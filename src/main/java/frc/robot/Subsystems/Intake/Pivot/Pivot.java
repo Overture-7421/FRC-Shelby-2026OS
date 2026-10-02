@@ -2,14 +2,9 @@ package frc.robot.Subsystems.Intake.Pivot;
 
 import static edu.wpi.first.units.Units.Degrees;
 
-import java.util.concurrent.CancellationException;
-import java.util.function.BooleanSupplier;
-import com.ctre.phoenix6.CANBus;
-import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
-import com.ctre.phoenix6.controls.PositionVoltage;
+import com.ctre.phoenix6.hardware.CANcoder;
 import com.overture.lib.motorcontrollers.OverTalonFX;
-import com.overture.lib.sensors.CanCoderConfig;
 
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -17,52 +12,59 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
+public class Pivot extends SubsystemBase {
+	protected OverTalonFX pivotMotor;
+	protected CANcoder pivotCC;
 
-public class Pivot extends SubsystemBase{
-    protected OverTalonFX pivotMotor;
-    protected CANcoder pivotCC;
-    private Angle target;
+	private Angle target = Degrees.of(0.0);
 
-    
-    protected final MotionMagicVoltage motionMagicRequest = new MotionMagicVoltage(0.0);
-    
-    public Pivot pivot = new Pivot();
+	private MotionMagicVoltage motionMagicRequest = new MotionMagicVoltage(0.0)
+			.withEnableFOC(true);
 
-    public Pivot(){
+	public Pivot() {
+		pivotMotor = new OverTalonFX(PivotConstants.motorConfig(), PivotConstants.motorCanId, Constants.canbus);
+		pivotCC = new CANcoder(PivotConstants.CCCanId, Constants.canbus);
+		pivotCC.getConfigurator().apply(PivotConstants.CCConfig());
 
-        pivotMotor = new OverTalonFX(PivotConstants.motorConfig(), PivotConstants.motorCanId, Constants.canbus);
-        pivotCC = new CANcoder(PivotConstants.CCCanId, Constants.canbus);
-        pivotCC.getConfigurator().apply(PivotConstants.CCConfig());
-    }
-    
-    public void setTarget(Angle targetSetter){
-            target = targetSetter;
-    }
+	}
 
-    public Angle getTarget(){
-        return target;
-    }
+	public Command setPosition(Angle position) {
+		return run(() -> {
+			setMotor(position);
+		}).until(() -> isFinished());
+	}
 
-    
-    public Command setMotionMagic(Angle rotations){
-        return
-            runOnce(() -> setTarget(rotations))
-            .andThen(run(() -> pivotMotor.setControl(motionMagicRequest.withPosition(target))).until(() -> isFinished()));
-    }
+	public void setMotor(Angle position) {
+		target = position;
+		pivotMotor.setControl(motionMagicRequest.withPosition(target));
+	}
 
+	public double getTarget() {
+		return target.in(Degrees);
+	}
 
-    public Angle getPosition(){
-        return Degrees.of(pivotMotor.getPosition().getValueAsDouble());
-    }
+	public double getPosition() {
+		return pivotMotor.getPosition().getValue().in(Degrees);
+	}
 
-    private Angle getError(){
-        Angle error = getTarget().minus(getPosition());
-        return Degrees.of(Math.abs(error.baseUnitMagnitude()));
-    } 
+	public double getError() {
+		return Math.abs(getTarget() - getPosition());
+	}
 
-    private boolean isFinished(){
-        return getError().baseUnitMagnitude() < PivotConstants.Control.AcceptedError.baseUnitMagnitude();
-    }
+	private boolean isFinished() {
+		return (getError() < PivotConstants.Control.AcceptedError.in(Degrees));
+	}
 
+	public void updateTelemetry() {
+		SmartDashboard.putNumber("Subsystems/Pivot/Position", getPosition());
+		SmartDashboard.putNumber("Subsystems/Pivot/Target", getTarget());
+		SmartDashboard.putNumber("Subsystems/Pivot/Error", getError());
+		SmartDashboard.putBoolean("Subsystems/Pivot/AtTarget", isFinished());
+	}
+
+	@Override
+	public void periodic() {
+
+	}
 
 }

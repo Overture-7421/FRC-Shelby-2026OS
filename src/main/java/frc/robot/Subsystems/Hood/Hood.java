@@ -1,76 +1,71 @@
 package frc.robot.Subsystems.Hood;
 
-import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
-import com.ctre.phoenix6.configs.FeedbackConfigs;
-import com.ctre.phoenix6.configs.MotionMagicConfigs;
-import com.ctre.phoenix6.configs.MotorOutputConfigs;
-import com.ctre.phoenix6.configs.Slot0Configs;
-import com.ctre.phoenix6.configs.TalonFXConfiguration;
-import com.ctre.phoenix6.configs.VoltageConfigs;
+import static edu.wpi.first.units.Units.Degrees;
+
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
-import com.ctre.phoenix6.hardware.CANcoder;
-import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
-import com.ctre.phoenix6.signals.InvertedValue;
-import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.overture.lib.motorcontrollers.OverTalonFX;
-import frc.robot.Constants;
+
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import static edu.wpi.first.units.Units.*;
+import frc.robot.Constants;
 
-public class Hood extends SubsystemBase{
-    protected OverTalonFX hoodMotor;
-    protected CANcoder hoodCC;
-    private Angle target;
+public class Hood extends SubsystemBase {
+	protected OverTalonFX hoodMotor;
+	private Angle target = Degrees.of(0.0);
 
-    protected final MotionMagicVoltage motionMagicRequest = new MotionMagicVoltage(0);
-    
-     public Hood(){
-        
-        hoodMotor = new OverTalonFX(HoodConstants.motorConfig(), HoodConstants.motorCanId, Constants.canbus);
-        hoodCC = new CANcoder(HoodConstants.CCCanId, Constants.canbus);
-        hoodCC.getConfigurator().apply(HoodConstants.CCConfig());
-    }
+	private MotionMagicVoltage motionMagicRequest = new MotionMagicVoltage(0.0)
+			.withEnableFOC(true);
 
-    public Angle getTarget(){
-        return target;
-    }
+	public Hood() {
+		hoodMotor = new OverTalonFX(HoodConstants.motorConfig(), HoodConstants.motorCanId, Constants.canbus);
 
-    public Angle getPosition(){
-        return Degrees.of(hoodMotor.getPosition().getValueAsDouble());
-    }
+	}
 
-    private Angle getError(){
-        Angle error = getTarget().minus(getPosition());
-        return Degrees.of(Math.abs(error.baseUnitMagnitude()));
-    }
-    
-    public void setTarget(Angle targetSetter){
-        target = targetSetter;
-    }
+	public Command setPosition(Angle position) {
+		return run(() -> {
+			setMotor(position);
+		}).until(() -> isFinished());
+	}
 
-    public Command setPosition(Angle rotations){
-        return  
-            runOnce(() -> setTarget(rotations))
-            .andThen(run(() -> hoodMotor.setControl(motionMagicRequest.withPosition(target))).until(() -> isFinished()));
-    }
+	public void setMotor(Angle position) {
+		// Check if the position is within the allowed range
+		if (position.gt(HoodConstants.Max)) {
+			target = HoodConstants.Max;
+		} else if (position.lt(HoodConstants.Min)) {
+			target = HoodConstants.Min;
+		}
+		target = position;
+		hoodMotor.setControl(motionMagicRequest.withPosition(target));
+	}
 
-    public Command setClosed(){
-        return setPosition(HoodConstants.States.Closed);
-    }
+	public double getTarget() {
+		return target.in(Degrees);
+	}
 
-    private boolean isFinished(){
-        return getError().baseUnitMagnitude() < HoodConstants.Control.AcceptedError.baseUnitMagnitude();
-    }
-    
-    public void updateTelemetry(){
-        SmartDashboard.putNumber("Subsystems/Arm/Position", getPosition().baseUnitMagnitude());
-        SmartDashboard.putNumber("Subsystems/Arm/Target", getTarget().baseUnitMagnitude());
-        SmartDashboard.putNumber("Subsystems/Arm/Error", getError().baseUnitMagnitude());
-        SmartDashboard.putBoolean("Subsystems/Arm/Position", isFinished());
-    }
+	public double getPosition() {
+		return hoodMotor.getPosition().getValue().in(Degrees);
+	}
 
-    
+	public double getError() {
+		return Math.abs(getTarget() - getPosition());
+	}
+
+	private boolean isFinished() {
+		return (getError() < HoodConstants.Control.AcceptedError.in(Degrees));
+	}
+
+	public void updateTelemetry() {
+		SmartDashboard.putNumber("Subsystems/Hood/Position", getPosition());
+		SmartDashboard.putNumber("Subsystems/Hood/Target", getTarget());
+		SmartDashboard.putNumber("Subsystems/Hood/Error", getError());
+		SmartDashboard.putBoolean("Subsystems/Hood/AtTarget", isFinished());
+	}
+
+	@Override
+	public void periodic() {
+
+	}
+
 }
