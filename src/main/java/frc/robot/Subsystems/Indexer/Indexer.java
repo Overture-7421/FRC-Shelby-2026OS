@@ -23,10 +23,13 @@ public class Indexer extends SubsystemBase {
 
 	Indexer() {
 		indexerMotorLead = new OverTalonFX(IndexerConstants.motorConfig(), IndexerConstants.leaderCanId,
-				Constants.canbus);
-		indexerMotor2 = new OverTalonFX(IndexerConstants.motorConfig(), IndexerConstants.MotorCanId2, Constants.canbus);
-		indexerMotor3 = new OverTalonFX(IndexerConstants.motorConfig(), IndexerConstants.MotorCanId3, Constants.canbus);
-		indexerMotor4 = new OverTalonFX(IndexerConstants.motorConfig(), IndexerConstants.MotorCanId4, Constants.canbus);
+				Constants.RobotConstants.rio);
+		indexerMotor2 = new OverTalonFX(IndexerConstants.motorConfig(), IndexerConstants.MotorCanId2,
+				Constants.RobotConstants.rio);
+		indexerMotor3 = new OverTalonFX(IndexerConstants.motorConfig(), IndexerConstants.MotorCanId3,
+				Constants.RobotConstants.rio);
+		indexerMotor4 = new OverTalonFX(IndexerConstants.motorConfig(), IndexerConstants.MotorCanId4,
+				Constants.RobotConstants.rio);
 
 		indexerMotor2.setFollow(IndexerConstants.leaderCanId, false);
 		indexerMotor3.setFollow(IndexerConstants.leaderCanId, false);

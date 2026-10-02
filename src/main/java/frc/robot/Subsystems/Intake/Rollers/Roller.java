@@ -19,7 +19,8 @@ public class Roller extends SubsystemBase {
 	private VoltageOut voltageRequest = new VoltageOut(0.0);
 
 	public Roller() {
-		rollerMotor = new OverTalonFX(RollerConstants.motorConfig(), RollerConstants.motorCanId, Constants.canbus);
+		rollerMotor = new OverTalonFX(RollerConstants.motorConfig(), RollerConstants.motorCanId,
+				Constants.RobotConstants.rio);
 	}
 
 	public Command setVoltage(Voltage volts) {
