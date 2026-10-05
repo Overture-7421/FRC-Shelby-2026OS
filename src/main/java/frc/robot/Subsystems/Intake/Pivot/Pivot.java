@@ -22,8 +22,9 @@ public class Pivot extends SubsystemBase {
 			.withEnableFOC(true);
 
 	public Pivot() {
-		pivotMotor = new OverTalonFX(PivotConstants.motorConfig(), PivotConstants.motorCanId, Constants.canbus);
-		pivotCC = new CANcoder(PivotConstants.CCCanId, Constants.canbus);
+		pivotMotor = new OverTalonFX(PivotConstants.motorConfig(), PivotConstants.motorCanId,
+				Constants.RobotConstants.rio);
+		pivotCC = new CANcoder(PivotConstants.CCCanId, Constants.RobotConstants.rio);
 		pivotCC.getConfigurator().apply(PivotConstants.CCConfig());
 
 	}
