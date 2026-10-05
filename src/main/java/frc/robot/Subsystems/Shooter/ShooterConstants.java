@@ -1,5 +1,6 @@
 package frc.robot.Subsystems.Shooter;
 import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
+import com.ctre.phoenix6.configs.FeedbackConfigs;
 import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
@@ -32,6 +33,9 @@ public class ShooterConstants {
         protected static Velocity<AngularAccelerationUnit> JerkLimit = RotationsPerSecondPerSecond.per(Second).of(0);
         
         protected static double AcceptedError = 1;
+        protected static double SensorToMechanismRatio = 1.6666666666;
+        protected static double RotorToSensorRatio = 1.0;
+        
 
     }
 
@@ -71,6 +75,9 @@ public class ShooterConstants {
                 new MotorOutputConfigs()
                     .withInverted(InvertedValue.CounterClockwise_Positive)
                     .withNeutralMode(NeutralModeValue.Coast))
+            .withFeedback(
+                new FeedbackConfigs()
+                    .withSensorToMechanismRatio(Control.SensorToMechanismRatio))
             .withSlot0( 
                 new Slot0Configs()
                 .withKP(Control.kP)

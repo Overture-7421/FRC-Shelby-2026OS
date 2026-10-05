@@ -6,9 +6,13 @@ import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.SlotConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.configs.CANcoderConfiguration;
+import com.ctre.phoenix6.configs.CANrangeConfiguration;
 import com.ctre.phoenix6.configs.VoltageConfigs;
+import com.ctre.phoenix6.hardware.CANrange;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
+import com.overture.lib.sensors.CanCoderConfig;
 
 import edu.wpi.first.units.measure.AngularAcceleration;
 import edu.wpi.first.units.measure.AngularVelocity;
@@ -33,6 +37,9 @@ public class IndexerConstants {
     public static int MotorCanId3 = 13;
     public static int MotorCanId4 = 12;
 
+    public static int shooterCanRangeId = 11;
+    public static int hopperCanRangeId = 10;
+
     
 
     public static TalonFXConfiguration motorConfig() {
@@ -56,4 +63,6 @@ public class IndexerConstants {
                     
             );
     }
+
+
 }

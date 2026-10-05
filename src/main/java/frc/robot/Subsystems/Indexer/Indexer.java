@@ -7,6 +7,7 @@ import com.ctre.phoenix6.controls.MotionMagicVelocityVoltage;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.overture.lib.motorcontrollers.OverTalonFX;
+import com.ctre.phoenix6.hardware.CANrange;
 
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Voltage;
@@ -24,6 +25,9 @@ public class Indexer extends SubsystemBase{
     protected OverTalonFX indexerMotor3;
     protected OverTalonFX indexerMotor4;
 
+    protected CANrange shooterCanRange;
+    protected CANrange hopperCanRange;
+
     private double target;    
 
     private VoltageOut voltageRequest = new VoltageOut(0.0);
@@ -33,6 +37,9 @@ public class Indexer extends SubsystemBase{
         indexerMotor2 = new OverTalonFX(IndexerConstants.motorConfig(), IndexerConstants.MotorCanId2, Constants.canbus);
         indexerMotor3 = new OverTalonFX(IndexerConstants.motorConfig(), IndexerConstants.MotorCanId3, Constants.canbus);
         indexerMotor4 = new OverTalonFX(IndexerConstants.motorConfig(), IndexerConstants.MotorCanId4, Constants.canbus);
+
+        shooterCanRange = new CANrange(IndexerConstants.hopperCanRangeId);
+        hopperCanRange = new CANrange(IndexerConstants.hopperCanRangeId);
         
         indexerMotor2.setFollow(IndexerConstants.leaderCanId, false);
         indexerMotor3.setFollow(IndexerConstants.leaderCanId, false);    

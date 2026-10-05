@@ -19,17 +19,21 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Subsystems.Shooter.ShooterConstants;
 
 public class Roller extends SubsystemBase{
     
-    protected OverTalonFX rollerMotor;
+    protected OverTalonFX rollerLeadMotor;
+    protected OverTalonFX rollerSlaveMotor;
     private double target;
     
     protected final VoltageOut voltageRequest = new VoltageOut(0.0);
 
     public Roller(){
-        rollerMotor = new OverTalonFX(RollerConstants.motorConfig(), RollerConstants.motorCanId, Constants.canbus);
-
+        rollerLeadMotor = new OverTalonFX(RollerConstants.motorConfig(), RollerConstants.motorCanId, Constants.canbus);
+        rollerSlaveMotor = new OverTalonFX(RollerConstants.motorConfig(), RollerConstants.motorCanId, Constants.canbus);
+        
+        rollerSlaveMotor.setFollow(ShooterConstants.leaderCanId, true); 
     }
 
     public void setTarget(double targetSetter){
@@ -41,11 +45,11 @@ public class Roller extends SubsystemBase{
     }
 
     public Command setVoltage(double volts){
-        return runOnce(() -> rollerMotor.setVoltage(volts));
+        return runOnce(() -> rollerLeadMotor.setVoltage(volts));
     }
 
     public double getVelocity(){
-        return rollerMotor.getVelocity().getValueAsDouble();
+        return rollerLeadMotor.getVelocity().getValueAsDouble();
     }
 
     

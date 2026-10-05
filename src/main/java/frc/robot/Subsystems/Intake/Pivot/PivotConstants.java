@@ -41,7 +41,7 @@ public class PivotConstants {
         protected static Time TimeOut = Seconds.of(1); 
         protected static Angle OffSet = Degrees.of(0); 
         protected static double SensorToMechanismRatio = 1.0;
-        protected static double RotorToSensorRatio = 0/0;
+        protected static double RotorToSensorRatio = 40/1;
     }
 
     public class States {

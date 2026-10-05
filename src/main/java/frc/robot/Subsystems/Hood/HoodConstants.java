@@ -39,8 +39,8 @@ public class HoodConstants {
         protected static Angle AcceptedError = Degrees.of(1);            
         protected static Time TimeOut = Seconds.of(1); 
         protected static Angle OffSet = Degrees.of(0); 
-        protected static double SensorToMechanismRatio = 1.0;
-        protected static double RotorToSensorRatio = 30/35;
+        protected static double SensorToMechanismRatio = 94.9;
+        protected static double RotorToSensorRatio = 1.0;
 
     }
 
