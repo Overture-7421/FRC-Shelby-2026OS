@@ -24,17 +24,21 @@ public class HoodConstants {
 		protected static double kP = 0.0;
 		protected static double kV = 0.0;
 
-		protected static AngularAcceleration AccelerationLimit = RotationsPerSecondPerSecond.of(0.0);
-		protected static AngularVelocity CruiseVelocity = RotationsPerSecond.of(0.0);
-		protected static Velocity<AngularAccelerationUnit> JerkLimit = RotationsPerSecondPerSecond.per(Second).of(0);
+        protected static AngularAcceleration AccelerationLimit = RotationsPerSecondPerSecond.of(0.0);
+        protected static AngularVelocity CruiseVelocity = RotationsPerSecond.of(0.0);
+        protected static Velocity<AngularAccelerationUnit> JerkLimit = RotationsPerSecondPerSecond.per(Second).of(0);
+        
+        protected static Angle AcceptedError = Degrees.of(1);            
+        protected static Angle OffSet = Degrees.of(0); 
+        protected static double SensorToMechanismRatio = 94.9;
+        
+    }
 
-		protected static Angle AcceptedError = Degrees.of(1);
-		protected static Angle OffSet = Degrees.of(0);
+    public class States {
+            public static Angle Max = Degree.of(90);
+            public static Angle Min = Degree.of(0);
 
-	}
-
-	public static final Angle Max = Degrees.of(90);
-	public static final Angle Min = Degrees.of(0);
+        }
 
 	public static int motorCanId = 15;
 	public static int CCCanId = 14;

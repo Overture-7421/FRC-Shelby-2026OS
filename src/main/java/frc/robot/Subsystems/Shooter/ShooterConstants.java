@@ -2,6 +2,7 @@ package frc.robot.Subsystems.Shooter;
 
 import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 import com.ctre.phoenix6.configs.FeedbackConfigs;
+import com.ctre.phoenix6.configs.FeedbackConfigs;
 import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
@@ -24,11 +25,14 @@ public class ShooterConstants {
 		protected static double kP = 0.0;
 		protected static double kV = 0.0;
 
-		protected static AngularAcceleration AccelerationLimit = RotationsPerSecondPerSecond.of(0.0);
-		protected static AngularVelocity CruiseVelocity = RotationsPerSecond.of(0.0);
-		protected static Velocity<AngularAccelerationUnit> JerkLimit = RotationsPerSecondPerSecond.per(Second).of(0);
+        protected static AngularAcceleration AccelerationLimit = RotationsPerSecondPerSecond.of(0.0);
+        protected static AngularVelocity CruiseVelocity = RotationsPerSecond.of(0.0);
+        protected static Velocity<AngularAccelerationUnit> JerkLimit = RotationsPerSecondPerSecond.per(Second).of(0);
+        
+        protected static double AcceptedError = 1;
+        protected static double SensorToMechanismRatio = 1.6666666666;
 
-		protected static double AcceptedError = 1;
+        
 
 	}
 
@@ -41,36 +45,36 @@ public class ShooterConstants {
 
 	public static final double GearRatio = (1 / 1);
 
-	public static TalonFXConfiguration motorConfig() {
-		return new TalonFXConfiguration()
-				.withCurrentLimits(
-						new CurrentLimitsConfigs()
-								.withStatorCurrentLimitEnable(true)
-								.withStatorCurrentLimit(120)
-								.withSupplyCurrentLimitEnable(true)
-								.withStatorCurrentLimit(40)
-								.withSupplyCurrentLowerLimit(40)
-								.withSupplyCurrentLowerTime(0.05))
-				.withVoltage(
-						new VoltageConfigs()
-								.withPeakForwardVoltage(12)
-								.withPeakReverseVoltage(0))
-				.withMotorOutput(
-						new MotorOutputConfigs()
-								.withInverted(InvertedValue.CounterClockwise_Positive)
-								.withNeutralMode(NeutralModeValue.Coast))
-				.withSlot0(
-						new Slot0Configs()
-								.withKP(Control.kP)
-								.withKV(Control.kV))
-				.withMotionMagic(
-						new MotionMagicConfigs()
-								.withMotionMagicCruiseVelocity(Control.CruiseVelocity)
-								.withMotionMagicAcceleration(Control.AccelerationLimit)
-								.withMotionMagicJerk(Control.JerkLimit))
-				.withFeedback(
-						new FeedbackConfigs()
-								.withSensorToMechanismRatio(GearRatio));
-	}
-
+    public static TalonFXConfiguration motorConfig() {
+        return new TalonFXConfiguration()
+            .withCurrentLimits(
+                new CurrentLimitsConfigs()
+                    .withStatorCurrentLimitEnable(true)
+                    .withStatorCurrentLimit(120)
+                    .withSupplyCurrentLimitEnable(true)
+                    .withStatorCurrentLimit(40)
+                    .withSupplyCurrentLowerLimit(40)
+                    .withSupplyCurrentLowerTime(0.05))
+            .withVoltage(
+                new VoltageConfigs()
+                    .withPeakForwardVoltage(12)
+                    .withPeakReverseVoltage(-12))
+            .withMotorOutput(
+                new MotorOutputConfigs()
+                    .withInverted(InvertedValue.CounterClockwise_Positive)
+                    .withNeutralMode(NeutralModeValue.Coast))
+            .withFeedback(
+                new FeedbackConfigs()
+                    .withSensorToMechanismRatio(Control.SensorToMechanismRatio))
+            .withSlot0( 
+                new Slot0Configs()
+                .withKP(Control.kP)
+                .withKV(Control.kV))
+            .withMotionMagic(
+                new MotionMagicConfigs()
+                    .withMotionMagicCruiseVelocity(Control.CruiseVelocity)
+                    .withMotionMagicAcceleration(Control.AccelerationLimit)
+                    .withMotionMagicJerk(Control.JerkLimit)
+            );
+    }
 }

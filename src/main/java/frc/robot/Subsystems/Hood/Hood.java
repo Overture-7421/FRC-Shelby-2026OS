@@ -32,10 +32,10 @@ public class Hood extends SubsystemBase {
 
 	public void setMotor(Angle position) {
 		// Check if the position is within the allowed range
-		if (position.gt(HoodConstants.Max)) {
-			target = HoodConstants.Max;
-		} else if (position.lt(HoodConstants.Min)) {
-			target = HoodConstants.Min;
+		if (position.gt(HoodConstants.States.Max)) {
+			target = HoodConstants.States.Max;
+		} else if (position.lt(HoodConstants.States.Min)) {
+			target = HoodConstants.States.Min;
 		}
 		target = position;
 		hoodMotor.setControl(motionMagicRequest.withPosition(target));
