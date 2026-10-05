@@ -1,10 +1,11 @@
 package frc.robot.Subsystems.Shooter;
+
 import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
+import com.ctre.phoenix6.configs.FeedbackConfigs;
 import com.ctre.phoenix6.configs.FeedbackConfigs;
 import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
-import com.ctre.phoenix6.configs.SlotConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.configs.VoltageConfigs;
 import com.ctre.phoenix6.signals.InvertedValue;
@@ -15,18 +16,14 @@ import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Velocity;
 import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.units.AngularAccelerationUnit;
-import edu.wpi.first.units.VoltageUnit;
 import static edu.wpi.first.units.Units.*;
 
-
 public class ShooterConstants {
- 
-    protected class Control{
 
-        protected static double kI = 0.0;
-        protected static double kD = 0.0;
-        protected static double kP = 0.6;
-        protected static double kV = 0.12;
+	protected class Control {
+
+		protected static double kP = 0.0;
+		protected static double kV = 0.0;
 
         protected static AngularAcceleration AccelerationLimit = RotationsPerSecondPerSecond.of(0.0);
         protected static AngularVelocity CruiseVelocity = RotationsPerSecond.of(0.0);
@@ -37,25 +34,16 @@ public class ShooterConstants {
         protected static double RotorToSensorRatio = 1.0;
         
 
-    }
+	}
 
-    public class States {
-        
-        public static Voltage VoltageOFF = Volts.of(0.0);
-        public static Voltage VoltageIdle = Volts.of(0.0);
-        public static Voltage VoltageON = Volts.of(4);
-        public static AngularVelocity VelocityOFF = RotationsPerSecond.of(0);
-        public static AngularVelocity VelocityON = RotationsPerSecond.of(45);
-        public static AngularVelocity VelocityIdle = RotationsPerSecond.of(0.0);
+	public static Voltage VoltageOFF = Volts.of(0.0);
 
-    }
+	public static int leaderCanId = 19;
+	public static int MotorCanId2 = 18;
+	public static int MotorCanId3 = 17;
+	public static int MotorCanId4 = 16;
 
-    public static int leaderCanId = 19;
-    public static int MotorCanId2 = 18;
-    public static int MotorCanId3 = 17;
-    public static int MotorCanId4 = 16;
-
-    public static final double GearRatio = (1/1);
+	public static final double GearRatio = (1 / 1);
 
     public static TalonFXConfiguration motorConfig() {
         return new TalonFXConfiguration()
