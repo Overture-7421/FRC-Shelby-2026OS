@@ -31,7 +31,7 @@ public class ShooterConstants {
         
         protected static double AcceptedError = 1;
         protected static double SensorToMechanismRatio = 1.6666666666;
-        protected static double RotorToSensorRatio = 1.0;
+
         
 
 	}
