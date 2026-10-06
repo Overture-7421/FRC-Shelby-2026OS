@@ -28,10 +28,10 @@ public class Indexer extends SubsystemBase{
 	private VoltageOut voltageRequest = new VoltageOut(0.0);
 
     Indexer(){
-        indexerMotorLead = new OverTalonFX(IndexerConstants.motorConfig(), IndexerConstants.leaderCanId, Constants.canbus);    
-        indexerMotor2 = new OverTalonFX(IndexerConstants.motorConfig(), IndexerConstants.MotorCanId2, Constants.canbus);
-        indexerMotor3 = new OverTalonFX(IndexerConstants.motorConfig(), IndexerConstants.MotorCanId3, Constants.canbus);
-        indexerMotor4 = new OverTalonFX(IndexerConstants.motorConfig(), IndexerConstants.MotorCanId4, Constants.canbus);
+        indexerMotorLead = new OverTalonFX(IndexerConstants.motorConfig(), IndexerConstants.leaderCanId, Constants.RobotConstants.rio);    
+        indexerMotor2 = new OverTalonFX(IndexerConstants.motorConfig(), IndexerConstants.MotorCanId2, Constants.RobotConstants.rio);
+        indexerMotor3 = new OverTalonFX(IndexerConstants.motorConfig(), IndexerConstants.MotorCanId3, Constants.RobotConstants.rio);
+        indexerMotor4 = new OverTalonFX(IndexerConstants.motorConfig(), IndexerConstants.MotorCanId4, Constants.RobotConstants.rio);
 
         shooterCanRange = new CANrange(IndexerConstants.hopperCanRangeId);
         hopperCanRange = new CANrange(IndexerConstants.hopperCanRangeId);

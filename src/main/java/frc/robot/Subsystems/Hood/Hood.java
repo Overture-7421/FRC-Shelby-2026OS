@@ -1,5 +1,6 @@
 package frc.robot.Subsystems.Hood;
 
+import static edu.wpi.first.units.Units.Amps;
 import static edu.wpi.first.units.Units.Degrees;
 import static edu.wpi.first.units.Units.Volts;
 
@@ -7,13 +8,13 @@ import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.overture.lib.motorcontrollers.OverTalonFX;
 
+import edu.wpi.first.math.filter.Debouncer;
+import edu.wpi.first.math.filter.Debouncer.DebounceType;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.Constants;
 
 public class Hood extends SubsystemBase {
@@ -23,6 +24,10 @@ public class Hood extends SubsystemBase {
 	private MotionMagicVoltage motionMagicRequest = new MotionMagicVoltage(0.0)
 			.withEnableFOC(true);
 	private VoltageOut voltageRequest = new VoltageOut(0.0);
+
+	private boolean homed = false;
+	private final Debouncer touchingDebouncer = new Debouncer(HoodConstants.Control.HomingSettleTime,
+			DebounceType.kRising);
 
 	public Hood() {
 		hoodMotor = new OverTalonFX(HoodConstants.motorConfig(), HoodConstants.motorCanId,
@@ -37,17 +42,17 @@ public class Hood extends SubsystemBase {
 	}
 
 	public void setMotor(Angle position) {
-		// Check if the position is within the allowed range
 		if (position.gt(HoodConstants.States.Max)) {
 			target = HoodConstants.States.Max;
 		} else if (position.lt(HoodConstants.States.Min)) {
 			target = HoodConstants.States.Min;
+		} else {
+			target = position;
 		}
-		target = position;
 		hoodMotor.setControl(motionMagicRequest.withPosition(target));
 	}
 
-	private void setVoltage(Voltage volts){
+	private void setVoltage(Voltage volts) {
 		hoodMotor.setControl(voltageRequest.withOutput(volts));
 	}
 
@@ -55,7 +60,7 @@ public class Hood extends SubsystemBase {
 		return target.in(Degrees);
 	}
 
-	public double getAmps(){
+	public double getAmps() {
 		return hoodMotor.getStatorCurrent().getValueAsDouble();
 	}
 
@@ -71,23 +76,23 @@ public class Hood extends SubsystemBase {
 		return (getError() < HoodConstants.Control.AcceptedError.in(Degrees));
 	}
 
-	private boolean isHome(){
-		return (getAmps() > HoodConstants.Control.TouchingCurrentTreshold.baseUnitMagnitude());
+	private boolean isHome() {
+		return touchingDebouncer.calculate(getAmps() > HoodConstants.Control.TouchingCurrentThreshold.in(Amps));
 	}
 
-
-	public Command HoodHoming(){
-		return 
-			runOnce(()-> setVoltage(Volts.of(1*HoodConstants.Control.DirectionOfHoming)))
-			.andThen(new WaitUntilCommand(() -> isHome()))
-			.andThen(() -> setVoltage(Volts.of(0.0)))
-			.andThen(() -> {HoodConstants.Control.OffSet = Degrees.of(hoodMotor.getPosition().getValueAsDouble());});
-			
-			/*
-			* para hacerlo por velocidad checa en esta parte del code de 2910:
-			* src\main\java\org\frc2910\robot\subsystems\base\servo\ServoMotorSubsystem.java
-			* funcion home
-			*/
+	public Command HoodHoming() {
+		return runOnce(() -> {
+			homed = false;
+			touchingDebouncer.calculate(false);
+		}).andThen(run(() -> {
+			setVoltage(Volts.of(HoodConstants.Control.HomingVoltage.in(Volts)));
+		}).until(() -> isHome())).finallyDo((interrupted) -> {
+			setVoltage(Volts.of(0.0));
+			if (!interrupted) {
+				hoodMotor.setPosition(HoodConstants.Control.HomedPosition);
+				homed = true;
+			}
+		});
 	}
 
 	public void updateTelemetry() {
@@ -95,6 +100,9 @@ public class Hood extends SubsystemBase {
 		SmartDashboard.putNumber("Subsystems/Hood/Target", getTarget());
 		SmartDashboard.putNumber("Subsystems/Hood/Error", getError());
 		SmartDashboard.putBoolean("Subsystems/Hood/AtTarget", isFinished());
+
+		SmartDashboard.putNumber("Subsystems/Hood/Amps", getAmps());
+		SmartDashboard.putBoolean("Subsystems/Hood/Homed", homed);
 	}
 
 	@Override

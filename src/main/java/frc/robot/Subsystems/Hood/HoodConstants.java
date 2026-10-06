@@ -16,6 +16,7 @@ import edu.wpi.first.units.measure.AngularAcceleration;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Velocity;
 import edu.wpi.first.units.measure.Current;
+import edu.wpi.first.units.measure.Voltage;
 import static edu.wpi.first.units.Units.*;
 
 public class HoodConstants {
@@ -25,24 +26,24 @@ public class HoodConstants {
 		protected static double kP = 0.0;
 		protected static double kV = 0.0;
 
-        protected static AngularAcceleration AccelerationLimit = RotationsPerSecondPerSecond.of(0.0);
-        protected static AngularVelocity CruiseVelocity = RotationsPerSecond.of(0.0);
-        protected static Velocity<AngularAccelerationUnit> JerkLimit = RotationsPerSecondPerSecond.per(Second).of(0);
-        
-        protected static Angle AcceptedError = Degrees.of(1);            
-        protected static Angle OffSet = Degrees.of(0); 
-        protected static double SensorToMechanismRatio = 94.9;
+		protected static AngularAcceleration AccelerationLimit = RotationsPerSecondPerSecond.of(0.0);
+		protected static AngularVelocity CruiseVelocity = RotationsPerSecond.of(0.0);
+		protected static Velocity<AngularAccelerationUnit> JerkLimit = RotationsPerSecondPerSecond.per(Second).of(0);
 
-		protected static Current TouchingCurrentTreshold = Amps.of(0.0) ;
-		protected static int DirectionOfHoming = 1;
-        
-    }
+		protected static Angle AcceptedError = Degrees.of(1);
 
-    public class States {
-            public static Angle Max = Degree.of(90);
-            public static Angle Min = Degree.of(0);
+		protected static Voltage HomingVoltage = Volts.of(1.0);
+		protected static Current TouchingCurrentThreshold = Amps.of(0.0);
+		protected static double HomingSettleTime = 0.1; // Seconds
+		protected static Angle HomedPosition = Degrees.of(0.0);
 
-        }
+	}
+
+	public class States {
+		public static Angle Max = Degree.of(90);
+		public static Angle Min = Degree.of(0);
+
+	}
 
 	public static int motorCanId = 15;
 	public static int CCCanId = 14;

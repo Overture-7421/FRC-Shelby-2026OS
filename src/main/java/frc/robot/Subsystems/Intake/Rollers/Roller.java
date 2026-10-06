@@ -21,8 +21,8 @@ public class Roller extends SubsystemBase{
     protected final VoltageOut voltageRequest = new VoltageOut(0.0);
 
     public Roller(){
-        rollerLeadMotor = new OverTalonFX(RollerConstants.motorConfig(), RollerConstants.motorCanId, Constants.canbus);
-        rollerSlaveMotor = new OverTalonFX(RollerConstants.motorConfig(), RollerConstants.motorCanId, Constants.canbus);
+        rollerLeadMotor = new OverTalonFX(RollerConstants.motorConfig(), RollerConstants.motorCanId, Constants.RobotConstants.rio);
+        rollerSlaveMotor = new OverTalonFX(RollerConstants.motorConfig(), RollerConstants.motorCanId, Constants.RobotConstants.rio);
         
         rollerSlaveMotor.setFollow(ShooterConstants.leaderCanId, true); 
     }
