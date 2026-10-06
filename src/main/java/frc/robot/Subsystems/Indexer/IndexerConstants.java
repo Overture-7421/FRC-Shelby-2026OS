@@ -4,9 +4,13 @@ import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 import com.ctre.phoenix6.configs.FeedbackConfigs;
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.configs.CANcoderConfiguration;
+import com.ctre.phoenix6.configs.CANrangeConfiguration;
 import com.ctre.phoenix6.configs.VoltageConfigs;
+import com.ctre.phoenix6.hardware.CANrange;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
+import com.overture.lib.sensors.CanCoderConfig;
 
 import edu.wpi.first.units.measure.Voltage;
 import static edu.wpi.first.units.Units.*;
@@ -17,10 +21,13 @@ public class IndexerConstants {
 	public static Voltage shootVoltage = Volts.of(4);
 	public static Voltage preloadVoltage = Volts.of(2);
 
-	public static int leaderCanId = 15;
-	public static int MotorCanId2 = 14;
-	public static int MotorCanId3 = 13;
-	public static int MotorCanId4 = 12;
+    public static int leaderCanId = 15;
+    public static int MotorCanId2 = 14;
+    public static int MotorCanId3 = 13;
+    public static int MotorCanId4 = 12;
+
+    public static int shooterCanRangeId = 11;
+    public static int hopperCanRangeId = 10;
 
 	public static final double GearRatio = (1 / 1);
 

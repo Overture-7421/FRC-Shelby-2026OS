@@ -27,17 +27,21 @@ public class PivotConstants {
 		protected static double kP = 0.0;
 		protected static double kV = 0.0;
 
-		protected static AngularAcceleration AccelerationLimit = RotationsPerSecondPerSecond.of(0.0);
-		protected static AngularVelocity CruiseVelocity = RotationsPerSecond.of(0.0);
-		protected static Velocity<AngularAccelerationUnit> JerkLimit = RotationsPerSecondPerSecond.per(Second).of(0);
+        protected static AngularAcceleration AccelerationLimit = RadiansPerSecondPerSecond.of(0.0);
+        protected static AngularVelocity CruiseVelocity = RadiansPerSecond.of(0.0);
+        protected static Velocity<AngularAccelerationUnit> JerkLimit = RadiansPerSecondPerSecond.per(Second).of(0);
+        
+        protected static Angle AcceptedError = Degrees.of(1); 
+		protected static Angle EncoderOffSet = Degrees.of(0);           
+        protected static Angle OffSet = Degrees.of(0); 
+        protected static double RotorToSensorRatio = 40.0;
+		
+    }
 
-		protected static Angle AcceptedError = Degrees.of(1);
-		protected static Angle EncoderOffSet = Degrees.of(0);
-
-	}
-
-	public static Angle Open = Degrees.of(0);
-	public static Angle Closed = Degrees.of(0);
+    public class States {
+        public static Angle Position1 = Degree.of(0);
+        public static Angle Position2 = Degree.of(0);
+    }
 
 	public static int motorCanId = 22;
 	public static int CCCanId = 21;

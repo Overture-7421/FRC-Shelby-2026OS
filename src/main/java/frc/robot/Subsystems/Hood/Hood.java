@@ -1,11 +1,17 @@
 package frc.robot.Subsystems.Hood;
 
+import static edu.wpi.first.units.Units.Amps;
 import static edu.wpi.first.units.Units.Degrees;
+import static edu.wpi.first.units.Units.Volts;
 
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
+import com.ctre.phoenix6.controls.VoltageOut;
 import com.overture.lib.motorcontrollers.OverTalonFX;
 
+import edu.wpi.first.math.filter.Debouncer;
+import edu.wpi.first.math.filter.Debouncer.DebounceType;
 import edu.wpi.first.units.measure.Angle;
+import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -17,6 +23,11 @@ public class Hood extends SubsystemBase {
 
 	private MotionMagicVoltage motionMagicRequest = new MotionMagicVoltage(0.0)
 			.withEnableFOC(true);
+	private VoltageOut voltageRequest = new VoltageOut(0.0);
+
+	private boolean homed = false;
+	private final Debouncer touchingDebouncer = new Debouncer(HoodConstants.Control.HomingSettleTime,
+			DebounceType.kRising);
 
 	public Hood() {
 		hoodMotor = new OverTalonFX(HoodConstants.motorConfig(), HoodConstants.motorCanId,
@@ -31,18 +42,26 @@ public class Hood extends SubsystemBase {
 	}
 
 	public void setMotor(Angle position) {
-		// Check if the position is within the allowed range
-		if (position.gt(HoodConstants.Max)) {
-			target = HoodConstants.Max;
-		} else if (position.lt(HoodConstants.Min)) {
-			target = HoodConstants.Min;
+		if (position.gt(HoodConstants.States.Max)) {
+			target = HoodConstants.States.Max;
+		} else if (position.lt(HoodConstants.States.Min)) {
+			target = HoodConstants.States.Min;
+		} else {
+			target = position;
 		}
-		target = position;
 		hoodMotor.setControl(motionMagicRequest.withPosition(target));
+	}
+
+	private void setVoltage(Voltage volts) {
+		hoodMotor.setControl(voltageRequest.withOutput(volts));
 	}
 
 	public double getTarget() {
 		return target.in(Degrees);
+	}
+
+	public double getAmps() {
+		return hoodMotor.getStatorCurrent().getValueAsDouble();
 	}
 
 	public double getPosition() {
@@ -57,11 +76,33 @@ public class Hood extends SubsystemBase {
 		return (getError() < HoodConstants.Control.AcceptedError.in(Degrees));
 	}
 
+	private boolean isHome() {
+		return touchingDebouncer.calculate(getAmps() > HoodConstants.Control.TouchingCurrentThreshold.in(Amps));
+	}
+
+	public Command HoodHoming() {
+		return runOnce(() -> {
+			homed = false;
+			touchingDebouncer.calculate(false);
+		}).andThen(run(() -> {
+			setVoltage(Volts.of(HoodConstants.Control.HomingVoltage.in(Volts)));
+		}).until(() -> isHome())).finallyDo((interrupted) -> {
+			setVoltage(Volts.of(0.0));
+			if (!interrupted) {
+				hoodMotor.setPosition(HoodConstants.Control.HomedPosition);
+				homed = true;
+			}
+		});
+	}
+
 	public void updateTelemetry() {
 		SmartDashboard.putNumber("Subsystems/Hood/Position", getPosition());
 		SmartDashboard.putNumber("Subsystems/Hood/Target", getTarget());
 		SmartDashboard.putNumber("Subsystems/Hood/Error", getError());
 		SmartDashboard.putBoolean("Subsystems/Hood/AtTarget", isFinished());
+
+		SmartDashboard.putNumber("Subsystems/Hood/Amps", getAmps());
+		SmartDashboard.putBoolean("Subsystems/Hood/Homed", homed);
 	}
 
 	@Override

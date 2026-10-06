@@ -10,37 +10,42 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Subsystems.Shooter.ShooterConstants;
 
-public class Roller extends SubsystemBase {
-	protected OverTalonFX rollerMotor;
+public class Roller extends SubsystemBase{
+    
+    protected OverTalonFX rollerLeadMotor;
+    protected OverTalonFX rollerSlaveMotor;
+    private Voltage target = Volts.of(0.0);
+    
+    protected final VoltageOut voltageRequest = new VoltageOut(0.0);
 
-	private Voltage target = Volts.of(0.0);
+    public Roller(){
+        rollerLeadMotor = new OverTalonFX(RollerConstants.motorConfig(), RollerConstants.motorCanId, Constants.RobotConstants.rio);
+        rollerSlaveMotor = new OverTalonFX(RollerConstants.motorConfig(), RollerConstants.motorCanId, Constants.RobotConstants.rio);
+        
+        rollerSlaveMotor.setFollow(ShooterConstants.leaderCanId, true); 
+    }
 
-	private VoltageOut voltageRequest = new VoltageOut(0.0);
+    public void setTarget(Voltage targetSetter){
+        target = targetSetter;
+    }
 
-	public Roller() {
-		rollerMotor = new OverTalonFX(RollerConstants.motorConfig(), RollerConstants.motorCanId,
-				Constants.RobotConstants.rio);
-	}
+    public double getTarget(){
+        return target.baseUnitMagnitude();
+    }
 
-	public Command setVoltage(Voltage volts) {
-		return runOnce(() -> {
-			setMotor(volts);
-		});
-	}
-
-	public void setMotor(Voltage volts) {
-		target = volts;
-		rollerMotor.setControl(voltageRequest.withOutput(target));
-	}
-
-	public double getTarget() {
-		return target.in(Volts);
-	}
+    public Command setVoltage(double volts){
+        return runOnce(() -> rollerLeadMotor.setVoltage(volts));
+    }
 
 	public double getVoltage() {
-		return rollerMotor.getMotorVoltage().getValueAsDouble();
+		return rollerLeadMotor.getMotorVoltage().getValueAsDouble();
 	}
+
+    public double getVelocity(){
+        return rollerLeadMotor.getVelocity().getValueAsDouble();
+    }
 
 	public void updateTelemetry() {
 		SmartDashboard.putNumber("Subsystems/Roller/Voltage", getVoltage());

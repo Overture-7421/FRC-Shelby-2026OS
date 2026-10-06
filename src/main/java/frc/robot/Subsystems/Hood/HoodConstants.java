@@ -15,6 +15,8 @@ import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularAcceleration;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Velocity;
+import edu.wpi.first.units.measure.Current;
+import edu.wpi.first.units.measure.Voltage;
 import static edu.wpi.first.units.Units.*;
 
 public class HoodConstants {
@@ -29,12 +31,19 @@ public class HoodConstants {
 		protected static Velocity<AngularAccelerationUnit> JerkLimit = RotationsPerSecondPerSecond.per(Second).of(0);
 
 		protected static Angle AcceptedError = Degrees.of(1);
-		protected static Angle OffSet = Degrees.of(0);
+
+		protected static Voltage HomingVoltage = Volts.of(1.0);
+		protected static Current TouchingCurrentThreshold = Amps.of(0.0);
+		protected static double HomingSettleTime = 0.1; // Seconds
+		protected static Angle HomedPosition = Degrees.of(0.0);
 
 	}
 
-	public static final Angle Max = Degrees.of(90);
-	public static final Angle Min = Degrees.of(0);
+	public class States {
+		public static Angle Max = Degree.of(90);
+		public static Angle Min = Degree.of(0);
+
+	}
 
 	public static int motorCanId = 15;
 	public static int CCCanId = 14;
