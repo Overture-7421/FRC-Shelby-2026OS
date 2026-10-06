@@ -15,6 +15,7 @@ import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularAcceleration;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Velocity;
+import edu.wpi.first.units.measure.Current;
 import static edu.wpi.first.units.Units.*;
 
 public class HoodConstants {
@@ -31,6 +32,9 @@ public class HoodConstants {
         protected static Angle AcceptedError = Degrees.of(1);            
         protected static Angle OffSet = Degrees.of(0); 
         protected static double SensorToMechanismRatio = 94.9;
+
+		protected static Current TouchingCurrentTreshold = Amps.of(0.0) ;
+		protected static int DirectionOfHoming = 1;
         
     }
 
