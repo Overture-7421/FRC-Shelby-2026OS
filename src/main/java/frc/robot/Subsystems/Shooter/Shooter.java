@@ -27,10 +27,10 @@ public class Shooter extends SubsystemBase {
 
 	Shooter() {
 		shooterMotorLead = new OverTalonFX(ShooterConstants.motorConfig(), ShooterConstants.leaderCanId,
-				Constants.canbus);
-		shooterMotor2 = new OverTalonFX(ShooterConstants.motorConfig(), ShooterConstants.MotorCanId2, Constants.canbus);
-		shooterMotor3 = new OverTalonFX(ShooterConstants.motorConfig(), ShooterConstants.MotorCanId3, Constants.canbus);
-		shooterMotor4 = new OverTalonFX(ShooterConstants.motorConfig(), ShooterConstants.MotorCanId4, Constants.canbus);
+				Constants.RobotConstants.rio);
+		shooterMotor2 = new OverTalonFX(ShooterConstants.motorConfig(), ShooterConstants.MotorCanId2, Constants.RobotConstants.rio);
+		shooterMotor3 = new OverTalonFX(ShooterConstants.motorConfig(), ShooterConstants.MotorCanId3, Constants.RobotConstants.rio);
+		shooterMotor4 = new OverTalonFX(ShooterConstants.motorConfig(), ShooterConstants.MotorCanId4, Constants.RobotConstants.rio);
 
 		shooterMotor2.setFollow(ShooterConstants.leaderCanId, false);
 		shooterMotor3.setFollow(ShooterConstants.leaderCanId, false);

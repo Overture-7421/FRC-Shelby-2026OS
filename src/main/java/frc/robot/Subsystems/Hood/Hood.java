@@ -25,7 +25,8 @@ public class Hood extends SubsystemBase {
 	private VoltageOut voltageRequest = new VoltageOut(0.0);
 
 	public Hood() {
-		hoodMotor = new OverTalonFX(HoodConstants.motorConfig(), HoodConstants.motorCanId, Constants.canbus);
+		hoodMotor = new OverTalonFX(HoodConstants.motorConfig(), HoodConstants.motorCanId,
+				Constants.RobotConstants.rio);
 
 	}
 
