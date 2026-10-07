@@ -6,14 +6,15 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import frc.robot.Subsystems.Hood.Hood;
+
 
 public class RobotContainer {
-	public RobotContainer() {
-		configureBindings();
-	}
+	protected Hood hood = new Hood();
 
-	private void configureBindings() {
-	}
+	public RobotContainer() {}
+	
+	
 
 	public Command getAutonomousCommand() {
 		return Commands.print("No autonomous command configured");
