@@ -17,7 +17,8 @@ public class RollerConstants {
 	public static Voltage intakingVoltage = Volts.of(4);
 	public static Voltage outtakingVoltage = Volts.of(-4);
 
-	public static int motorCanId = 20;
+	public static int motorCanId = 32; // Right, the leader
+	public static int MotorCanId2 = 31; // Left, follows the leader inverted
 
 	public static final double GearRatio = (1 / 1);
 

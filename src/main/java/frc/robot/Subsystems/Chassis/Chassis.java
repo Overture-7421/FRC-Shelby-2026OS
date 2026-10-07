@@ -32,11 +32,9 @@ import org.ironmaple.simulation.drivesims.configs.SwerveModuleSimulationConfig;
  *
  * <p>
  * Some C++ overrides are gone and are not missing by accident.
- * getDriveBaseRadius() went away when PathPlanner started reading the robot
- * config from its own settings file, and getRotation3d() is no longer part of
- * the SwerveBase contract.
- * getTranslationPID() and getRotationPID() went away when OvertureLib stopped
- * wiring a path follower into the chassis.
+ * getDriveBaseRadius(), getTranslationPID() and getRotationPID() went away
+ * when OvertureLib stopped wiring a path follower into the chassis, and
+ * getRotation3d() is no longer part of the SwerveBase contract.
  *
  * <p>
  * Nothing in here knows how the robot follows paths. BLinePaths, next to this
