@@ -13,9 +13,9 @@ import static edu.wpi.first.units.Units.*;
 
 public class RollerConstants {
 
-	public static Voltage offVoltage = Volts.of(0.0);
-	public static Voltage intakingVoltage = Volts.of(4);
-	public static Voltage outtakingVoltage = Volts.of(-4);
+	public static Voltage OffVoltage = Volts.of(0.0);
+	public static Voltage IntakingVoltage = Volts.of(4);
+	public static Voltage OutTakingVoltage = Volts.of(-4);
 
 	public static int motorCanId = 20;
 
