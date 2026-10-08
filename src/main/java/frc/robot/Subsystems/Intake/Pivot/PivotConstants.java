@@ -6,6 +6,7 @@ import com.ctre.phoenix6.configs.FeedbackConfigs;
 import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
+import com.ctre.phoenix6.configs.Slot1Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.configs.VoltageConfigs;
 import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
@@ -29,6 +30,7 @@ public class PivotConstants {
 
         protected static AngularAcceleration AccelerationLimit = RadiansPerSecondPerSecond.of(0.0);
         protected static AngularVelocity CruiseVelocity = RadiansPerSecond.of(0.0);
+		protected static AngularVelocity CruiseVelocityCompression = RadiansPerSecond.of(0.0);
         protected static Velocity<AngularAccelerationUnit> JerkLimit = RadiansPerSecondPerSecond.per(Second).of(0);
         
         protected static Angle AcceptedError = Degrees.of(1); 
@@ -41,6 +43,7 @@ public class PivotConstants {
     public class States {
         public static Angle Position1 = Degree.of(0);
         public static Angle Position2 = Degree.of(0);
+		public static Angle CompressPosition = Degree.of(0);
     }
 
 	public static int motorCanId = 22;
@@ -73,6 +76,40 @@ public class PivotConstants {
 				.withMotionMagic(
 						new MotionMagicConfigs()
 								.withMotionMagicCruiseVelocity(Control.CruiseVelocity)
+								.withMotionMagicAcceleration(Control.AccelerationLimit)
+								.withMotionMagicJerk(Control.JerkLimit))
+				.withFeedback(
+						new FeedbackConfigs()
+								.withFeedbackSensorSource(FeedbackSensorSourceValue.FusedCANcoder)
+								.withFeedbackRemoteSensorID(CCCanId)
+								.withRotorToSensorRatio(RotorToSensorRatio));
+	}
+
+	public static TalonFXConfiguration motorConfigComrpession() {
+		return new TalonFXConfiguration()
+				.withCurrentLimits(
+						new CurrentLimitsConfigs()
+								.withStatorCurrentLimitEnable(true)
+								.withStatorCurrentLimit(120)
+								.withSupplyCurrentLimitEnable(true)
+								.withStatorCurrentLimit(40)
+								.withSupplyCurrentLowerLimit(40)
+								.withSupplyCurrentLowerTime(0.05))
+				.withVoltage(
+						new VoltageConfigs()
+								.withPeakForwardVoltage(12)
+								.withPeakReverseVoltage(-12))
+				.withMotorOutput(
+						new MotorOutputConfigs()
+								.withInverted(InvertedValue.CounterClockwise_Positive)
+								.withNeutralMode(NeutralModeValue.Brake))
+				.withSlot1(
+						new Slot1Configs()
+								.withKP(Control.kP)
+								.withKV(Control.kV))
+				.withMotionMagic(
+						new MotionMagicConfigs()
+								.withMotionMagicCruiseVelocity(Control.CruiseVelocityCompression)
 								.withMotionMagicAcceleration(Control.AccelerationLimit)
 								.withMotionMagicJerk(Control.JerkLimit))
 				.withFeedback(

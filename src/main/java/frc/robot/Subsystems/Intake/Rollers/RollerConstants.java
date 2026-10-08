@@ -16,6 +16,7 @@ public class RollerConstants {
 	public static Voltage OffVoltage = Volts.of(0.0);
 	public static Voltage IntakingVoltage = Volts.of(4);
 	public static Voltage OutTakingVoltage = Volts.of(-4);
+	public static Voltage CompressingVoltage = Volts.of(-1);
 
 	public static int motorCanId = 20;
 
@@ -44,4 +45,5 @@ public class RollerConstants {
 								.withSensorToMechanismRatio(GearRatio));
 	}
 
+	
 }
