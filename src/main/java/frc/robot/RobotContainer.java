@@ -15,12 +15,14 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.Subsystems.Chassis.BLinePaths;
 import frc.robot.Subsystems.Chassis.Chassis;
+import frc.robot.Subsystems.Hood.Hood;
 import frc.robot.commands.DriveCommand;
 
 public class RobotContainer implements OverContainer {
 
 	// Subsystems
 	public final Chassis chassis = new Chassis();
+	protected Hood hood = new Hood();
 
 	// Controllers. There is no operator controller, the driver does everything
 	private final OverXboxController driver = new OverXboxController(0, 0.20, 0.2);

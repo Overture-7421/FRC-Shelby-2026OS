@@ -16,6 +16,8 @@ public class Robot extends OverRobot {
 
   public Robot() {
     m_robotContainer = new RobotContainer();
+    ButtonBinding.configureBindings(m_robotContainer);
+    
   }
 
   @Override

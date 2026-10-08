@@ -56,6 +56,10 @@ public class Hood extends SubsystemBase {
 		hoodMotor.setControl(voltageRequest.withOutput(volts));
 	}
 
+	public Command setVoltageCommand(Voltage volts){
+		return runOnce(() -> setVoltage(volts));
+	}
+
 	public double getTarget() {
 		return target.in(Degrees);
 	}
