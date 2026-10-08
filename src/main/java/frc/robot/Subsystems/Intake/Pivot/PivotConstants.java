@@ -43,8 +43,8 @@ public class PivotConstants {
         public static Angle Position2 = Degree.of(0);
     }
 
-	public static int motorCanId = 22;
-	public static int CCCanId = 21;
+	public static int motorCanId = 29;
+	public static int CCCanId = 30;
 
 	public static final double RotorToSensorRatio = 1.0;
 

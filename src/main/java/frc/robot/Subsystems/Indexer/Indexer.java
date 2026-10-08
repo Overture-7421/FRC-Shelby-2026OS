@@ -33,8 +33,8 @@ public class Indexer extends SubsystemBase{
         indexerMotor3 = new OverTalonFX(IndexerConstants.motorConfig(), IndexerConstants.MotorCanId3, Constants.RobotConstants.rio);
         indexerMotor4 = new OverTalonFX(IndexerConstants.motorConfig(), IndexerConstants.MotorCanId4, Constants.RobotConstants.rio);
 
-        shooterCanRange = new CANrange(IndexerConstants.hopperCanRangeId);
-        hopperCanRange = new CANrange(IndexerConstants.hopperCanRangeId);
+        shooterCanRange = new CANrange(IndexerConstants.shooterCanRangeId, Constants.RobotConstants.rio);
+        hopperCanRange = new CANrange(IndexerConstants.hopperCanRangeId, Constants.RobotConstants.rio);
         
         indexerMotor2.setFollow(IndexerConstants.leaderCanId, false);
         indexerMotor3.setFollow(IndexerConstants.leaderCanId, false);    
