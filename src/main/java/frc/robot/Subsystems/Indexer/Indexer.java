@@ -27,7 +27,7 @@ public class Indexer extends SubsystemBase{
 
 	private VoltageOut voltageRequest = new VoltageOut(0.0);
 
-    Indexer(){
+    public Indexer() {
         indexerMotorLead = new OverTalonFX(IndexerConstants.motorConfig(), IndexerConstants.leaderCanId, Constants.RobotConstants.rio);    
         indexerMotor2 = new OverTalonFX(IndexerConstants.motorConfig(), IndexerConstants.MotorCanId2, Constants.RobotConstants.rio);
         indexerMotor3 = new OverTalonFX(IndexerConstants.motorConfig(), IndexerConstants.MotorCanId3, Constants.RobotConstants.rio);
