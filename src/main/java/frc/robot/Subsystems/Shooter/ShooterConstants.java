@@ -35,10 +35,10 @@ public class ShooterConstants {
 
 	public static Voltage VoltageOFF = Volts.of(0.0);
 
-	public static int leaderCanId = 19;
-	public static int MotorCanId2 = 18;
-	public static int MotorCanId3 = 17;
-	public static int MotorCanId4 = 16;
+	public static int leaderCanId = 25;
+	public static int MotorCanId2 = 26;
+	public static int MotorCanId3 = 27;
+	public static int MotorCanId4 = 28;
 
 	public static final double GearRatio = (1 / 1);
 

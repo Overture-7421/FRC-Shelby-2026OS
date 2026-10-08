@@ -15,7 +15,6 @@ import com.overture.lib.sensors.OverPigeon;
 import com.overture.lib.subsystems.swerve.SwerveChassis;
 import com.overture.lib.subsystems.swerve.SwerveModule;
 import com.overture.lib.subsystems.swerve.SwerveModuleConfig;
-import com.pathplanner.lib.config.PIDConstants;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -32,11 +31,14 @@ import org.ironmaple.simulation.drivesims.configs.SwerveModuleSimulationConfig;
  * Port of the C++ Chassis subsystem, the OvertureLib SwerveChassis subclass.
  *
  * <p>
- * Two C++ overrides are gone and are not missing by accident.
- * getDriveBaseRadius() went away when
- * PathPlanner started reading its RobotConfig from
- * deploy/pathplanner/settings.json, and
+ * Some C++ overrides are gone and are not missing by accident.
+ * getDriveBaseRadius(), getTranslationPID() and getRotationPID() went away
+ * when OvertureLib stopped wiring a path follower into the chassis, and
  * getRotation3d() is no longer part of the SwerveBase contract.
+ *
+ * <p>
+ * Nothing in here knows how the robot follows paths. BLinePaths, next to this
+ * file, hands the chassis to BLine.
  */
 public class Chassis extends SwerveChassis {
 	/**
@@ -89,7 +91,7 @@ public class Chassis extends SwerveChassis {
 		return new SimpleMotorFeedforward(0.0, 2.0879, 0.098433);
 	}
 
-	/** Builds the drivetrain and wires it into PathPlanner. */
+	/** Builds the drivetrain. */
 	public Chassis() {
 		super();
 		configureSwerveBase();
@@ -179,16 +181,6 @@ public class Chassis extends SwerveChassis {
 	@Override
 	public Rotation2d getRotation2d() {
 		return pigeon.getRotation2d();
-	}
-
-	@Override
-	protected PIDConstants getTranslationPID() {
-		return new PIDConstants(6.0, 0.0, 0.0);
-	}
-
-	@Override
-	protected PIDConstants getRotationPID() {
-		return new PIDConstants(6.0, 0.0, 0.0);
 	}
 
 	private static SwerveModuleConfig baseModuleConfig() {

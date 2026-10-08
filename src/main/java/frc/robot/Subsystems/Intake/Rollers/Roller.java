@@ -10,7 +10,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.Subsystems.Shooter.ShooterConstants;
 
 public class Roller extends SubsystemBase{
     
@@ -22,9 +21,9 @@ public class Roller extends SubsystemBase{
 
     public Roller(){
         rollerLeadMotor = new OverTalonFX(RollerConstants.motorConfig(), RollerConstants.motorCanId, Constants.RobotConstants.rio);
-        rollerSlaveMotor = new OverTalonFX(RollerConstants.motorConfig(), RollerConstants.motorCanId, Constants.RobotConstants.rio);
-        
-        rollerSlaveMotor.setFollow(ShooterConstants.leaderCanId, true); 
+        rollerSlaveMotor = new OverTalonFX(RollerConstants.motorConfig(), RollerConstants.MotorCanId2, Constants.RobotConstants.rio);
+
+        rollerSlaveMotor.setFollow(RollerConstants.motorCanId, true);
     }
 
     public void setTarget(Voltage targetSetter){

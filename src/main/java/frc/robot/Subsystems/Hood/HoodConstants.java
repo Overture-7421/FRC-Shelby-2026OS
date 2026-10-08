@@ -45,8 +45,7 @@ public class HoodConstants {
 
 	}
 
-	public static int motorCanId = 15;
-	public static int CCCanId = 14;
+	public static int motorCanId = 24;
 
 	public static final double SensorToMechanismRatio = 1.0;
 
