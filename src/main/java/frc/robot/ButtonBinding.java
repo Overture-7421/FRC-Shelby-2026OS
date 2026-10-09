@@ -39,7 +39,8 @@ public class ButtonBinding {
             .onFalse(RobotContainer.roller.setVoltage(RollerConstants.IntakingVoltage));
 
         buttonX
-            .whileTrue(CloseAndCompress.closeAndCompres());
+            .whileTrue(CloseAndCompress.closeAndCompres())
+            .onFalse(OpenCommand.openCommand());
         
 
     }
