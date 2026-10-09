@@ -47,11 +47,9 @@ public class ShooterConstants {
 				.withCurrentLimits(
 						new CurrentLimitsConfigs()
 								.withStatorCurrentLimitEnable(true)
-								.withStatorCurrentLimit(120)
+								.withStatorCurrentLimit(60)
 								.withSupplyCurrentLimitEnable(true)
-								.withStatorCurrentLimit(40)
-								.withSupplyCurrentLowerLimit(40)
-								.withSupplyCurrentLowerTime(0.05))
+								.withSupplyCurrentLimit(35))
 				.withVoltage(
 						new VoltageConfigs()
 								.withPeakForwardVoltage(12)

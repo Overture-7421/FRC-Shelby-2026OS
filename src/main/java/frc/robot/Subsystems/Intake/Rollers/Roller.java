@@ -34,8 +34,11 @@ public class Roller extends SubsystemBase{
         return target.baseUnitMagnitude();
     }
 
-    public Command setVoltage(double volts){
-        return runOnce(() -> rollerLeadMotor.setVoltage(volts));
+    public Command setVoltage(Voltage volts){
+        return runOnce(() -> {
+            setTarget(volts);
+            rollerLeadMotor.setControl(voltageRequest.withOutput(volts));
+        });
     }
 
 	public double getVoltage() {

@@ -16,8 +16,6 @@ public class Robot extends OverRobot {
 
   public Robot() {
     m_robotContainer = new RobotContainer();
-    ButtonBinding.configureBindings(m_robotContainer);
-    
   }
 
   @Override
@@ -55,6 +53,7 @@ public class Robot extends OverRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
+    CommandScheduler.getInstance().schedule(m_robotContainer.intakeOut());
   }
 
   @Override

@@ -34,30 +34,27 @@ public class PivotConstants {
         protected static Angle AcceptedError = Degrees.of(1); 
 		protected static Angle EncoderOffSet = Degrees.of(0);           
         protected static Angle OffSet = Degrees.of(0); 
-        protected static double RotorToSensorRatio = 40.0;
 		
     }
 
     public class States {
-        public static Angle Position1 = Degree.of(0);
-        public static Angle Position2 = Degree.of(0);
+        public static Angle Open = Degree.of(114);
+        public static Angle Closed = Degree.of(10);
     }
 
 	public static int motorCanId = 29;
 	public static int CCCanId = 30;
 
-	public static final double RotorToSensorRatio = 1.0;
+	public static final double RotorToSensorRatio = 40.0;
 
 	public static TalonFXConfiguration motorConfig() {
 		return new TalonFXConfiguration()
 				.withCurrentLimits(
 						new CurrentLimitsConfigs()
 								.withStatorCurrentLimitEnable(true)
-								.withStatorCurrentLimit(120)
+								.withStatorCurrentLimit(75)
 								.withSupplyCurrentLimitEnable(true)
-								.withStatorCurrentLimit(40)
-								.withSupplyCurrentLowerLimit(40)
-								.withSupplyCurrentLowerTime(0.05))
+								.withSupplyCurrentLimit(30))
 				.withVoltage(
 						new VoltageConfigs()
 								.withPeakForwardVoltage(12)
