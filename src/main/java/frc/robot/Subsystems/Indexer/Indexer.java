@@ -29,14 +29,14 @@ public class Indexer extends SubsystemBase{
 
 	private VoltageOut voltageRequest = new VoltageOut(0.0);
 
-    public Indexer(){
+    public Indexer() {
         indexerMotorLead = new OverTalonFX(IndexerConstants.motorConfig(), IndexerConstants.leaderCanId, Constants.RobotConstants.rio);    
         indexerMotor2 = new OverTalonFX(IndexerConstants.motorConfig(), IndexerConstants.MotorCanId2, Constants.RobotConstants.rio);
         indexerMotor3 = new OverTalonFX(IndexerConstants.motorConfig(), IndexerConstants.MotorCanId3, Constants.RobotConstants.rio);
         indexerMotor4 = new OverTalonFX(IndexerConstants.motorConfig(), IndexerConstants.MotorCanId4, Constants.RobotConstants.rio);
 
-        shooterCanRange = new CANrange(IndexerConstants.hopperCanRangeId);
-        hopperCanRange = new CANrange(IndexerConstants.hopperCanRangeId);
+        shooterCanRange = new CANrange(IndexerConstants.shooterCanRangeId, Constants.RobotConstants.rio);
+        hopperCanRange = new CANrange(IndexerConstants.hopperCanRangeId, Constants.RobotConstants.rio);
         
         indexerMotor2.setFollow(IndexerConstants.leaderCanId, false);
         indexerMotor3.setFollow(IndexerConstants.leaderCanId, false);    

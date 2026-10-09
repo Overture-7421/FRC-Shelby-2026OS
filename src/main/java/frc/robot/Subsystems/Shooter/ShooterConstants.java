@@ -36,10 +36,10 @@ public class ShooterConstants {
 	public static Voltage OffVoltage = Volts.of(0.0);
 	public static Voltage preloadVoltage = Volts.of(0.0);
 
-	public static int leaderCanId = 19;
-	public static int MotorCanId2 = 18;
-	public static int MotorCanId3 = 17;
-	public static int MotorCanId4 = 16;
+	public static int leaderCanId = 25;
+	public static int MotorCanId2 = 26;
+	public static int MotorCanId3 = 27;
+	public static int MotorCanId4 = 28;
 
 	public static final double GearRatio = (1 / 1);
 
@@ -48,11 +48,9 @@ public class ShooterConstants {
 				.withCurrentLimits(
 						new CurrentLimitsConfigs()
 								.withStatorCurrentLimitEnable(true)
-								.withStatorCurrentLimit(120)
+								.withStatorCurrentLimit(60)
 								.withSupplyCurrentLimitEnable(true)
-								.withStatorCurrentLimit(40)
-								.withSupplyCurrentLowerLimit(40)
-								.withSupplyCurrentLowerTime(0.05))
+								.withSupplyCurrentLimit(35))
 				.withVoltage(
 						new VoltageConfigs()
 								.withPeakForwardVoltage(12)

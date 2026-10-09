@@ -21,13 +21,14 @@ public class IndexerConstants {
 	public static double fuelInHopperTreshold = 0.0;
 
 
-	public static int leaderCanId = 15;
-	public static int MotorCanId2 = 14;
-	public static int MotorCanId3 = 13;
-	public static int MotorCanId4 = 12;
+	// Mechanisms count from 20, 1 to 19 belong to the swerve
+	public static int leaderCanId = 20;
+	public static int MotorCanId2 = 21;
+	public static int MotorCanId3 = 22;
+	public static int MotorCanId4 = 23;
 
-	public static int shooterCanRangeId = 11;
-	public static int hopperCanRangeId = 10;
+	public static int hopperCanRangeId = 33;
+	public static int shooterCanRangeId = 34;
 
 	public static final double GearRatio = (1 / 1);
 
@@ -36,11 +37,9 @@ public class IndexerConstants {
 				.withCurrentLimits(
 						new CurrentLimitsConfigs()
 								.withStatorCurrentLimitEnable(true)
-								.withStatorCurrentLimit(120)
+								.withStatorCurrentLimit(80)
 								.withSupplyCurrentLimitEnable(true)
-								.withStatorCurrentLimit(40)
-								.withSupplyCurrentLowerLimit(40)
-								.withSupplyCurrentLowerTime(0.05))
+								.withSupplyCurrentLimit(40))
 				.withVoltage(
 						new VoltageConfigs()
 								.withPeakForwardVoltage(12)

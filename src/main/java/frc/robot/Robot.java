@@ -4,25 +4,24 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.TimedRobot;
+import com.overture.lib.robots.OverRobot;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.Commands.*;
 
-public class Robot extends TimedRobot {
+public class Robot extends OverRobot {
   private Command m_autonomousCommand;
 
   private final RobotContainer m_robotContainer;
 
   public Robot() {
     m_robotContainer = new RobotContainer();
-    ButtonBinding.configureBindings();
-    
   }
 
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
+    m_robotContainer.updateTelemetry();
   }
 
   @Override
@@ -54,7 +53,7 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
-    OpenCommand.openCommand();
+    CommandScheduler.getInstance().schedule(m_robotContainer.intakeOut());
   }
 
   @Override

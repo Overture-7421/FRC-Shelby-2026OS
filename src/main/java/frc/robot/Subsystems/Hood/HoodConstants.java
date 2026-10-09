@@ -30,7 +30,7 @@ public class HoodConstants {
 		protected static AngularVelocity CruiseVelocity = RotationsPerSecond.of(0.0);
 		protected static Velocity<AngularAccelerationUnit> JerkLimit = RotationsPerSecondPerSecond.per(Second).of(0);
 
-		protected static Angle AcceptedError = Degrees.of(1);
+		protected static Angle AcceptedError = Degrees.of(3);
 
 		protected static Voltage HomingVoltage = Volts.of(1.0);
 		protected static Current TouchingCurrentThreshold = Amps.of(0.0);
@@ -40,26 +40,24 @@ public class HoodConstants {
 	}
 
 	public class States {
-		public static Angle Max = Degree.of(90);
+		public static Angle Max = Degree.of(37);
 		public static Angle Min = Degree.of(0);
+		public static Angle Close = Degree.of(0);
 
 	}
 
-	public static int motorCanId = 15;
-	public static int CCCanId = 14;
+	public static int motorCanId = 24;
 
-	public static final double SensorToMechanismRatio = 1.0;
+	public static final double SensorToMechanismRatio = 94.9;
 
 	public static TalonFXConfiguration motorConfig() {
 		return new TalonFXConfiguration()
 				.withCurrentLimits(
 						new CurrentLimitsConfigs()
 								.withStatorCurrentLimitEnable(true)
-								.withStatorCurrentLimit(120)
+								.withStatorCurrentLimit(60)
 								.withSupplyCurrentLimitEnable(true)
-								.withStatorCurrentLimit(40)
-								.withSupplyCurrentLowerLimit(40)
-								.withSupplyCurrentLowerTime(0.05))
+								.withSupplyCurrentLimit(20))
 				.withVoltage(
 						new VoltageConfigs()
 								.withPeakForwardVoltage(12)

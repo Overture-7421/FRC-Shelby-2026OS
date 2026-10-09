@@ -38,7 +38,14 @@ public class Hood extends SubsystemBase {
 	public Command setPosition(Angle position) {
 		return run(() -> {
 			setMotor(position);
-		}).until(() -> isFinished());
+		}).until(() -> isAtTarget());
+	}
+
+	// A setPosition that never ends, for the default command
+	public Command holdPosition(Angle position) {
+		return run(() -> {
+			setMotor(position);
+		});
 	}
 
 	public void setMotor(Angle position) {
@@ -49,7 +56,10 @@ public class Hood extends SubsystemBase {
 		} else {
 			target = position;
 		}
-		hoodMotor.setControl(motionMagicRequest.withPosition(target));
+
+		if (homed) {
+			hoodMotor.setControl(motionMagicRequest.withPosition(target));
+		}
 	}
 
 	private void setVoltage(Voltage volts) {
@@ -76,8 +86,12 @@ public class Hood extends SubsystemBase {
 		return Math.abs(getTarget() - getPosition());
 	}
 
-	private boolean isFinished() {
-		return (getError() < HoodConstants.Control.AcceptedError.in(Degrees));
+	public boolean isHomed() {
+		return homed;
+	}
+
+	public boolean isAtTarget() {
+		return homed && (getError() < HoodConstants.Control.AcceptedError.in(Degrees));
 	}
 
 	private boolean isHome() {
@@ -103,7 +117,7 @@ public class Hood extends SubsystemBase {
 		SmartDashboard.putNumber("Subsystems/Hood/Position", getPosition());
 		SmartDashboard.putNumber("Subsystems/Hood/Target", getTarget());
 		SmartDashboard.putNumber("Subsystems/Hood/Error", getError());
-		SmartDashboard.putBoolean("Subsystems/Hood/AtTarget", isFinished());
+		SmartDashboard.putBoolean("Subsystems/Hood/AtTarget", isAtTarget());
 
 		SmartDashboard.putNumber("Subsystems/Hood/Amps", getAmps());
 		SmartDashboard.putBoolean("Subsystems/Hood/Homed", homed);
