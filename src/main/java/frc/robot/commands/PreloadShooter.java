@@ -23,13 +23,13 @@ public class PreloadShooter {
 
     public static Command preloadShooter(){
 
-        if (RobotContainer.indexer.isFuelInShooter() && RobotContainer.indexer.isFuelInHopper()){
+        if (RobotContainer.indexer.isShooterFull() && RobotContainer.indexer.isHopperFull()){
             return new ParallelCommandGroup(
                 RobotContainer.indexer.setVoltage(IndexerConstants.OffVoltage),
                 RobotContainer.shooter.setVoltage(ShooterConstants.OffVoltage)
             );
             
-        } else if(RobotContainer.indexer.isFuelInShooter() && !RobotContainer.indexer.isFuelInHopper()){
+        } else if(RobotContainer.indexer.isShooterFull() && !RobotContainer.indexer.isHopperFull()){
             return new ParallelCommandGroup(
                 RobotContainer.indexer.setVoltage(IndexerConstants.preloadVoltage),
                 RobotContainer.shooter.setVoltage(ShooterConstants.OffVoltage)

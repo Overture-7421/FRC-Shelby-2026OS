@@ -5,14 +5,12 @@ import static edu.wpi.first.units.Units.Volts;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.overture.lib.motorcontrollers.OverTalonFX;
 import com.ctre.phoenix6.hardware.CANrange;
-import com.ctre.phoenix6.hardware.core.CoreCANrange;
 import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.Subsystems.Shooter.Shooter;
-import frc.robot.Subsystems.Shooter.ShooterConstants;
+import edu.wpi.first.math.filter.Debouncer;
 
 
 public class Indexer extends SubsystemBase{
@@ -24,6 +22,12 @@ public class Indexer extends SubsystemBase{
 
     protected CANrange shooterCanRange;
     protected CANrange hopperCanRange;
+	
+	protected boolean hopperFull;
+	protected boolean shooterFull;
+	protected Debouncer debouncer;
+
+
 
 	private Voltage target = Volts.of(0.0);
 
@@ -37,6 +41,8 @@ public class Indexer extends SubsystemBase{
 
         shooterCanRange = new CANrange(IndexerConstants.shooterCanRangeId, Constants.RobotConstants.rio);
         hopperCanRange = new CANrange(IndexerConstants.hopperCanRangeId, Constants.RobotConstants.rio);
+		debouncer = new Debouncer(IndexerConstants.fuelDebouncingTime);
+		
         
         indexerMotor2.setFollow(IndexerConstants.leaderCanId, false);
         indexerMotor3.setFollow(IndexerConstants.leaderCanId, false);    
@@ -69,19 +75,27 @@ public class Indexer extends SubsystemBase{
 		SmartDashboard.putNumber("Subsystems/Indexer/Target", getTarget());
 	}
 
-	public Boolean isFuelInHopper(){
+	private Boolean isFuelInHopper(){
 		return (shooterCanRange.getDistance().getValueAsDouble() < IndexerConstants.fuelInShooterTreshold);
 	}
 
-	public Boolean isFuelInShooter(){
+	private Boolean isFuelInShooter(){
 		return (hopperCanRange.getDistance().getValueAsDouble() < IndexerConstants.fuelInHopperTreshold);
 	}
 	
-	
+	public boolean isHopperFull(){
+		return hopperFull;
+	}
+
+	public boolean isShooterFull(){
+		return shooterFull;
+	}
 
 	@Override
 	public void periodic() {
-
+		hopperFull = debouncer.calculate(isFuelInHopper());
+		shooterFull = debouncer.calculate(isFuelInShooter());
 	}
+
 
 }

@@ -17,15 +17,16 @@ public class IndexerConstants {
 	public static Voltage shootVoltage = Volts.of(4);
 	public static Voltage preloadVoltage = Volts.of(2);
 
-	public static double fuelInShooterTreshold = 0.0;
-	public static double fuelInHopperTreshold = 0.0;
+	public static final double fuelInShooterTreshold = 0.0;
+	public static final double fuelInHopperTreshold = 0.0;
+	public static final double fuelDebouncingTime = 0.0;
 
 
 	// Mechanisms count from 20, 1 to 19 belong to the swerve
-	public static int leaderCanId = 20;
-	public static int MotorCanId2 = 21;
-	public static int MotorCanId3 = 22;
-	public static int MotorCanId4 = 23;
+	public static final int leaderCanId = 20;
+	public static final int MotorCanId2 = 21;
+	public static final int MotorCanId3 = 22;
+	public static final int MotorCanId4 = 23;
 
 	public static int hopperCanRangeId = 33;
 	public static int shooterCanRangeId = 34;
