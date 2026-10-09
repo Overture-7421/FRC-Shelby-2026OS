@@ -24,6 +24,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.Subsystems.Chassis.BLinePaths;
 import frc.robot.Subsystems.Chassis.Chassis;
 import frc.robot.Subsystems.Hood.Hood;
+import frc.robot.Subsystems.Hood.HoodConstants;
 import frc.robot.Subsystems.Indexer.Indexer;
 import frc.robot.Subsystems.Intake.Pivot.Pivot;
 import frc.robot.Subsystems.Intake.Pivot.PivotConstants;
@@ -73,6 +74,9 @@ public class RobotContainer implements OverContainer {
 	@Override
 	public void configDriverBindings() {
 		chassis.setDefaultCommand(new DriveCommand(chassis, driver));
+
+		hood.setDefaultCommand(
+				Commands.either(hood.holdPosition(HoodConstants.States.Close), hood.HoodHoming(), hood::isHomed));
 
 		driver.back().onTrue(Commands.runOnce(() -> {
 			chassis.resetHeading(UtilityFunctions.isRedAlliance() ? 180.0 : 0.0);
