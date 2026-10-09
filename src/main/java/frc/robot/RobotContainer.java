@@ -17,16 +17,18 @@ import frc.robot.Subsystems.Chassis.BLinePaths;
 import frc.robot.Subsystems.Chassis.Chassis;
 import frc.robot.Subsystems.Hood.Hood;
 import frc.robot.Subsystems.Intake.Pivot.Pivot;
+import frc.robot.Subsystems.Intake.Pivot.PivotConstants;
 import frc.robot.Subsystems.Intake.Rollers.Roller;
-import frc.robot.Commands.DriveCommand;
+import frc.robot.Subsystems.Intake.Rollers.RollerConstants;
+import frc.robot.commands.DriveCommand;
 
 public class RobotContainer implements OverContainer {
 
 	// Subsystems
 	public final Chassis chassis = new Chassis();
-	public static Hood hood = new Hood();
-	public static Pivot pivot = new Pivot();
-	public static Roller roller = new Roller();
+	protected Hood hood = new Hood();
+	protected Pivot pivot = new Pivot();
+	protected Roller roller = new Roller();
 
 	// Controllers. There is no operator controller, the driver does everything
 	private final OverXboxController driver = new OverXboxController(0, 0.20, 0.2);
@@ -49,6 +51,20 @@ public class RobotContainer implements OverContainer {
 		driver.back().onTrue(Commands.runOnce(() -> {
 			chassis.resetHeading(UtilityFunctions.isRedAlliance() ? 180.0 : 0.0);
 		}));
+
+		driver.leftTrigger().whileTrue(Commands.parallel(
+				pivot.setPosition(PivotConstants.States.Open),
+				roller.setVoltage(RollerConstants.IntakingVoltage)));
+		driver.leftTrigger().onFalse(roller.setVoltage(RollerConstants.OffVoltage));
+
+		driver.x().whileTrue(Commands.parallel(
+				pivot.setPosition(PivotConstants.States.Closed),
+				roller.setVoltage(RollerConstants.CompressingVoltage)));
+		driver.x().onFalse(Commands.parallel(
+				pivot.setPosition(PivotConstants.States.Open),
+				roller.setVoltage(RollerConstants.OffVoltage)));
+
+		driver.start().onTrue(hood.HoodHoming());
 	}
 
 	@Override
@@ -71,9 +87,17 @@ public class RobotContainer implements OverContainer {
 		return autoChooser.getSelected();
 	}
 
+	// The robot plays with the intake out, Robot.teleopInit schedules this once
+	public Command intakeOut() {
+		return pivot.setPosition(PivotConstants.States.Open);
+	}
+
 	@Override
 	public void updateTelemetry() {
 		chassis.shuffleboardPeriodic();
+		hood.updateTelemetry();
+		pivot.updateTelemetry();
+		roller.updateTelemetry();
 
 		SmartDashboard.putNumber("MatchTime", DriverStation.getMatchTime());
 	}

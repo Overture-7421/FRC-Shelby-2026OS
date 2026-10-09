@@ -8,7 +8,6 @@ import com.overture.lib.robots.OverRobot;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.Commands.*;
 
 public class Robot extends OverRobot {
   private Command m_autonomousCommand;
@@ -17,8 +16,6 @@ public class Robot extends OverRobot {
 
   public Robot() {
     m_robotContainer = new RobotContainer();
-    ButtonBinding.configureBindings();
-    
   }
 
   @Override
@@ -56,7 +53,7 @@ public class Robot extends OverRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
-    OpenCommand.openCommand();
+    CommandScheduler.getInstance().schedule(m_robotContainer.intakeOut());
   }
 
   @Override

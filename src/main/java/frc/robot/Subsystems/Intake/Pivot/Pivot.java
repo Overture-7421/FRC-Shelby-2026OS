@@ -2,11 +2,10 @@ package frc.robot.Subsystems.Intake.Pivot;
 
 import static edu.wpi.first.units.Units.Degrees;
 
-import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.overture.lib.motorcontrollers.OverTalonFX;
-import edu.wpi.first.units.measure.AngularVelocity;
+
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -39,28 +38,6 @@ public class Pivot extends SubsystemBase {
 	public void setMotor(Angle position) {
 		target = position;
 		pivotMotor.setControl(motionMagicRequest.withPosition(target));
-	}
-
-	public Command Compress(){
-		return runOnce(() -> {
-			setCompression(PivotConstants.States.CompressPosition);
-		});
-	}
-
-	public void setCompression(Angle position) {
-		target = position;
-		pivotMotor.getConfigurator().apply(PivotConstants.motorConfigComrpession());
-		pivotMotor.setControl(motionMagicRequest.withPosition(target));
-
-		// apply this when the button is left.
-		// pivotMotor.getConfigurator().apply(PivotConstants.motorConfig());
-		//runOnce((RobotContainer.pivot) -> {RobotContainer.pivot.applyConfiguration(PivotConstants.motorConfig());}),
-	}
-
-	public Command applyConfiguration(TalonFXConfiguration config){
-		return runOnce(() -> {
-			pivotMotor.getConfigurator().apply(PivotConstants.motorConfig());
-		});
 	}
 
 	public double getTarget() {

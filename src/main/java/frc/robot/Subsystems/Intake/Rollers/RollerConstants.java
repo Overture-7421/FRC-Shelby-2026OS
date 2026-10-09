@@ -14,9 +14,9 @@ import static edu.wpi.first.units.Units.*;
 public class RollerConstants {
 
 	public static Voltage OffVoltage = Volts.of(0.0);
-	public static Voltage IntakingVoltage = Volts.of(4);
+	public static Voltage IntakingVoltage = Volts.of(12);
 	public static Voltage OutTakingVoltage = Volts.of(-4);
-	public static Voltage CompressingVoltage = Volts.of(-1);
+	public static Voltage CompressingVoltage = Volts.of(1.8);
 
 	public static int motorCanId = 32; // Right, the leader
 	public static int MotorCanId2 = 31; // Left, follows the leader inverted
@@ -28,11 +28,9 @@ public class RollerConstants {
 				.withCurrentLimits(
 						new CurrentLimitsConfigs()
 								.withStatorCurrentLimitEnable(true)
-								.withStatorCurrentLimit(120)
+								.withStatorCurrentLimit(100)
 								.withSupplyCurrentLimitEnable(true)
-								.withStatorCurrentLimit(40)
-								.withSupplyCurrentLowerLimit(40)
-								.withSupplyCurrentLowerTime(0.05))
+								.withSupplyCurrentLimit(40))
 				.withVoltage(
 						new VoltageConfigs()
 								.withPeakForwardVoltage(12)

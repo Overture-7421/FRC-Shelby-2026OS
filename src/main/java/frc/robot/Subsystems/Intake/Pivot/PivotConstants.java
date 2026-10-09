@@ -6,7 +6,6 @@ import com.ctre.phoenix6.configs.FeedbackConfigs;
 import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
-import com.ctre.phoenix6.configs.Slot1Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.configs.VoltageConfigs;
 import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
@@ -30,37 +29,32 @@ public class PivotConstants {
 
         protected static AngularAcceleration AccelerationLimit = RadiansPerSecondPerSecond.of(0.0);
         protected static AngularVelocity CruiseVelocity = RadiansPerSecond.of(0.0);
-		protected static AngularVelocity CruiseVelocityCompression = RadiansPerSecond.of(0.0);
         protected static Velocity<AngularAccelerationUnit> JerkLimit = RadiansPerSecondPerSecond.per(Second).of(0);
         
         protected static Angle AcceptedError = Degrees.of(1); 
 		protected static Angle EncoderOffSet = Degrees.of(0);           
         protected static Angle OffSet = Degrees.of(0); 
-        protected static double RotorToSensorRatio = 40.0;
 		
     }
 
     public class States {
-        public static Angle Position1 = Degree.of(0);
-        public static Angle Position2 = Degree.of(0);
-		public static Angle CompressPosition = Degree.of(0);
+        public static Angle Open = Degree.of(114);
+        public static Angle Closed = Degree.of(10);
     }
 
 	public static int motorCanId = 29;
 	public static int CCCanId = 30;
 
-	public static final double RotorToSensorRatio = 1.0;
+	public static final double RotorToSensorRatio = 40.0;
 
 	public static TalonFXConfiguration motorConfig() {
 		return new TalonFXConfiguration()
 				.withCurrentLimits(
 						new CurrentLimitsConfigs()
 								.withStatorCurrentLimitEnable(true)
-								.withStatorCurrentLimit(120)
+								.withStatorCurrentLimit(75)
 								.withSupplyCurrentLimitEnable(true)
-								.withStatorCurrentLimit(40)
-								.withSupplyCurrentLowerLimit(40)
-								.withSupplyCurrentLowerTime(0.05))
+								.withSupplyCurrentLimit(30))
 				.withVoltage(
 						new VoltageConfigs()
 								.withPeakForwardVoltage(12)
@@ -76,40 +70,6 @@ public class PivotConstants {
 				.withMotionMagic(
 						new MotionMagicConfigs()
 								.withMotionMagicCruiseVelocity(Control.CruiseVelocity)
-								.withMotionMagicAcceleration(Control.AccelerationLimit)
-								.withMotionMagicJerk(Control.JerkLimit))
-				.withFeedback(
-						new FeedbackConfigs()
-								.withFeedbackSensorSource(FeedbackSensorSourceValue.FusedCANcoder)
-								.withFeedbackRemoteSensorID(CCCanId)
-								.withRotorToSensorRatio(RotorToSensorRatio));
-	}
-
-	public static TalonFXConfiguration motorConfigComrpession() {
-		return new TalonFXConfiguration()
-				.withCurrentLimits(
-						new CurrentLimitsConfigs()
-								.withStatorCurrentLimitEnable(true)
-								.withStatorCurrentLimit(120)
-								.withSupplyCurrentLimitEnable(true)
-								.withStatorCurrentLimit(40)
-								.withSupplyCurrentLowerLimit(40)
-								.withSupplyCurrentLowerTime(0.05))
-				.withVoltage(
-						new VoltageConfigs()
-								.withPeakForwardVoltage(12)
-								.withPeakReverseVoltage(-12))
-				.withMotorOutput(
-						new MotorOutputConfigs()
-								.withInverted(InvertedValue.CounterClockwise_Positive)
-								.withNeutralMode(NeutralModeValue.Brake))
-				.withSlot1(
-						new Slot1Configs()
-								.withKP(Control.kP)
-								.withKV(Control.kV))
-				.withMotionMagic(
-						new MotionMagicConfigs()
-								.withMotionMagicCruiseVelocity(Control.CruiseVelocityCompression)
 								.withMotionMagicAcceleration(Control.AccelerationLimit)
 								.withMotionMagicJerk(Control.JerkLimit))
 				.withFeedback(
