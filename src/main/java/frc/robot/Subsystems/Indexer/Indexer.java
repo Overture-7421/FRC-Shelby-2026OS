@@ -5,12 +5,14 @@ import static edu.wpi.first.units.Units.Volts;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.overture.lib.motorcontrollers.OverTalonFX;
 import com.ctre.phoenix6.hardware.CANrange;
-
+import com.ctre.phoenix6.hardware.core.CoreCANrange;
 import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Subsystems.Shooter.Shooter;
+import frc.robot.Subsystems.Shooter.ShooterConstants;
 
 
 public class Indexer extends SubsystemBase{
@@ -27,7 +29,7 @@ public class Indexer extends SubsystemBase{
 
 	private VoltageOut voltageRequest = new VoltageOut(0.0);
 
-    Indexer(){
+    public Indexer(){
         indexerMotorLead = new OverTalonFX(IndexerConstants.motorConfig(), IndexerConstants.leaderCanId, Constants.RobotConstants.rio);    
         indexerMotor2 = new OverTalonFX(IndexerConstants.motorConfig(), IndexerConstants.MotorCanId2, Constants.RobotConstants.rio);
         indexerMotor3 = new OverTalonFX(IndexerConstants.motorConfig(), IndexerConstants.MotorCanId3, Constants.RobotConstants.rio);
@@ -66,6 +68,16 @@ public class Indexer extends SubsystemBase{
 		SmartDashboard.putNumber("Subsystems/Indexer/Voltage", getVoltage());
 		SmartDashboard.putNumber("Subsystems/Indexer/Target", getTarget());
 	}
+
+	public Boolean isFuelInHopper(){
+		return (shooterCanRange.getDistance().getValueAsDouble() < IndexerConstants.fuelInShooterTreshold);
+	}
+
+	public Boolean isFuelInShooter(){
+		return (hopperCanRange.getDistance().getValueAsDouble() < IndexerConstants.fuelInHopperTreshold);
+	}
+	
+	
 
 	@Override
 	public void periodic() {

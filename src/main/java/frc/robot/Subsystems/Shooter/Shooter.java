@@ -25,7 +25,7 @@ public class Shooter extends SubsystemBase {
 	private MotionMagicVelocityVoltage velocityRequest = new MotionMagicVelocityVoltage(0.0)
 			.withEnableFOC(true);
 
-	Shooter() {
+	public Shooter() {
 		shooterMotorLead = new OverTalonFX(ShooterConstants.motorConfig(), ShooterConstants.leaderCanId,
 				Constants.RobotConstants.rio);
 		shooterMotor2 = new OverTalonFX(ShooterConstants.motorConfig(), ShooterConstants.MotorCanId2, Constants.RobotConstants.rio);

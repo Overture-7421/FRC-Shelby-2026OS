@@ -13,9 +13,13 @@ import static edu.wpi.first.units.Units.*;
 
 public class IndexerConstants {
 
-	public static Voltage offVoltage = Volts.of(0.0);
+	public static Voltage OffVoltage = Volts.of(0.0);
 	public static Voltage shootVoltage = Volts.of(4);
 	public static Voltage preloadVoltage = Volts.of(2);
+
+	public static double fuelInShooterTreshold = 0.0;
+	public static double fuelInHopperTreshold = 0.0;
+
 
 	public static int leaderCanId = 15;
 	public static int MotorCanId2 = 14;
