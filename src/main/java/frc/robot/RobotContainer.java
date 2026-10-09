@@ -31,17 +31,17 @@ import frc.robot.Subsystems.Intake.Pivot.PivotConstants;
 import frc.robot.Subsystems.Intake.Rollers.Roller;
 import frc.robot.Subsystems.Intake.Rollers.RollerConstants;
 import frc.robot.Subsystems.Shooter.Shooter;
-import frc.robot.commands.DriveCommand;
+import frc.robot.Commands.DriveCommand;
 
 public class RobotContainer implements OverContainer {
 
 	// Subsystems
 	public final Chassis chassis = new Chassis();
-	protected Hood hood = new Hood();
-	protected Pivot pivot = new Pivot();
-	protected Roller roller = new Roller();
-	protected Indexer indexer = new Indexer();
-	protected Shooter shooter = new Shooter();
+	public static Hood hood = new Hood();
+	public static Pivot pivot = new Pivot();
+	public static Roller roller = new Roller();
+	public static Indexer indexer = new Indexer();
+	public static Shooter shooter = new Shooter();
 
 	// Controllers. There is no operator controller, the driver does everything
 	private final OverXboxController driver = new OverXboxController(0, 0.20, 0.2);
