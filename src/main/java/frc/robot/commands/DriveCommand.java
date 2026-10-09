@@ -44,7 +44,6 @@ public class DriveCommand extends Command {
 	 *
 	 * @param chassis   the drivetrain
 	 * @param gamepad   the driver's controller
-	 * @param processor the processor, held for parity with the C++ signature
 	 */
 	public DriveCommand(Chassis chassis, OverXboxController gamepad) {
 		this.chassis = chassis;

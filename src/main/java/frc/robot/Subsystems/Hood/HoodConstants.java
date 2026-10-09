@@ -47,18 +47,16 @@ public class HoodConstants {
 
 	public static int motorCanId = 24;
 
-	public static final double SensorToMechanismRatio = 1.0;
+	public static final double SensorToMechanismRatio = 94.9;
 
 	public static TalonFXConfiguration motorConfig() {
 		return new TalonFXConfiguration()
 				.withCurrentLimits(
 						new CurrentLimitsConfigs()
 								.withStatorCurrentLimitEnable(true)
-								.withStatorCurrentLimit(120)
+								.withStatorCurrentLimit(60)
 								.withSupplyCurrentLimitEnable(true)
-								.withStatorCurrentLimit(40)
-								.withSupplyCurrentLowerLimit(40)
-								.withSupplyCurrentLowerTime(0.05))
+								.withSupplyCurrentLimit(20))
 				.withVoltage(
 						new VoltageConfigs()
 								.withPeakForwardVoltage(12)

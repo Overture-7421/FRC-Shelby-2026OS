@@ -26,7 +26,9 @@ import frc.robot.Subsystems.Chassis.Chassis;
 import frc.robot.Subsystems.Hood.Hood;
 import frc.robot.Subsystems.Indexer.Indexer;
 import frc.robot.Subsystems.Intake.Pivot.Pivot;
+import frc.robot.Subsystems.Intake.Pivot.PivotConstants;
 import frc.robot.Subsystems.Intake.Rollers.Roller;
+import frc.robot.Subsystems.Intake.Rollers.RollerConstants;
 import frc.robot.Subsystems.Shooter.Shooter;
 import frc.robot.commands.DriveCommand;
 
@@ -75,6 +77,20 @@ public class RobotContainer implements OverContainer {
 		driver.back().onTrue(Commands.runOnce(() -> {
 			chassis.resetHeading(UtilityFunctions.isRedAlliance() ? 180.0 : 0.0);
 		}));
+
+		driver.leftTrigger().whileTrue(Commands.parallel(
+				pivot.setPosition(PivotConstants.States.Open),
+				roller.setVoltage(RollerConstants.IntakingVoltage)));
+		driver.leftTrigger().onFalse(roller.setVoltage(RollerConstants.OffVoltage));
+
+		driver.x().whileTrue(Commands.parallel(
+				pivot.setPosition(PivotConstants.States.Closed),
+				roller.setVoltage(RollerConstants.CompressingVoltage)));
+		driver.x().onFalse(Commands.parallel(
+				pivot.setPosition(PivotConstants.States.Open),
+				roller.setVoltage(RollerConstants.OffVoltage)));
+
+		driver.start().onTrue(hood.HoodHoming());
 	}
 
 	@Override
@@ -95,6 +111,11 @@ public class RobotContainer implements OverContainer {
 
 	public Command getAutonomousCommand() {
 		return autoChooser.getSelected();
+	}
+
+	// The robot plays with the intake out, Robot.teleopInit schedules this once
+	public Command intakeOut() {
+		return pivot.setPosition(PivotConstants.States.Open);
 	}
 
 	@Override
