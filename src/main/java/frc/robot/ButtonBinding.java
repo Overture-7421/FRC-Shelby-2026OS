@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Commands.CloseAndCompress;
+import frc.robot.Commands.HubOrPass;
 import frc.robot.Commands.OpenCommand;
 import frc.robot.Subsystems.Hood.Hood;
 import frc.robot.Subsystems.Intake.Pivot.Pivot;
@@ -31,6 +32,9 @@ public class ButtonBinding {
         Trigger buttonStart = new JoystickButton(driver, XboxController.Button.kStart.value);
         Trigger buttonLeftTrigger = new JoystickButton(driver, XboxController.Axis.kLeftTrigger.value);
         Trigger buttonX = new JoystickButton(driver, XboxController.Button.kX.value);
+        Trigger buttonRightTrigger = new JoystickButton(driver, XboxController.Axis.kRightTrigger.value);
+        Trigger buttonLeftBumper = new JoystickButton(driver, XboxController.Button.kLeftBumper.value);
+
 
         buttonStart
             .whileTrue(hood.HoodHoming())
@@ -44,6 +48,13 @@ public class ButtonBinding {
             .whileTrue(CloseAndCompress.closeAndCompres(pivot, roller))
             .onFalse(OpenCommand.openCommand(pivot, roller));
         
+        buttonRightTrigger
+        .whileTrue(HubOrPass.hubOrPass(HubOrPass.LaunchModes.HUB, hood))
+        .onFalse(HubOrPass.hubOrPass(HubOrPass.LaunchModes.IDLE, hood));
+
+        buttonLeftBumper
+        .whileTrue(HubOrPass.hubOrPass(HubOrPass.LaunchModes.PASS, hood))
+        .onFalse(HubOrPass.hubOrPass(HubOrPass.LaunchModes.IDLE, hood));
 
     }
 
