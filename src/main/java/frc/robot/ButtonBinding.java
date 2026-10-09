@@ -39,12 +39,8 @@ public class ButtonBinding {
             .onFalse(RobotContainer.roller.setVoltage(RollerConstants.IntakingVoltage));
 
         buttonX
-            .whileTrue(CloseAndCompress.closeAndCompres())
-            .onFalse(
-                new SequentialCommandGroup(
-                    RobotContainer.pivot.applyConfiguration(PivotConstants.motorConfig()),
-                    OpenCommand.openCommand() 
-                ));
+            .whileTrue(CloseAndCompress.closeAndCompres());
+        
 
     }
 

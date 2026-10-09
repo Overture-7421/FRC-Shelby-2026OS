@@ -30,7 +30,7 @@ public class PivotConstants {
 
         protected static AngularAcceleration AccelerationLimit = RadiansPerSecondPerSecond.of(0.0);
         protected static AngularVelocity CruiseVelocity = RadiansPerSecond.of(0.0);
-		protected static AngularVelocity CruiseVelocityCompression = RadiansPerSecond.of(0.0);
+		protected static AngularVelocity CompressCruiseVelocity = RadiansPerSecond.of(0.0);
         protected static Velocity<AngularAccelerationUnit> JerkLimit = RadiansPerSecondPerSecond.per(Second).of(0);
         
         protected static Angle AcceptedError = Degrees.of(1); 
@@ -41,8 +41,8 @@ public class PivotConstants {
     }
 
     public class States {
-        public static Angle Position1 = Degree.of(0);
-        public static Angle Position2 = Degree.of(0);
+        public static Angle Closed = Degree.of(0);
+        public static Angle Opened = Degree.of(0);
 		public static Angle CompressPosition = Degree.of(0);
     }
 
@@ -85,16 +85,14 @@ public class PivotConstants {
 								.withRotorToSensorRatio(RotorToSensorRatio));
 	}
 
-	public static TalonFXConfiguration motorConfigComrpession() {
+	public static TalonFXConfiguration motorCompressConfig() {
 		return new TalonFXConfiguration()
 				.withCurrentLimits(
 						new CurrentLimitsConfigs()
 								.withStatorCurrentLimitEnable(true)
-								.withStatorCurrentLimit(120)
+								.withStatorCurrentLimit(75)
 								.withSupplyCurrentLimitEnable(true)
-								.withStatorCurrentLimit(40)
-								.withSupplyCurrentLowerLimit(40)
-								.withSupplyCurrentLowerTime(0.05))
+								.withSupplyCurrentLimit(30))
 				.withVoltage(
 						new VoltageConfigs()
 								.withPeakForwardVoltage(12)
@@ -103,13 +101,13 @@ public class PivotConstants {
 						new MotorOutputConfigs()
 								.withInverted(InvertedValue.CounterClockwise_Positive)
 								.withNeutralMode(NeutralModeValue.Brake))
-				.withSlot1(
-						new Slot1Configs()
+				.withSlot0(
+						new Slot0Configs()
 								.withKP(Control.kP)
 								.withKV(Control.kV))
 				.withMotionMagic(
 						new MotionMagicConfigs()
-								.withMotionMagicCruiseVelocity(Control.CruiseVelocityCompression)
+								.withMotionMagicCruiseVelocity(Control.CompressCruiseVelocity)
 								.withMotionMagicAcceleration(Control.AccelerationLimit)
 								.withMotionMagicJerk(Control.JerkLimit))
 				.withFeedback(

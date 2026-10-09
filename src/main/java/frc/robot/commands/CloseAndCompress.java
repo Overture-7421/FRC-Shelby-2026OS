@@ -18,8 +18,8 @@ public class CloseAndCompress {
 
     public static Command closeAndCompres(){
          return new ParallelCommandGroup(
-            RobotContainer.pivot.Compress(),
-            RobotContainer.roller.setVoltage(RollerConstants.IntakingVoltage)
+            RobotContainer.pivot.compress(),
+            RobotContainer.roller.setVoltage(RollerConstants.CompressingVoltage)
             );
     }
 

@@ -15,6 +15,7 @@ import frc.robot.Constants;
 
 public class Pivot extends SubsystemBase {
 	protected OverTalonFX pivotMotor;
+	protected OverTalonFX pivotCompressMotor;
 	protected CANcoder pivotCC;
 
 	private Angle target = Degrees.of(0.0);
@@ -23,9 +24,17 @@ public class Pivot extends SubsystemBase {
 			.withEnableFOC(true);
 
 	public Pivot() {
-		pivotMotor = new OverTalonFX(PivotConstants.motorConfig(), PivotConstants.motorCanId,
-				Constants.RobotConstants.rio);
-		pivotCC = new CANcoder(PivotConstants.CCCanId, Constants.RobotConstants.rio);
+		pivotCompressMotor = new OverTalonFX(
+			PivotConstants.motorCompressConfig(),
+			PivotConstants.motorCanId,
+			Constants.RobotConstants.rio);
+		pivotMotor = new OverTalonFX(
+			PivotConstants.motorConfig(), 
+			PivotConstants.motorCanId,
+			Constants.RobotConstants.rio);
+		pivotCC = new CANcoder(
+			PivotConstants.CCCanId, 
+			Constants.RobotConstants.rio);
 		pivotCC.getConfigurator().apply(PivotConstants.CCConfig());
 
 	}
@@ -36,31 +45,16 @@ public class Pivot extends SubsystemBase {
 		}).until(() -> isFinished());
 	}
 
+	public Command compress(){
+		return run(() -> {
+			target = PivotConstants.States.Closed;
+			pivotCompressMotor.setControl(motionMagicRequest.withPosition(target));
+		}).until(() -> isFinished());
+	}
+
 	public void setMotor(Angle position) {
 		target = position;
 		pivotMotor.setControl(motionMagicRequest.withPosition(target));
-	}
-
-	public Command Compress(){
-		return runOnce(() -> {
-			setCompression(PivotConstants.States.CompressPosition);
-		});
-	}
-
-	public void setCompression(Angle position) {
-		target = position;
-		pivotMotor.getConfigurator().apply(PivotConstants.motorConfigComrpession());
-		pivotMotor.setControl(motionMagicRequest.withPosition(target));
-
-		// apply this when the button is left.
-		// pivotMotor.getConfigurator().apply(PivotConstants.motorConfig());
-		//runOnce((RobotContainer.pivot) -> {RobotContainer.pivot.applyConfiguration(PivotConstants.motorConfig());}),
-	}
-
-	public Command applyConfiguration(TalonFXConfiguration config){
-		return runOnce(() -> {
-			pivotMotor.getConfigurator().apply(PivotConstants.motorConfig());
-		});
 	}
 
 	public double getTarget() {
