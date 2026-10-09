@@ -20,7 +20,7 @@ public class OpenCommand {
 
     public static Command openCommand(){
          return new ParallelCommandGroup(
-            RobotContainer.pivot.setPosition(PivotConstants.States.Position2),
+            RobotContainer.pivot.setPosition(PivotConstants.States.Opened),
             RobotContainer.roller.setVoltage(RollerConstants.CompressingVoltage)
             );
     }
