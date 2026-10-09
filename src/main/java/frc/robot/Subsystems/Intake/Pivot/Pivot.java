@@ -14,6 +14,7 @@ import frc.robot.Constants;
 
 public class Pivot extends SubsystemBase {
 	protected OverTalonFX pivotMotor;
+	protected OverTalonFX pivotCompressMotor;
 	protected CANcoder pivotCC;
 
 	private Angle target = Degrees.of(0.0);
@@ -22,9 +23,17 @@ public class Pivot extends SubsystemBase {
 			.withEnableFOC(true);
 
 	public Pivot() {
-		pivotMotor = new OverTalonFX(PivotConstants.motorConfig(), PivotConstants.motorCanId,
-				Constants.RobotConstants.rio);
-		pivotCC = new CANcoder(PivotConstants.CCCanId, Constants.RobotConstants.rio);
+		pivotCompressMotor = new OverTalonFX(
+			PivotConstants.motorCompressConfig(),
+			PivotConstants.motorCanId,
+			Constants.RobotConstants.rio);
+		pivotMotor = new OverTalonFX(
+			PivotConstants.motorConfig(), 
+			PivotConstants.motorCanId,
+			Constants.RobotConstants.rio);
+		pivotCC = new CANcoder(
+			PivotConstants.CCCanId, 
+			Constants.RobotConstants.rio);
 		pivotCC.getConfigurator().apply(PivotConstants.CCConfig());
 
 	}
@@ -32,6 +41,13 @@ public class Pivot extends SubsystemBase {
 	public Command setPosition(Angle position) {
 		return run(() -> {
 			setMotor(position);
+		}).until(() -> isFinished());
+	}
+
+	public Command compress(){
+		return run(() -> {
+			target = PivotConstants.States.Closed;
+			pivotCompressMotor.setControl(motionMagicRequest.withPosition(target));
 		}).until(() -> isFinished());
 	}
 
