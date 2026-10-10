@@ -37,7 +37,7 @@ public class RollerConstants {
 								.withPeakReverseVoltage(-12))
 				.withMotorOutput(
 						new MotorOutputConfigs()
-								.withInverted(InvertedValue.CounterClockwise_Positive)
+								.withInverted(InvertedValue.Clockwise_Positive)
 								.withNeutralMode(NeutralModeValue.Brake))
 				.withFeedback(
 						new FeedbackConfigs()

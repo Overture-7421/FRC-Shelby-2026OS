@@ -28,17 +28,18 @@ public class ShooterConstants {
 		protected static AngularVelocity CruiseVelocity = RotationsPerSecond.of(0.0);
 		protected static Velocity<AngularAccelerationUnit> JerkLimit = RotationsPerSecondPerSecond.per(Second).of(0);
 
-		protected static double AcceptedError = 1;
+		// 2910 uses 3000 RPM, which never blocks a shot. Tighten once tuned
+		protected static AngularVelocity AcceptedError = RPM.of(3000);
 		protected static double SensorToMechanismRatio = 1.6666666666;
 
 	}
 
-	public static Voltage VoltageOFF = Volts.of(0.0);
+	public static Voltage OffVoltage = Volts.of(0.0);
 
-	public static int leaderCanId = 25;
-	public static int MotorCanId2 = 26;
-	public static int MotorCanId3 = 27;
-	public static int MotorCanId4 = 28;
+	public static int leaderCanId = 25; // Top left
+	public static int MotorCanId2 = 26; // Bottom left
+	public static int MotorCanId3 = 27; // Top right
+	public static int MotorCanId4 = 28; // Bottom right
 
 	public static final double GearRatio = (1 / 1);
 
@@ -53,10 +54,10 @@ public class ShooterConstants {
 				.withVoltage(
 						new VoltageConfigs()
 								.withPeakForwardVoltage(12)
-								.withPeakReverseVoltage(-12))
+								.withPeakReverseVoltage(0)) // The flywheel never spins backwards
 				.withMotorOutput(
 						new MotorOutputConfigs()
-								.withInverted(InvertedValue.CounterClockwise_Positive)
+								.withInverted(InvertedValue.Clockwise_Positive)
 								.withNeutralMode(NeutralModeValue.Coast))
 				.withFeedback(
 						new FeedbackConfigs()

@@ -31,15 +31,17 @@ public class PivotConstants {
         protected static AngularVelocity CruiseVelocity = RadiansPerSecond.of(0.0);
         protected static Velocity<AngularAccelerationUnit> JerkLimit = RadiansPerSecondPerSecond.per(Second).of(0);
         
-        protected static Angle AcceptedError = Degrees.of(1); 
+        protected static Angle AcceptedError = Degrees.of(2); 
 		protected static Angle EncoderOffSet = Degrees.of(0);           
         protected static Angle OffSet = Degrees.of(0); 
 		
     }
 
     public class States {
+
         public static Angle Open = Degree.of(114);
         public static Angle Closed = Degree.of(10);
+
     }
 
 	public static int motorCanId = 29;
@@ -61,7 +63,7 @@ public class PivotConstants {
 								.withPeakReverseVoltage(-12))
 				.withMotorOutput(
 						new MotorOutputConfigs()
-								.withInverted(InvertedValue.CounterClockwise_Positive)
+								.withInverted(InvertedValue.Clockwise_Positive)
 								.withNeutralMode(NeutralModeValue.Brake))
 				.withSlot0(
 						new Slot0Configs()
@@ -81,7 +83,7 @@ public class PivotConstants {
 
 	public static CANcoderConfiguration CCConfig() {
 		CANcoderConfiguration CCConfig = new CANcoderConfiguration();
-		CCConfig.MagnetSensor.SensorDirection = SensorDirectionValue.CounterClockwise_Positive;
+		CCConfig.MagnetSensor.SensorDirection = SensorDirectionValue.Clockwise_Positive;
 		CCConfig.MagnetSensor.withMagnetOffset(Control.EncoderOffSet);
 		return CCConfig;
 	}

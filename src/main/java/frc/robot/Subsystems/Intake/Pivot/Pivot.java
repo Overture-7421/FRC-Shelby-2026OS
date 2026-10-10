@@ -32,7 +32,7 @@ public class Pivot extends SubsystemBase {
 	public Command setPosition(Angle position) {
 		return run(() -> {
 			setMotor(position);
-		}).until(() -> isFinished());
+		}).until(() -> isAtTarget());
 	}
 
 	public void setMotor(Angle position) {
@@ -52,7 +52,7 @@ public class Pivot extends SubsystemBase {
 		return Math.abs(getTarget() - getPosition());
 	}
 
-	private boolean isFinished() {
+	public boolean isAtTarget() {
 		return (getError() < PivotConstants.Control.AcceptedError.in(Degrees));
 	}
 
@@ -60,7 +60,7 @@ public class Pivot extends SubsystemBase {
 		SmartDashboard.putNumber("Subsystems/Pivot/Position", getPosition());
 		SmartDashboard.putNumber("Subsystems/Pivot/Target", getTarget());
 		SmartDashboard.putNumber("Subsystems/Pivot/Error", getError());
-		SmartDashboard.putBoolean("Subsystems/Pivot/AtTarget", isFinished());
+		SmartDashboard.putBoolean("Subsystems/Pivot/AtTarget", isAtTarget());
 	}
 
 	@Override
