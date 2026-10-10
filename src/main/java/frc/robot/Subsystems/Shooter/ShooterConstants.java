@@ -35,10 +35,10 @@ public class ShooterConstants {
 
 	public static Voltage OffVoltage = Volts.of(0.0);
 
-	public static int leaderCanId = 25;
-	public static int MotorCanId2 = 26;
-	public static int MotorCanId3 = 27;
-	public static int MotorCanId4 = 28;
+	public static int leaderCanId = 25; // Top left
+	public static int MotorCanId2 = 26; // Bottom left
+	public static int MotorCanId3 = 27; // Top right
+	public static int MotorCanId4 = 28; // Bottom right
 
 	public static final double GearRatio = (1 / 1);
 
@@ -56,7 +56,7 @@ public class ShooterConstants {
 								.withPeakReverseVoltage(-12))
 				.withMotorOutput(
 						new MotorOutputConfigs()
-								.withInverted(InvertedValue.CounterClockwise_Positive)
+								.withInverted(InvertedValue.Clockwise_Positive)
 								.withNeutralMode(NeutralModeValue.Coast))
 				.withFeedback(
 						new FeedbackConfigs()

@@ -45,8 +45,8 @@ public class Indexer extends SubsystemBase{
         hopperCanRange.getConfigurator().apply(IndexerConstants.rangeConfig());
 		debouncer = new Debouncer(IndexerConstants.fuelDebouncingTime, DebounceType.kRising);
         
-        indexerMotor2.setFollow(IndexerConstants.leaderCanId, false);
-        indexerMotor3.setFollow(IndexerConstants.leaderCanId, false);    
+        indexerMotor2.setFollow(IndexerConstants.leaderCanId, true);
+        indexerMotor3.setFollow(IndexerConstants.leaderCanId, true);
         indexerMotor4.setFollow(IndexerConstants.leaderCanId, false);
     }
 

@@ -23,10 +23,10 @@ public class IndexerConstants {
 	public static final double fuelDebouncingTime = 0.25;
 
 	// Mechanisms count from 20, 1 to 19 belong to the swerve
-	public static final int leaderCanId = 20;
-	public static final int MotorCanId2 = 21;
-	public static final int MotorCanId3 = 22;
-	public static final int MotorCanId4 = 23;
+	public static final int leaderCanId = 20; // Front left
+	public static final int MotorCanId2 = 21; // Front right
+	public static final int MotorCanId3 = 22; // Back right
+	public static final int MotorCanId4 = 23; // Back left
 
 	// One CANrange looks at the hopper and the other at the shooter feed, right before
 	// the wheels

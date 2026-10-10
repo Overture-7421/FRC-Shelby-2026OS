@@ -68,7 +68,7 @@ public class HoodConstants {
 								.withPeakReverseVoltage(-12))
 				.withMotorOutput(
 						new MotorOutputConfigs()
-								.withInverted(InvertedValue.CounterClockwise_Positive)
+								.withInverted(InvertedValue.Clockwise_Positive)
 								.withNeutralMode(NeutralModeValue.Brake))
 				.withSlot0(
 						new Slot0Configs()

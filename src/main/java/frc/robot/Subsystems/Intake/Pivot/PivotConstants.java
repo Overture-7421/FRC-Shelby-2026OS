@@ -63,7 +63,7 @@ public class PivotConstants {
 								.withPeakReverseVoltage(-12))
 				.withMotorOutput(
 						new MotorOutputConfigs()
-								.withInverted(InvertedValue.CounterClockwise_Positive)
+								.withInverted(InvertedValue.Clockwise_Positive)
 								.withNeutralMode(NeutralModeValue.Brake))
 				.withSlot0(
 						new Slot0Configs()
@@ -83,7 +83,7 @@ public class PivotConstants {
 
 	public static CANcoderConfiguration CCConfig() {
 		CANcoderConfiguration CCConfig = new CANcoderConfiguration();
-		CCConfig.MagnetSensor.SensorDirection = SensorDirectionValue.CounterClockwise_Positive;
+		CCConfig.MagnetSensor.SensorDirection = SensorDirectionValue.Clockwise_Positive;
 		CCConfig.MagnetSensor.withMagnetOffset(Control.EncoderOffSet);
 		return CCConfig;
 	}
