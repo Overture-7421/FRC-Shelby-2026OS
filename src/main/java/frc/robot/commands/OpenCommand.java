@@ -20,8 +20,10 @@ public class OpenCommand {
 
     public static Command openCommand(Pivot pivot, Roller roller){
          return new ParallelCommandGroup(
+
             pivot.setPosition(PivotConstants.States.Open),
             roller.setVoltage(RollerConstants.CompressingVoltage)
+
             );
     }
 

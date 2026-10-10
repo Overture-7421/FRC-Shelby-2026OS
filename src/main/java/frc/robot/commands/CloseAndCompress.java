@@ -20,6 +20,7 @@ public class CloseAndCompress {
          return new ParallelCommandGroup(
             pivot.compress(),
             roller.setVoltage(RollerConstants.CompressingVoltage)
+
             );
     }
 
