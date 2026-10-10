@@ -31,7 +31,7 @@ public class PivotConstants {
         protected static AngularVelocity CruiseVelocity = RadiansPerSecond.of(0.0);
         protected static Velocity<AngularAccelerationUnit> JerkLimit = RadiansPerSecondPerSecond.per(Second).of(0);
         
-        protected static Angle AcceptedError = Degrees.of(1); 
+        protected static Angle AcceptedError = Degrees.of(2); 
 		protected static Angle EncoderOffSet = Degrees.of(0);           
         protected static Angle OffSet = Degrees.of(0); 
 		

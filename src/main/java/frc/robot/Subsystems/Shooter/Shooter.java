@@ -2,6 +2,8 @@ package frc.robot.Subsystems.Shooter;
 
 import static edu.wpi.first.units.Units.RotationsPerSecond;
 
+import java.util.function.Supplier;
+
 import com.ctre.phoenix6.controls.MotionMagicVelocityVoltage;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.overture.lib.motorcontrollers.OverTalonFX;
@@ -46,7 +48,13 @@ public class Shooter extends SubsystemBase {
 	public Command setVelocity(AngularVelocity rps) {
 		return run(() -> {
 			setMotor(rps);
-		}).until(() -> isFinished());
+		}).until(() -> isAtTarget());
+	}
+
+	public Command trackVelocity(Supplier<AngularVelocity> rps) {
+		return run(() -> {
+			setMotor(rps.get());
+		});
 	}
 
 	public void setMotor(AngularVelocity rps) {
@@ -62,8 +70,8 @@ public class Shooter extends SubsystemBase {
 		return shooterMotorLead.getVelocity().getValueAsDouble();
 	}
 
-	private boolean isFinished() {
-		return (Math.abs(getTarget() - getVelocity()) < ShooterConstants.Control.AcceptedError);
+	public boolean isAtTarget() {
+		return (Math.abs(getTarget() - getVelocity()) < ShooterConstants.Control.AcceptedError.in(RotationsPerSecond));
 	}
 
 	public void updateTelemetry() {

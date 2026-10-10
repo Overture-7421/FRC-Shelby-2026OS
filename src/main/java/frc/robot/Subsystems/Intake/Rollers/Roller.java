@@ -26,8 +26,10 @@ public class Roller extends SubsystemBase{
         rollerSlaveMotor.setFollow(RollerConstants.motorCanId, true);
     }
 
+    // Drives the motor straight away, for commands that move the rollers every loop
     public void setTarget(Voltage targetSetter){
         target = targetSetter;
+        rollerLeadMotor.setControl(voltageRequest.withOutput(target));
     }
 
     public double getTarget(){
@@ -37,7 +39,6 @@ public class Roller extends SubsystemBase{
     public Command setVoltage(Voltage volts){
         return runOnce(() -> {
             setTarget(volts);
-            rollerLeadMotor.setControl(voltageRequest.withOutput(volts));
         });
     }
 

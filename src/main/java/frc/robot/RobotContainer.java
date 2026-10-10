@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import static edu.wpi.first.units.Units.RotationsPerSecond;
+
 import com.overture.lib.gamepads.OverXboxController;
 import com.overture.lib.robots.OverContainer;
 import com.overture.lib.subsystems.vision.AprilTags;
@@ -21,6 +23,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+
+import java.util.function.BooleanSupplier;
 import frc.robot.Subsystems.Chassis.BLinePaths;
 import frc.robot.Subsystems.Chassis.Chassis;
 import frc.robot.Subsystems.Hood.Hood;
@@ -32,7 +36,9 @@ import frc.robot.Subsystems.Intake.Rollers.Roller;
 import frc.robot.Subsystems.Intake.Rollers.RollerConstants;
 import frc.robot.Subsystems.Shooter.Shooter;
 import frc.robot.commands.DriveCommand;
-import frc.robot.commands.HubOrPass;
+import frc.robot.commands.LaunchCommand;
+import frc.robot.commands.LaunchConstants;
+import frc.robot.commands.LaunchModes;
 
 public class RobotContainer implements OverContainer {
 
@@ -65,7 +71,20 @@ public class RobotContainer implements OverContainer {
 	private final BLinePaths paths = new BLinePaths(chassis);
 	private final SendableChooser<Command> autoChooser = new SendableChooser<>();
 
+	// Shooter trims typed on the dashboard, 1.0 means the table as it is
+	private static final String hubShooterMultiKey = "LaunchCommand/HubShooterMulti";
+	private static final String passShooterMultiKey = "LaunchCommand/PassShooterMulti";
+
+	// What the launch command needs to know from the cameras and the driver
+	private final BooleanSupplier tagVisible = () -> isAnyTagVisible();
+	private final BooleanSupplier intakeInUse = driver.leftTrigger().or(driver.x());
+
 	public RobotContainer() {
+		// Only sets them if the dashboard does not already have them, so a trim
+		// survives a code restart
+		SmartDashboard.setDefaultNumber(hubShooterMultiKey, 1.0);
+		SmartDashboard.setDefaultNumber(passShooterMultiKey, 1.0);
+
 		configDriverBindings();
 		configOperatorBindings();
 		configCharacterizationBindings();
@@ -75,6 +94,11 @@ public class RobotContainer implements OverContainer {
 	@Override
 	public void configDriverBindings() {
 		chassis.setDefaultCommand(new DriveCommand(chassis, driver));
+
+		// The wheel never stops. Between shots it follows the velocity a hub shot
+		// would need from wherever the robot is, so launching does not wait for it
+		shooter.setDefaultCommand(shooter.trackVelocity(
+				() -> RotationsPerSecond.of(LaunchConstants.DistanceToShooterForHub.get(getHubDistance()))));
 
 		hood.setDefaultCommand(
 				Commands.either(hood.holdPosition(HoodConstants.States.Close), hood.HoodHoming(), hood::isHomed));
@@ -100,9 +124,14 @@ public class RobotContainer implements OverContainer {
 
 		driver.start().onTrue(hood.HoodHoming());
 
-		// Launch. The hood goes back to Close by itself when the button is released
-		driver.rightTrigger().whileTrue(HubOrPass.hubOrPass(HubOrPass.LaunchModes.HUB, hood));
-		driver.leftBumper().whileTrue(HubOrPass.hubOrPass(HubOrPass.LaunchModes.PASS, hood));
+		// Launch. Each button holds its own command with its own target and trim. They
+		// share the shooter, the hood and the indexer, so the one pressed last wins.
+		// On release everything goes back to its default: hood down, shooter
+		// pre-spinning, indexer preloading
+		driver.rightTrigger().whileTrue(new LaunchCommand(shooter, hood, chassis, indexer, pivot, roller,
+				LaunchModes.HUB, () -> getShooterMulti(LaunchModes.HUB), tagVisible, intakeInUse));
+		driver.leftBumper().whileTrue(new LaunchCommand(shooter, hood, chassis, indexer, pivot, roller,
+				LaunchModes.PASS, () -> getShooterMulti(LaunchModes.PASS), tagVisible, intakeInUse));
 	}
 
 	@Override
@@ -143,6 +172,18 @@ public class RobotContainer implements OverContainer {
 
 		SmartDashboard.putNumber("MatchTime", DriverStation.getMatchTime());
 		SmartDashboard.putBoolean("Vision/AnyTagVisible", isAnyTagVisible());
+	}
+
+	// Read fresh every time so a trim typed mid-match takes effect on the next loop
+	private double getShooterMulti(LaunchModes launchMode) {
+		if (launchMode == LaunchModes.PASS) {
+			return SmartDashboard.getNumber(passShooterMultiKey, 1.0);
+		}
+		return SmartDashboard.getNumber(hubShooterMultiKey, 1.0);
+	}
+
+	private double getHubDistance() {
+		return chassis.getEstimatedPose().getTranslation().getDistance(LaunchConstants.getHubPose());
 	}
 
 	// A tag in front of any of the four cameras counts
