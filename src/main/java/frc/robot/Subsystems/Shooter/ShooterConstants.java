@@ -34,7 +34,6 @@ public class ShooterConstants {
 	}
 
 	public static Voltage OffVoltage = Volts.of(0.0);
-	public static Voltage preloadVoltage = Volts.of(0.0);
 
 	public static int leaderCanId = 25;
 	public static int MotorCanId2 = 26;

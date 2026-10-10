@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import edu.wpi.first.math.filter.Debouncer;
+import edu.wpi.first.math.filter.Debouncer.DebounceType;
 
 
 public class Indexer extends SubsystemBase{
@@ -22,12 +23,11 @@ public class Indexer extends SubsystemBase{
 
     protected CANrange shooterCanRange;
     protected CANrange hopperCanRange;
-	
+
+	// The hopper sensor is debounced so a single fuel rolling by does not count as
+	// a full hopper. The shooter sensor is read straight, a shot has to react fast
 	protected boolean hopperFull;
-	protected boolean shooterFull;
 	protected Debouncer debouncer;
-
-
 
 	private Voltage target = Volts.of(0.0);
 
@@ -40,16 +40,15 @@ public class Indexer extends SubsystemBase{
         indexerMotor4 = new OverTalonFX(IndexerConstants.motorConfig(), IndexerConstants.MotorCanId4, Constants.RobotConstants.rio);
 
         shooterCanRange = new CANrange(IndexerConstants.shooterCanRangeId, Constants.RobotConstants.rio);
+        shooterCanRange.getConfigurator().apply(IndexerConstants.rangeConfig());
         hopperCanRange = new CANrange(IndexerConstants.hopperCanRangeId, Constants.RobotConstants.rio);
-		debouncer = new Debouncer(IndexerConstants.fuelDebouncingTime);
-		
+        hopperCanRange.getConfigurator().apply(IndexerConstants.rangeConfig());
+		debouncer = new Debouncer(IndexerConstants.fuelDebouncingTime, DebounceType.kRising);
         
         indexerMotor2.setFollow(IndexerConstants.leaderCanId, false);
         indexerMotor3.setFollow(IndexerConstants.leaderCanId, false);    
         indexerMotor4.setFollow(IndexerConstants.leaderCanId, false);
     }
-    
-    
 
 	public Command setVoltage(Voltage volts) {
 		return runOnce(() -> {
@@ -57,9 +56,27 @@ public class Indexer extends SubsystemBase{
 		});
 	}
 
+	// What the indexer does when nobody is shooting. It never finishes, it is the
+	// default command
+	public Command preloadShooter() {
+		return run(() -> {
+			setMotorPreload();
+		});
+	}
+
 	public void setTarget(Voltage volts) {
 		target = volts;
 		indexerMotorLead.setControl(voltageRequest.withOutput(target));
+	}
+
+	// Creeps the fuel towards the shooter while the hopper has fuel and nothing is
+	// waiting at the shooter yet, so the first shot leaves without delay
+	public void setMotorPreload() {
+		if (isHopperFull() && !isShooterFull()) {
+			setTarget(IndexerConstants.preloadVoltage);
+		} else {
+			setTarget(IndexerConstants.OffVoltage);
+		}
 	}
 
 	public double getTarget() {
@@ -73,14 +90,16 @@ public class Indexer extends SubsystemBase{
 	public void updateTelemetry() {
 		SmartDashboard.putNumber("Subsystems/Indexer/Voltage", getVoltage());
 		SmartDashboard.putNumber("Subsystems/Indexer/Target", getTarget());
+		SmartDashboard.putBoolean("Subsystems/Indexer/HopperFull", isHopperFull());
+		SmartDashboard.putBoolean("Subsystems/Indexer/ShooterFull", isShooterFull());
 	}
 
-	private Boolean isFuelInHopper(){
-		return (shooterCanRange.getDistance().getValueAsDouble() < IndexerConstants.fuelInShooterTreshold);
+	private boolean isFuelInHopper(){
+		return hopperCanRange.getIsDetected().getValue();
 	}
 
-	private Boolean isFuelInShooter(){
-		return (hopperCanRange.getDistance().getValueAsDouble() < IndexerConstants.fuelInHopperTreshold);
+	private boolean isFuelInShooter(){
+		return shooterCanRange.getIsDetected().getValue();
 	}
 	
 	public boolean isHopperFull(){
@@ -88,14 +107,12 @@ public class Indexer extends SubsystemBase{
 	}
 
 	public boolean isShooterFull(){
-		return shooterFull;
+		return isFuelInShooter();
 	}
 
 	@Override
 	public void periodic() {
 		hopperFull = debouncer.calculate(isFuelInHopper());
-		shooterFull = debouncer.calculate(isFuelInShooter());
 	}
-
 
 }

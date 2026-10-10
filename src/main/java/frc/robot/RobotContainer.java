@@ -31,17 +31,18 @@ import frc.robot.Subsystems.Intake.Pivot.PivotConstants;
 import frc.robot.Subsystems.Intake.Rollers.Roller;
 import frc.robot.Subsystems.Intake.Rollers.RollerConstants;
 import frc.robot.Subsystems.Shooter.Shooter;
-import frc.robot.Commands.DriveCommand;
+import frc.robot.commands.DriveCommand;
+import frc.robot.commands.HubOrPass;
 
 public class RobotContainer implements OverContainer {
 
 	// Subsystems
 	public final Chassis chassis = new Chassis();
-	public static Hood hood = new Hood();
-	public static Pivot pivot = new Pivot();
-	public static Roller roller = new Roller();
-	public static Indexer indexer = new Indexer();
-	public static Shooter shooter = new Shooter();
+	protected Hood hood = new Hood();
+	protected Pivot pivot = new Pivot();
+	protected Roller roller = new Roller();
+	protected Indexer indexer = new Indexer();
+	protected Shooter shooter = new Shooter();
 
 	// Controllers. There is no operator controller, the driver does everything
 	private final OverXboxController driver = new OverXboxController(0, 0.20, 0.2);
@@ -78,6 +79,9 @@ public class RobotContainer implements OverContainer {
 		hood.setDefaultCommand(
 				Commands.either(hood.holdPosition(HoodConstants.States.Close), hood.HoodHoming(), hood::isHomed));
 
+		// Between shots the indexer keeps the fuel ready at the shooter
+		indexer.setDefaultCommand(indexer.preloadShooter());
+
 		driver.back().onTrue(Commands.runOnce(() -> {
 			chassis.resetHeading(UtilityFunctions.isRedAlliance() ? 180.0 : 0.0);
 		}));
@@ -95,6 +99,10 @@ public class RobotContainer implements OverContainer {
 				roller.setVoltage(RollerConstants.OffVoltage)));
 
 		driver.start().onTrue(hood.HoodHoming());
+
+		// Launch. The hood goes back to Close by itself when the button is released
+		driver.rightTrigger().whileTrue(HubOrPass.hubOrPass(HubOrPass.LaunchModes.HUB, hood));
+		driver.leftBumper().whileTrue(HubOrPass.hubOrPass(HubOrPass.LaunchModes.PASS, hood));
 	}
 
 	@Override

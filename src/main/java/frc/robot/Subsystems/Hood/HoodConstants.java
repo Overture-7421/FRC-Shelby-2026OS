@@ -44,6 +44,10 @@ public class HoodConstants {
 		public static Angle Min = Degree.of(0);
 		public static Angle Close = Degree.of(0);
 
+		// Placeholders until the hood angle comes from the launch tables by distance
+		public static Angle Hub = Degree.of(0);
+		public static Angle Pass = Degree.of(0);
+
 	}
 
 	public static int motorCanId = 24;
