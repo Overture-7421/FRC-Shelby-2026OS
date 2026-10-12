@@ -35,9 +35,11 @@ public class Shooter extends SubsystemBase {
 		shooterMotor4 = new OverTalonFX(ShooterConstants.motorConfig(), ShooterConstants.MotorCanId4, Constants.RobotConstants.rio);
 
 
+		// One linkage for all four. The right motors are mounted mirrored, they follow
+		// opposed or they fight the shaft (bottom right read negative on the robot)
 		shooterMotor2.setFollow(ShooterConstants.leaderCanId, false);
 		shooterMotor3.setFollow(ShooterConstants.leaderCanId, true);
-		shooterMotor4.setFollow(ShooterConstants.leaderCanId, false);
+		shooterMotor4.setFollow(ShooterConstants.leaderCanId, true);
 
 	}
 

@@ -39,6 +39,7 @@ import frc.robot.commands.DriveCommand;
 import frc.robot.commands.LaunchCommand;
 import frc.robot.commands.LaunchConstants;
 import frc.robot.commands.LaunchModes;
+import frc.robot.commands.VisionAlignCmd;
 
 public class RobotContainer implements OverContainer {
 
@@ -59,13 +60,15 @@ public class RobotContainer implements OverContainer {
 
 	private static final String camRightName = "camRight";
 	private static final String camLeftName = "camLeft";
-	private static final String limelightUpName = "limelight-up";
-	private static final String limelightDownName = "limelight-down";
+	private static final String limelightRightName = "limelight-right";
+	private static final String limelightLeftName = "limelight-left";
 
-	private final AprilTags camRight = new AprilTags(tagLayout, chassis, camRightConfig());
-	private final AprilTags camLeft = new AprilTags(tagLayout, chassis, camLeftConfig());
-	private final AprilTags limelightUp = new AprilTags(tagLayout, chassis, limelightUpConfig());
-	private final AprilTags limelightDown = new AprilTags(tagLayout, chassis, limelightDownConfig());
+	// The PhotonVision cameras are not on the robot yet. Uncomment these two and the
+	// two photonSeesTag terms in isAnyTagVisible when they are mounted
+	// private final AprilTags camRight = new AprilTags(tagLayout, chassis, camRightConfig());
+	// private final AprilTags camLeft = new AprilTags(tagLayout, chassis, camLeftConfig());
+	private final AprilTags limelightRight = new AprilTags(tagLayout, chassis, limelightRightConfig());
+	private final AprilTags limelightLeft = new AprilTags(tagLayout, chassis, limelightLeftConfig());
 
 	// Autonomous
 	private final BLinePaths paths = new BLinePaths(chassis);
@@ -141,11 +144,15 @@ public class RobotContainer implements OverContainer {
 
 	@Override
 	public void configCharacterizationBindings() {
-		// No characterization controller
+		// No tuning controller
 	}
 
 	private void configureAutos() {
 		autoChooser.setDefaultOption("None", Commands.none());
+
+		// Each entry is a path file in deploy/autos/paths. The first path of an auto
+		// resets the pose to its start, later ones follow from wherever the robot is
+		autoChooser.addOption("Testing", paths.resetAndFollow("testing"));
 
 		SmartDashboard.putData("Auto Chooser", autoChooser);
 	}
@@ -188,8 +195,8 @@ public class RobotContainer implements OverContainer {
 
 	// A tag in front of any of the four cameras counts
 	public boolean isAnyTagVisible() {
-		return LimelightHelpers.getTV(limelightUpName) || LimelightHelpers.getTV(limelightDownName)
-				|| photonSeesTag(camRightName) || photonSeesTag(camLeftName);
+		return LimelightHelpers.getTV(limelightRightName) || LimelightHelpers.getTV(limelightLeftName);
+		// || photonSeesTag(camRightName) || photonSeesTag(camLeftName);
 	}
 
 	// PhotonVision publishes whether each of its cameras has a target
@@ -220,31 +227,31 @@ public class RobotContainer implements OverContainer {
 		return config;
 	}
 
-	private static AprilTags.Config limelightUpConfig() {
+	private static AprilTags.Config limelightLeftConfig() {
 		AprilTags.Config config = new AprilTags.Config();
 		config.backend = AprilTags.VisionBackend.Limelight;
-		config.cameraName = limelightUpName;
+		config.cameraName = limelightLeftName;
 		config.limelightMode = AprilTags.LimelightMode.MegaTag2;
 		config.multiTagStdDevs = new double[] { 0.5, 0.5, 0.5 };
 		config.yawCorrectionThreshold = 10.0;
 		config.cameraToRobotSupplier = () -> new Transform3d(
-				Units.inchesToMeters(0.0), Units.inchesToMeters(0.0), Units.inchesToMeters(0.0),
-				new Rotation3d(Units.degreesToRadians(0.0), Units.degreesToRadians(0.0),
-						Units.degreesToRadians(0.0)));
+				Units.inchesToMeters(-13.659907), Units.inchesToMeters(1.7318223), Units.inchesToMeters(14.785706),
+				new Rotation3d(Units.degreesToRadians(0.0), Units.degreesToRadians(-15.0),
+						Units.degreesToRadians(180.0)));
 		return config;
 	}
 
-	private static AprilTags.Config limelightDownConfig() {
+	private static AprilTags.Config limelightRightConfig() {
 		AprilTags.Config config = new AprilTags.Config();
 		config.backend = AprilTags.VisionBackend.Limelight;
-		config.cameraName = limelightDownName;
+		config.cameraName = limelightRightName;
 		config.limelightMode = AprilTags.LimelightMode.MegaTag2;
 		config.multiTagStdDevs = new double[] { 0.5, 0.5, 0.5 };
 		config.yawCorrectionThreshold = 10.0;
 		config.cameraToRobotSupplier = () -> new Transform3d(
-				Units.inchesToMeters(0.0), Units.inchesToMeters(0.0), Units.inchesToMeters(0.0),
-				new Rotation3d(Units.degreesToRadians(0.0), Units.degreesToRadians(0.0),
-						Units.degreesToRadians(0.0)));
+				Units.inchesToMeters(-13.463993), Units.inchesToMeters(-1.732177), Units.inchesToMeters(14.999332),
+				new Rotation3d(Units.degreesToRadians(0.0), Units.degreesToRadians(-30.0),
+						Units.degreesToRadians(180.0)));
 		return config;
 	}
 }

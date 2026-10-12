@@ -21,10 +21,10 @@ public class ShooterConstants {
 
 	protected class Control {
 
-		protected static double kP = 0.0;
-		protected static double kV = 0.0;
+		protected static double kP = 0.35;
+		protected static double kV = 0.2;
 
-		protected static AngularAcceleration AccelerationLimit = RotationsPerSecondPerSecond.of(0.0);
+		protected static AngularAcceleration AccelerationLimit = RotationsPerSecondPerSecond.of(400.0);
 		protected static AngularVelocity CruiseVelocity = RotationsPerSecond.of(0.0);
 		protected static Velocity<AngularAccelerationUnit> JerkLimit = RotationsPerSecondPerSecond.per(Second).of(0);
 
@@ -40,8 +40,6 @@ public class ShooterConstants {
 	public static int MotorCanId2 = 26; // Bottom left
 	public static int MotorCanId3 = 27; // Top right
 	public static int MotorCanId4 = 28; // Bottom right
-
-	public static final double GearRatio = (1 / 1);
 
 	public static TalonFXConfiguration motorConfig() {
 		return new TalonFXConfiguration()

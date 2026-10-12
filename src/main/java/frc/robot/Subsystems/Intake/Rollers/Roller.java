@@ -51,8 +51,8 @@ public class Roller extends SubsystemBase{
     }
 
 	public void updateTelemetry() {
-		SmartDashboard.putNumber("Subsystems/Roller/Voltage", getVoltage());
-		SmartDashboard.putNumber("Subsystems/Roller/Target", getTarget());
+		// SmartDashboard.putNumber("Subsystems/Roller/Voltage", getVoltage());
+		// SmartDashboard.putNumber("Subsystems/Roller/Target", getTarget());
 	}
 
 	@Override

@@ -114,12 +114,12 @@ public class Hood extends SubsystemBase {
 	}
 
 	public void updateTelemetry() {
-		SmartDashboard.putNumber("Subsystems/Hood/Position", getPosition());
-		SmartDashboard.putNumber("Subsystems/Hood/Target", getTarget());
-		SmartDashboard.putNumber("Subsystems/Hood/Error", getError());
+		// SmartDashboard.putNumber("Subsystems/Hood/Position", getPosition());
+		// SmartDashboard.putNumber("Subsystems/Hood/Target", getTarget());
+		// SmartDashboard.putNumber("Subsystems/Hood/Error", getError());
 		SmartDashboard.putBoolean("Subsystems/Hood/AtTarget", isAtTarget());
 
-		SmartDashboard.putNumber("Subsystems/Hood/Amps", getAmps());
+		// SmartDashboard.putNumber("Subsystems/Hood/Amps", getAmps());
 		SmartDashboard.putBoolean("Subsystems/Hood/Homed", homed);
 	}
 

@@ -57,9 +57,9 @@ public class Pivot extends SubsystemBase {
 	}
 
 	public void updateTelemetry() {
-		SmartDashboard.putNumber("Subsystems/Pivot/Position", getPosition());
-		SmartDashboard.putNumber("Subsystems/Pivot/Target", getTarget());
-		SmartDashboard.putNumber("Subsystems/Pivot/Error", getError());
+		// SmartDashboard.putNumber("Subsystems/Pivot/Position", getPosition());
+		// SmartDashboard.putNumber("Subsystems/Pivot/Target", getTarget());
+		// SmartDashboard.putNumber("Subsystems/Pivot/Error", getError());
 		SmartDashboard.putBoolean("Subsystems/Pivot/AtTarget", isAtTarget());
 	}
 

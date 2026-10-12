@@ -7,7 +7,10 @@ import static edu.wpi.first.units.Units.MetersPerSecond;
 import com.overture.lib.math.InterpolatingTable;
 import com.overture.lib.utils.AllianceFlip;
 
+import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.LinearVelocity;
@@ -32,30 +35,26 @@ public final class LaunchConstants {
 	public static final double FieldMidline = AllianceFlip.getFieldWidth() / 2.0;
 	public static final double PassOverlap = 0.2;
 
-	// Distance to the hub in meters -> shooter velocity in rps
+	// Distance to the hub in meters -> shooter velocity in rps. Flat until the shooter is tuned,
+	// 2910's table is on main
 	public static final InterpolatingTable DistanceToShooterForHub = new InterpolatingTable(
-			1.3, 2100.0 / 60.0,
-			2.0, 2250.0 / 60.0,
-			3.0, 2400.0 / 60.0,
-			4.0, 2600.0 / 60.0,
-			5.0, 2900.0 / 60.0);
+			1.3, 23.0,
+			5.0, 23.0);
 
-	// Distance to the hub in meters -> hood angle in degrees
+	// Distance to the hub in meters -> hood angle in degrees. Flat until the shooter is tuned,
+	// the hood stays down
 	public static final InterpolatingTable DistanceToHoodForHub = new InterpolatingTable(
 			1.3, 0.0,
-			2.0, 8.0,
-			3.0, 17.0,
-			4.0, 23.0,
-			5.0, 28.0);
+			5.0, 0.0);
 
-	// Distance to the pass target in meters -> shooter velocity in rps
+	// Distance to the pass target in meters -> shooter velocity in rps. Flat until the
+	// shooter is tuned, the halved 2910 table is on main
 	public static final InterpolatingTable DistanceToShooterForPass = new InterpolatingTable(
-			2.0, 2000.0 / 60.0,
-			6.0, 3500.0 / 60.0,
-			10.0, 6000.0 / 60.0);
+			2.0, 23.0,
+			10.0, 23.0);
 
-	// Passes always leave with the hood all the way up
-	public static final Angle HoodForPass = HoodConstants.States.Max;
+	// Passes leave with the hood all the way up. Down until the shooter is tuned
+	public static final Angle HoodForPass = HoodConstants.States.Min;
 
 	// Distance to the pass target in meters -> seconds the fuel spends in the air.
 	// Only passes lead the target, the hub is shot at standing still
@@ -75,6 +74,21 @@ public final class LaunchConstants {
 	// How much of the driver's translation gets through while the chassis aligns
 	public static final double HubTranslationScalar = 1.0;
 	public static final double PassTranslationScalar = 0.3;
+
+	// The shooter is at the back of the robot, the intake is the front (+x). Aiming
+	// means pointing the back at the target, so the heading target gets this added
+	public static final Rotation2d ShooterSide = Rotation2d.fromDegrees(180.0);
+
+	// The heading controller that turns the robot at the target. Tuned on the robot
+	public static final double HeadingKP = 6.0;
+	public static final double HeadingKD = 0.6;
+	public static final double HeadingMaxVelocity = 9.0; // rad/s
+	public static final double HeadingMaxAcceleration = 12.0; // rad/s^2
+
+	public static ProfiledPIDController newHeadingController() {
+		return new ProfiledPIDController(HeadingKP, 0.0, HeadingKD,
+				new TrapezoidProfile.Constraints(HeadingMaxVelocity, HeadingMaxAcceleration));
+	}
 
 	public static Translation2d getHubPose() {
 		return AllianceFlip.flipIfRed(HubPose);

@@ -5,9 +5,18 @@
 package frc.robot.Subsystems.Chassis;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.networktables.StructArrayPublisher;
+import edu.wpi.first.networktables.StructPublisher;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.lib.BLine.FollowPath;
 import frc.robot.lib.BLine.Path;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Hands the chassis to BLine and builds the commands that follow its paths.
@@ -20,6 +29,24 @@ import frc.robot.lib.BLine.Path;
 public final class BLinePaths {
 	private final Chassis chassis;
 	private final FollowPath.Builder builder;
+
+	// BLine hands out its target pose, the path points and a few numbers through
+	// static hooks. They go to the BLine table so AdvantageScope can draw the target
+	// next to the robot pose from Swerve/Chassis/Pose
+	private static final NetworkTable table = NetworkTableInstance.getDefault().getTable("BLine");
+	private static final Map<String, StructPublisher<Pose2d>> posePublishers = new HashMap<>();
+	private static final Map<String, StructArrayPublisher<Translation2d>> pointsPublishers = new HashMap<>();
+
+	static {
+		FollowPath.setPoseLoggingConsumer(entry -> posePublishers
+				.computeIfAbsent(entry.getFirst(), key -> table.getStructTopic(key, Pose2d.struct).publish())
+				.set(entry.getSecond()));
+		FollowPath.setTranslationListLoggingConsumer(entry -> pointsPublishers
+				.computeIfAbsent(entry.getFirst(), key -> table.getStructArrayTopic(key, Translation2d.struct).publish())
+				.set(entry.getSecond()));
+		FollowPath.setDoubleLoggingConsumer(entry -> table.getEntry(entry.getFirst()).setDouble(entry.getSecond()));
+		FollowPath.setBooleanLoggingConsumer(entry -> table.getEntry(entry.getFirst()).setBoolean(entry.getSecond()));
+	}
 
 	/**
 	 * Wires BLine to the chassis.
@@ -36,12 +63,18 @@ public final class BLinePaths {
 				// Robot relative, both the speeds read and the speeds commanded.
 				chassis::getCurrentSpeeds,
 				chassis::setTargetSpeeds,
-				// Translation: how hard to drive at what is left of the path.
-				new PIDController(5.0, 0.0, 0.0),
+				// Translation: how hard to drive at what is left of the path. The robot only
+				// starts braking when vmax / kP is left, so kP has to stay under 2 x accel /
+				// vmax (4 m/s^2 and 4.5 m/s give 1.8) or it overshoots the end and comes back.
+				// 2.2 on the robot: 1.8 crawled the last stretch. The D holds it back only while
+				// it closes fast, so it stops at the end instead of coasting past it. Oct 11
+				new PIDController(3.5, 0.0, 0.15),
 				// Rotation: how hard to turn towards the heading the path asks for.
-				new PIDController(3.0, 0.0, 0.0),
-				// Cross track: how hard to pull back onto the line between two points.
-				new PIDController(2.0, 0.0, 0.0))
+				new PIDController(6.0, 0.0, 0.3),
+				// Cross track: how hard to pull back onto the line between two points. 2 let the
+
+				// robot swing wide through a 90 degree corner, 4 on the robot Oct 11
+				new PIDController(4.0, 0.0, 0.0))
 				// Paths are drawn on the blue side and flipped when we are red.
 				.withDefaultShouldFlip();
 	}
