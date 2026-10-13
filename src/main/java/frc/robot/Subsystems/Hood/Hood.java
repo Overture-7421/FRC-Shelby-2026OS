@@ -29,9 +29,6 @@ public class Hood extends SubsystemBase {
 	private final Debouncer touchingDebouncer = new Debouncer(HoodConstants.Control.HomingSettleTime,
 			DebounceType.kRising);
 
-	private int multiplier = 1;
-	private final double manualOffset = 0;
-	
 	public Hood() {
 		hoodMotor = new OverTalonFX(HoodConstants.motorConfig(), HoodConstants.motorCanId,
 				Constants.RobotConstants.rio);
@@ -52,13 +49,12 @@ public class Hood extends SubsystemBase {
 	}
 
 	public void setMotor(Angle position) {
-		Angle estimatedAngle = position.plus(Degrees.of(manualOffset * multiplier));
-		if (estimatedAngle.gt(HoodConstants.States.Max)) {
+		if (position.gt(HoodConstants.States.Max)) {
 			target = HoodConstants.States.Max;
-		} else if (estimatedAngle.lt(HoodConstants.States.Min)) {
+		} else if (position.lt(HoodConstants.States.Min)) {
 			target = HoodConstants.States.Min;
 		} else {
-			estimatedAngle = position;
+			target = position;
 		}
 
 		if (homed) {
@@ -117,23 +113,13 @@ public class Hood extends SubsystemBase {
 		});
 	}
 
-	private void addOffset(int addedOffset){
-		multiplier = multiplier + addedOffset ;
-	}
-
-	public Command AddOffset(int addedOffset){
-		return runOnce(() -> {
-			addOffset(addedOffset);
-		});
-	}
-
 	public void updateTelemetry() {
-		// SmartDashboard.putNumber("Subsystems/Hood/Position", getPosition());
-		// SmartDashboard.putNumber("Subsystems/Hood/Target", getTarget());
-		// SmartDashboard.putNumber("Subsystems/Hood/Error", getError());
+		SmartDashboard.putNumber("Subsystems/Hood/Position", getPosition());
+		SmartDashboard.putNumber("Subsystems/Hood/Target", getTarget());
+		SmartDashboard.putNumber("Subsystems/Hood/Error", getError());
 		SmartDashboard.putBoolean("Subsystems/Hood/AtTarget", isAtTarget());
 
-		// SmartDashboard.putNumber("Subsystems/Hood/Amps", getAmps());
+		SmartDashboard.putNumber("Subsystems/Hood/Amps", getAmps());
 		SmartDashboard.putBoolean("Subsystems/Hood/Homed", homed);
 	}
 

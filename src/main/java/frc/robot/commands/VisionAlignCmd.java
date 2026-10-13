@@ -20,8 +20,9 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
-// import edu.wpi.first.networktables.NetworkTableInstance;
-// import edu.wpi.first.networktables.StructPublisher;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.networktables.StructPublisher;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Subsystems.Chassis.Chassis;
@@ -46,11 +47,13 @@ public class VisionAlignCmd extends Command {
 	private final DoubleSupplier multiSupplier;
 	private final BooleanSupplier tagVisible;
 
-	// Gains in LaunchConstants
-	private final ProfiledPIDController headingController = LaunchConstants.newHeadingController();
+	// Same heading controller the C++ VisionAlignCmd aimed with
+	private final ProfiledPIDController headingController = new ProfiledPIDController(
+			6.0, 0.0, 0.0, new TrapezoidProfile.Constraints(9.0, 4.0));
 	private final HeadingSpeedsHelper headingSpeedsHelper;
 
-
+	// The heading helper only takes over the rotation. This one also slows the
+	// translation the driver asks for, which 2910 does while passing
 	private final SpeedsHelper alignSpeedsHelper;
 	private double translationScalar = 1.0;
 
@@ -64,8 +67,8 @@ public class VisionAlignCmd extends Command {
 	private boolean tagSeen = false;
 	private boolean readyToLaunch = false;
 
-	// private final StructPublisher<Translation2d> targetPublisher = NetworkTableInstance.getDefault()
-			// .getStructTopic("SmartDashboard/MovingTarget", Translation2d.struct).publish();
+	private final StructPublisher<Translation2d> targetPublisher = NetworkTableInstance.getDefault()
+			.getStructTopic("SmartDashboard/MovingTarget", Translation2d.struct).publish();
 
 	/**
 	 * Builds the align command.
@@ -143,19 +146,18 @@ public class VisionAlignCmd extends Command {
 			movingGoalLocation = targetWhileMoving.getMovingTarget(chassisPose, speed, accel);
 		}
 
-		// The shooter is at the back of the robot
-		Rotation2d targetAngle = movingGoalLocation.minus(chassisPose.getTranslation()).getAngle()
-				.plus(LaunchConstants.ShooterSide);
+		// The shooter looks to the front of the robot
+		Rotation2d targetAngle = movingGoalLocation.minus(chassisPose.getTranslation()).getAngle();
 		headingSpeedsHelper.setTargetAngle(targetAngle);
 
 		double distanceToTarget = chassisPose.getTranslation().getDistance(movingGoalLocation);
-		// SmartDashboard.putNumber("LaunchCommand/DistanceTarget", distanceToTarget);
+		SmartDashboard.putNumber("LaunchCommand/DistanceTarget", distanceToTarget);
 
 		double hoodAngle;
 		double shooterSpeed;
 
 		if (launchMode == LaunchModes.PASS) {
-			hoodAngle = LaunchConstants.DistanceToHoodForPass.get(distanceToTarget);
+			hoodAngle = LaunchConstants.HoodForPass.in(Degrees);
 			shooterSpeed = LaunchConstants.DistanceToShooterForPass.get(distanceToTarget);
 			translationScalar = LaunchConstants.PassTranslationScalar;
 		} else {
@@ -168,7 +170,7 @@ public class VisionAlignCmd extends Command {
 		hood.setMotor(Degrees.of(hoodAngle));
 		shooter.setMotor(RotationsPerSecond.of(shooterSpeed * multi));
 		SmartDashboard.putString("LaunchCommand/LaunchMode", launchMode.toString());
-		// SmartDashboard.putNumber("LaunchCommand/ShooterMulti", multi);
+		SmartDashboard.putNumber("LaunchCommand/ShooterMulti", multi);
 
 		chassisError = Math.abs(targetAngle.minus(chassisPose.getRotation()).getDegrees());
 
@@ -200,11 +202,11 @@ public class VisionAlignCmd extends Command {
 
 		readyToLaunch = check && (launchMode == LaunchModes.PASS || tagSeen);
 
-		// SmartDashboard.putNumber("LaunchCommand/ChassisError", chassisError);
-		// SmartDashboard.putBoolean("LaunchCommand/ShotConditions", shotConditions);
-		// SmartDashboard.putBoolean("LaunchCommand/TagSeen", tagSeen);
+		SmartDashboard.putNumber("LaunchCommand/ChassisError", chassisError);
+		SmartDashboard.putBoolean("LaunchCommand/ShotConditions", shotConditions);
+		SmartDashboard.putBoolean("LaunchCommand/TagSeen", tagSeen);
 		SmartDashboard.putBoolean("LaunchCommand/ReadyToLaunch", readyToLaunch);
-		// targetPublisher.set(movingGoalLocation);
+		targetPublisher.set(movingGoalLocation);
 	}
 
 	/**
