@@ -59,18 +59,19 @@ public class EjectCommand extends Command {
 		if (readyToEject.getAsBoolean()) {
 			indexer.setTarget(IndexerConstants.shootVoltage);
 
-			if (!intakeInUse.getAsBoolean()) {
-				pivot.setMotor(PivotConstants.States.Closed);
-				roller.setTarget(RollerConstants.CompressingVoltage);
-				compressing = true;
-			}
+			// Auto compress while feeding, off while the intake is being repaired, Oct 12.
+			// Uncomment to bring it back
+			// if (!intakeInUse.getAsBoolean()) {
+			// 	pivot.setMotorSlow(PivotConstants.States.Closed);
+			// 	roller.setTarget(RollerConstants.CompressingVoltage);
+			// 	compressing = true;
+			// }
 		} else {
 			indexer.setMotorPreload();
 			openIntake();
 		}
 	}
 
-	// Only undoes what this command did, and never takes the intake from the driver
 	private void openIntake() {
 		if (compressing && !intakeInUse.getAsBoolean()) {
 			pivot.setMotor(PivotConstants.States.Open);

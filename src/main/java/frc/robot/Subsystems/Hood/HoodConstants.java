@@ -23,17 +23,21 @@ public class HoodConstants {
 
 	protected class Control {
 
-		protected static double kP = 0.0;
-		protected static double kV = 0.0;
+		// Starting points, 2910 method on our ratio: kP = 5.0 x 94.9 per hood rotation,
+		// kV = 12 V over the free speed at the hood (about 1.29 rps). Tune on the robot
+		protected static double kP = 474.5;
+		protected static double kV = 9.3;
 
-		protected static AngularAcceleration AccelerationLimit = RotationsPerSecondPerSecond.of(0.0);
-		protected static AngularVelocity CruiseVelocity = RotationsPerSecond.of(0.0);
+		// 3000 deg/s^2 and 7000 RPM at the motor, in hood rotations
+		protected static AngularAcceleration AccelerationLimit = RotationsPerSecondPerSecond.of(8.33);
+		protected static AngularVelocity CruiseVelocity = RotationsPerSecond.of(1.23);
 		protected static Velocity<AngularAccelerationUnit> JerkLimit = RotationsPerSecondPerSecond.per(Second).of(0);
 
 		protected static Angle AcceptedError = Degrees.of(3);
 
-		protected static Voltage HomingVoltage = Volts.of(1.0);
-		protected static Current TouchingCurrentThreshold = Amps.of(0.0);
+
+		protected static Voltage HomingVoltage = Volts.of(-2.0);
+		protected static Current TouchingCurrentThreshold = Amps.of(40.0);
 		protected static double HomingSettleTime = 0.1; // Seconds
 		protected static Angle HomedPosition = Degrees.of(0.0);
 
@@ -42,7 +46,7 @@ public class HoodConstants {
 	public class States {
 		public static Angle Max = Degree.of(37);
 		public static Angle Min = Degree.of(0);
-		public static Angle Close = Degree.of(0);
+		public static Angle Close = Degree.of(1);
 
 	}
 

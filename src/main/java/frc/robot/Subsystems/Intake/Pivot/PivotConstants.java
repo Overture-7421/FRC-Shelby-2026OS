@@ -24,23 +24,24 @@ public class PivotConstants {
 
 	protected class Control {
 
-		protected static double kP = 0.0;
-		protected static double kV = 0.0;
+		protected static double kP = 200.0;
+		protected static double kV = 4.8;
 
-        protected static AngularAcceleration AccelerationLimit = RadiansPerSecondPerSecond.of(0.0);
-        protected static AngularVelocity CruiseVelocity = RadiansPerSecond.of(0.0);
+        protected static AngularAcceleration AccelerationLimit = RotationsPerSecondPerSecond.of(11.1);
+        protected static AngularVelocity CruiseVelocity = RotationsPerSecond.of(2.29);
+        public static double CompressSpeedScale = 1.0 / 3.0;
+		public static double CompressAccelScale = 1.0 / 4.0;
         protected static Velocity<AngularAccelerationUnit> JerkLimit = RadiansPerSecondPerSecond.per(Second).of(0);
         
-        protected static Angle AcceptedError = Degrees.of(2); 
-		protected static Angle EncoderOffSet = Degrees.of(0);           
-        protected static Angle OffSet = Degrees.of(0); 
+        protected static Angle AcceptedError = Degrees.of(1); 
+		protected static Angle EncoderOffSet = Rotations.of(-0.2314453125);           
 		
     }
 
     public class States {
 
-        public static Angle Open = Degree.of(114);
-        public static Angle Closed = Degree.of(10);
+        public static Angle Open = Degree.of(118);
+        public static Angle Closed = Degree.of(5);
 
     }
 

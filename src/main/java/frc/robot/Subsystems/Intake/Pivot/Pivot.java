@@ -2,6 +2,7 @@ package frc.robot.Subsystems.Intake.Pivot;
 
 import static edu.wpi.first.units.Units.Degrees;
 
+import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.overture.lib.motorcontrollers.OverTalonFX;
@@ -21,6 +22,8 @@ public class Pivot extends SubsystemBase {
 	private MotionMagicVoltage motionMagicRequest = new MotionMagicVoltage(0.0)
 			.withEnableFOC(true);
 
+	private boolean slowLimits = false;
+
 	public Pivot() {
 		pivotMotor = new OverTalonFX(PivotConstants.motorConfig(), PivotConstants.motorCanId,
 				Constants.RobotConstants.rio);
@@ -35,9 +38,36 @@ public class Pivot extends SubsystemBase {
 		}).until(() -> isAtTarget());
 	}
 
+	public Command setPositionSlow(Angle position) {
+		return run(() -> {
+			setMotorSlow(position);
+		}).until(() -> isAtTarget());
+	}
+
 	public void setMotor(Angle position) {
+		applyLimits(false);
 		target = position;
 		pivotMotor.setControl(motionMagicRequest.withPosition(target));
+	}
+
+	public void setMotorSlow(Angle position) {
+		applyLimits(true);
+		target = position;
+		pivotMotor.setControl(motionMagicRequest.withPosition(target));
+	}
+
+	
+	private void applyLimits(boolean slow) {
+		if (slow == slowLimits) {
+			return;
+		}
+		slowLimits = slow;
+		double speedScale = slow ? PivotConstants.Control.CompressSpeedScale : 1.0;
+		double accelScale = slow ? PivotConstants.Control.CompressAccelScale : 1.0;
+		pivotMotor.getConfigurator().apply(new MotionMagicConfigs()
+				.withMotionMagicCruiseVelocity(PivotConstants.Control.CruiseVelocity.times(speedScale))
+				.withMotionMagicAcceleration(PivotConstants.Control.AccelerationLimit.times(accelScale))
+				.withMotionMagicJerk(PivotConstants.Control.JerkLimit));
 	}
 
 	public double getTarget() {
@@ -57,9 +87,9 @@ public class Pivot extends SubsystemBase {
 	}
 
 	public void updateTelemetry() {
-		SmartDashboard.putNumber("Subsystems/Pivot/Position", getPosition());
-		SmartDashboard.putNumber("Subsystems/Pivot/Target", getTarget());
-		SmartDashboard.putNumber("Subsystems/Pivot/Error", getError());
+		// SmartDashboard.putNumber("Subsystems/Pivot/Position", getPosition());
+		// SmartDashboard.putNumber("Subsystems/Pivot/Target", getTarget());
+		// SmartDashboard.putNumber("Subsystems/Pivot/Error", getError());
 		SmartDashboard.putBoolean("Subsystems/Pivot/AtTarget", isAtTarget());
 	}
 
