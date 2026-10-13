@@ -36,6 +36,7 @@ import frc.robot.Subsystems.Intake.Rollers.Roller;
 import frc.robot.Subsystems.Intake.Rollers.RollerConstants;
 import frc.robot.Subsystems.Shooter.Shooter;
 import frc.robot.commands.DriveCommand;
+import frc.robot.commands.EmergencyCompress;
 import frc.robot.commands.LaunchCommand;
 import frc.robot.commands.LaunchConstants;
 import frc.robot.commands.LaunchModes;
@@ -54,6 +55,7 @@ public class RobotContainer implements OverContainer {
 
 	// Controllers. There is no operator controller, the driver does everything
 	private final OverXboxController driver = new OverXboxController(0, 0.20, 0.2);
+	private final OverXboxController operator = new OverXboxController(0, 0.20, 0.2);
 
 	// Vision. One field layout shared by the four cameras, each one feeding the
 	// chassis pose estimator on its own
@@ -132,19 +134,24 @@ public class RobotContainer implements OverContainer {
 
 		driver.start().onTrue(hood.HoodHoming());
 
-		// Launch. Each button holds its own command with its own target and trim. They
-		// share the shooter, the hood and the indexer, so the one pressed last wins.
-		// On release everything goes back to its default: hood down, shooter
-		// pre-spinning, indexer preloading
 		driver.rightTrigger().whileTrue(new LaunchCommand(shooter, hood, chassis, indexer, pivot, roller,
 				LaunchModes.HUB, () -> getShooterMulti(LaunchModes.HUB), tagVisible, intakeInUse));
 		driver.leftBumper().whileTrue(new LaunchCommand(shooter, hood, chassis, indexer, pivot, roller,
 				LaunchModes.PASS, () -> getShooterMulti(LaunchModes.PASS), tagVisible, intakeInUse));
+
+
+		
 	}
 
 	@Override
 	public void configOperatorBindings() {
-		// No operator controller
+		operator.x().whileTrue(new EmergencyCompress(pivot, roller));
+		operator.y().onTrue(hood.HoodHoming());
+		operator.povUp().onTrue(hood.AddOffset(1));
+		operator.povDown().onTrue(hood.AddOffset(-1));
+		operator.povRight().onTrue(shooter.AddOffset(1));
+		operator.povLeft().onTrue(shooter.AddOffset(-1));
+	
 	}
 
 	@Override
