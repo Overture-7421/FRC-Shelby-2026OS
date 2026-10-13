@@ -14,7 +14,7 @@ import static edu.wpi.first.units.Units.*;
 public class RollerConstants {
 
 	public static Voltage OffVoltage = Volts.of(0.0);
-	public static Voltage IntakingVoltage = Volts.of(12);
+	public static Voltage IntakingVoltage = Volts.of(8);
 	public static Voltage OutTakingVoltage = Volts.of(-4);
 	public static Voltage CompressingVoltage = Volts.of(1.8);
 
@@ -38,7 +38,7 @@ public class RollerConstants {
 				.withMotorOutput(
 						new MotorOutputConfigs()
 								.withInverted(InvertedValue.Clockwise_Positive)
-								.withNeutralMode(NeutralModeValue.Brake))
+								.withNeutralMode(NeutralModeValue.Coast))
 				.withFeedback(
 						new FeedbackConfigs()
 								.withSensorToMechanismRatio(GearRatio));

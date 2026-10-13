@@ -1,5 +1,6 @@
 package frc.robot.Subsystems.Shooter;
 
+import static edu.wpi.first.units.Units.RevolutionsPerSecond;
 import static edu.wpi.first.units.Units.RotationsPerSecond;
 
 import java.util.function.Supplier;
@@ -8,6 +9,7 @@ import com.ctre.phoenix6.controls.MotionMagicVelocityVoltage;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.overture.lib.motorcontrollers.OverTalonFX;
 
+import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -27,6 +29,9 @@ public class Shooter extends SubsystemBase {
 	private MotionMagicVelocityVoltage velocityRequest = new MotionMagicVelocityVoltage(0.0)
 			.withEnableFOC(true);
 
+	private int multiplier = 1;
+	private final double manualOffset = 0;
+
 	public Shooter() {
 		shooterMotorLead = new OverTalonFX(ShooterConstants.motorConfig(), ShooterConstants.leaderCanId,
 				Constants.RobotConstants.rio);
@@ -35,9 +40,11 @@ public class Shooter extends SubsystemBase {
 		shooterMotor4 = new OverTalonFX(ShooterConstants.motorConfig(), ShooterConstants.MotorCanId4, Constants.RobotConstants.rio);
 
 
+		// One linkage for all four. The right motors are mounted mirrored, they follow
+		// opposed or they fight the shaft (bottom right read negative on the robot)
 		shooterMotor2.setFollow(ShooterConstants.leaderCanId, false);
 		shooterMotor3.setFollow(ShooterConstants.leaderCanId, true);
-		shooterMotor4.setFollow(ShooterConstants.leaderCanId, false);
+		shooterMotor4.setFollow(ShooterConstants.leaderCanId, true);
 
 	}
 
@@ -58,7 +65,8 @@ public class Shooter extends SubsystemBase {
 	}
 
 	public void setMotor(AngularVelocity rps) {
-		target = rps;
+		target = rps.plus(RevolutionsPerSecond.of(manualOffset * multiplier));;
+
 		shooterMotorLead.setControl(velocityRequest.withVelocity(target));
 	}
 
@@ -72,6 +80,18 @@ public class Shooter extends SubsystemBase {
 
 	public boolean isAtTarget() {
 		return (Math.abs(getTarget() - getVelocity()) < ShooterConstants.Control.AcceptedError.in(RotationsPerSecond));
+
+		
+	}
+
+	private void addOffset(int addedOffset){
+		multiplier = multiplier + addedOffset ;
+	}
+
+	public Command AddOffset(int addedOffset){
+		return runOnce(() -> {
+			addOffset(addedOffset);
+		});
 	}
 
 	public void updateTelemetry() {

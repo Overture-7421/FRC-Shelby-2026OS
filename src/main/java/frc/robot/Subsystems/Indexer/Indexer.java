@@ -40,9 +40,7 @@ public class Indexer extends SubsystemBase{
         indexerMotor4 = new OverTalonFX(IndexerConstants.motorConfig(), IndexerConstants.MotorCanId4, Constants.RobotConstants.rio);
 
         shooterCanRange = new CANrange(IndexerConstants.shooterCanRangeId, Constants.RobotConstants.rio);
-        shooterCanRange.getConfigurator().apply(IndexerConstants.rangeConfig());
         hopperCanRange = new CANrange(IndexerConstants.hopperCanRangeId, Constants.RobotConstants.rio);
-        hopperCanRange.getConfigurator().apply(IndexerConstants.rangeConfig());
 		debouncer = new Debouncer(IndexerConstants.fuelDebouncingTime, DebounceType.kRising);
         
         indexerMotor2.setFollow(IndexerConstants.leaderCanId, true);
@@ -88,18 +86,22 @@ public class Indexer extends SubsystemBase{
 	}
 
 	public void updateTelemetry() {
-		SmartDashboard.putNumber("Subsystems/Indexer/Voltage", getVoltage());
-		SmartDashboard.putNumber("Subsystems/Indexer/Target", getTarget());
+		// SmartDashboard.putNumber("Subsystems/Indexer/Voltage", getVoltage());
+		// SmartDashboard.putNumber("Subsystems/Indexer/Target", getTarget());
 		SmartDashboard.putBoolean("Subsystems/Indexer/HopperFull", isHopperFull());
 		SmartDashboard.putBoolean("Subsystems/Indexer/ShooterFull", isShooterFull());
+		// SmartDashboard.putNumber("Subsystems/Indexer/HopperDistance", hopperCanRange.getDistance().getValueAsDouble());
+		// SmartDashboard.putNumber("Subsystems/Indexer/ShooterDistance", shooterCanRange.getDistance().getValueAsDouble());
+		// SmartDashboard.putNumber("Subsystems/Indexer/HopperSignalStrength", hopperCanRange.getSignalStrength().getValueAsDouble());
+		// SmartDashboard.putNumber("Subsystems/Indexer/ShooterSignalStrength", shooterCanRange.getSignalStrength().getValueAsDouble());
 	}
 
 	private boolean isFuelInHopper(){
-		return hopperCanRange.getIsDetected().getValue();
+		return hopperCanRange.getDistance().getValueAsDouble() < IndexerConstants.hopperFuelDistance;
 	}
 
 	private boolean isFuelInShooter(){
-		return shooterCanRange.getIsDetected().getValue();
+		return shooterCanRange.getDistance().getValueAsDouble() < IndexerConstants.shooterFuelDistance;
 	}
 	
 	public boolean isHopperFull(){

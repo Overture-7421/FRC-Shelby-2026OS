@@ -88,7 +88,7 @@ public class Chassis extends SwerveChassis {
 	 * @return the drive feedforward
 	 */
 	private static SimpleMotorFeedforward driveFeedForward() {
-		return new SimpleMotorFeedforward(0.0, 2.0879, 0.098433);
+		return new SimpleMotorFeedforward(0.0, 2.61, 0.098433);
 	}
 
 	/** Builds the drivetrain. */
