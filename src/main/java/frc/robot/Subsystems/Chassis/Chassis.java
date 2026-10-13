@@ -4,12 +4,6 @@
 
 package frc.robot.Subsystems.Chassis;
 
-import static edu.wpi.first.units.Units.Inches;
-import static edu.wpi.first.units.Units.KilogramSquareMeters;
-import static edu.wpi.first.units.Units.Kilograms;
-import static edu.wpi.first.units.Units.Volts;
-
-import com.ctre.phoenix6.hardware.Pigeon2;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.overture.lib.sensors.OverPigeon;
 import com.overture.lib.subsystems.swerve.SwerveChassis;
@@ -19,13 +13,8 @@ import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
-import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.util.Units;
 import frc.robot.Constants.RobotConstants;
-
-import org.ironmaple.simulation.drivesims.COTS;
-import org.ironmaple.simulation.drivesims.configs.DriveTrainSimulationConfig;
-import org.ironmaple.simulation.drivesims.configs.SwerveModuleSimulationConfig;
 
 /**
  * Port of the C++ Chassis subsystem, the OvertureLib SwerveChassis subclass.
@@ -99,54 +88,13 @@ public class Chassis extends SwerveChassis {
 		resetHeading();
 	}
 
-	/**
-	 * Describes this drivetrain to the physics simulation.
-	 *
-	 * <p>
-	 * These numbers are the ones RobotSim-Maple used for Shelby2, verified against
-	 * overture/sim/swerve/Constants.java: 61.235 kg, a Pigeon2, 30.5 x 31.5 inch
-	 * bumpers, and the
-	 * same module translations as the kinematics above.
-	 *
-	 * <p>
-	 * The gearing constants are the same ones the module configs use below. That is
-	 * the entire
-	 * point: the previous arrangement kept them in a separate simulation
-	 * repository, where a drive
-	 * ratio could sit at 6.03 against a robot geared 7.03 without anyone noticing.
-	 */
-	@Override
-	protected DriveTrainSimulationConfig getSimulationConfig() {
-		return DriveTrainSimulationConfig.Default()
-				.withRobotMass(Kilograms.of(61.235))
-				.withGyro(COTS.ofPigeon2())
-				.withSwerveModule(
-						new SwerveModuleSimulationConfig(
-								DCMotor.getKrakenX60(1),
-								DCMotor.getFalcon500(1),
-								kDriveGearRatio,
-								kTurnGearRatio,
-								Volts.of(0.01),
-								Volts.of(0.01),
-								Inches.of(kWheelRadiusInches),
-								KilogramSquareMeters.of(0.03),
-								// Conservative tyre friction. The COTS value was flagged as abnormal by the
-								// simulation (~2.106); 0.9 is realistic for rubber on carpet.
-								0.9))
-				.withCustomModuleTranslations(
-						new Translation2d[] {
-								new Translation2d(Inches.of(kTrackXInches), Inches.of(kTrackYInches)),
-								new Translation2d(Inches.of(kTrackXInches), Inches.of(-kTrackYInches)),
-								new Translation2d(Inches.of(-kTrackXInches), Inches.of(kTrackYInches)),
-								new Translation2d(Inches.of(-kTrackXInches), Inches.of(-kTrackYInches))
-						})
-				.withBumperSize(Inches.of(30.5), Inches.of(31.5));
-	}
-
-	@Override
-	protected Pigeon2 getSimulationPigeon() {
-		return pigeon;
-	}
+	// No in-robot physics simulation on this branch: drivetrain physics comes from
+	// the external WPILib Emulator, which drives the simulated Talon/CANcoder/Pigeon
+	// state. The maple-sim hookup (getSimulationConfig/getSimulationPigeon) was
+	// removed; SwerveBase then runs without a simulated drivetrain.
+	// Values kept here for the emulator model: 61.235 kg, 30.5 x 31.5 in bumpers,
+	// 11.125 x 10.875 in module offsets, 2 in wheel radius, Kraken X60 drive and
+	// Falcon 500 steer, tyre friction ~0.9.
 
 	@Override
 	public double getMaxModuleSpeed() {
