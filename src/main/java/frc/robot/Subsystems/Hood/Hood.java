@@ -29,6 +29,9 @@ public class Hood extends SubsystemBase {
 	private final Debouncer touchingDebouncer = new Debouncer(HoodConstants.Control.HomingSettleTime,
 			DebounceType.kRising);
 
+	private int multiplier = 1;
+	private final double manualOffset = 0;
+	
 	public Hood() {
 		hoodMotor = new OverTalonFX(HoodConstants.motorConfig(), HoodConstants.motorCanId,
 				Constants.RobotConstants.rio);
@@ -49,12 +52,13 @@ public class Hood extends SubsystemBase {
 	}
 
 	public void setMotor(Angle position) {
-		if (position.gt(HoodConstants.States.Max)) {
+		Angle estimatedAngle = position.plus(Degrees.of(manualOffset * multiplier));
+		if (estimatedAngle.gt(HoodConstants.States.Max)) {
 			target = HoodConstants.States.Max;
-		} else if (position.lt(HoodConstants.States.Min)) {
+		} else if (estimatedAngle.lt(HoodConstants.States.Min)) {
 			target = HoodConstants.States.Min;
 		} else {
-			target = position;
+			estimatedAngle = position;
 		}
 
 		if (homed) {
@@ -110,6 +114,16 @@ public class Hood extends SubsystemBase {
 				hoodMotor.setPosition(HoodConstants.Control.HomedPosition);
 				homed = true;
 			}
+		});
+	}
+
+	private void addOffset(int addedOffset){
+		multiplier = multiplier + addedOffset ;
+	}
+
+	public Command AddOffset(int addedOffset){
+		return runOnce(() -> {
+			addOffset(addedOffset);
 		});
 	}
 
