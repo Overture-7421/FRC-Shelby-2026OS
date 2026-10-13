@@ -29,6 +29,8 @@ public class PivotConstants {
 
         protected static AngularAcceleration AccelerationLimit = RotationsPerSecondPerSecond.of(11.1);
         protected static AngularVelocity CruiseVelocity = RotationsPerSecond.of(2.29);
+        public static double CompressSpeedScale = 1.0 / 3.0;
+		public static double CompressAccelScale = 1.0 / 4.0;
         protected static Velocity<AngularAccelerationUnit> JerkLimit = RadiansPerSecondPerSecond.per(Second).of(0);
         
         protected static Angle AcceptedError = Degrees.of(1); 

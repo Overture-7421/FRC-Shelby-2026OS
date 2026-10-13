@@ -35,26 +35,43 @@ public final class LaunchConstants {
 	public static final double FieldMidline = AllianceFlip.getFieldWidth() / 2.0;
 	public static final double PassOverlap = 0.2;
 
-	// Distance to the hub in meters -> shooter velocity in rps. Flat until the shooter is tuned,
-	// 2910's table is on main
+	// Distance to the hub in meters -> shooter velocity in rps. Measured on the robot, Oct 12
 	public static final InterpolatingTable DistanceToShooterForHub = new InterpolatingTable(
-			1.3, 23.0,
-			5.0, 23.0);
+			1.3, 22.0,
+			1.5, 24.0,
+			2.0, 25.0,
+			2.5, 26.0,
+			3.0, 27.0,
+			3.5, 27.0,
+			4.0, 28.0,
+			4.5, 29.0,
+			5.0, 29.0);
 
-	// Distance to the hub in meters -> hood angle in degrees. Flat until the shooter is tuned,
-	// the hood stays down
+	// Distance to the hub in meters -> hood angle in degrees. Measured on the robot, Oct 12
 	public static final InterpolatingTable DistanceToHoodForHub = new InterpolatingTable(
 			1.3, 0.0,
-			5.0, 0.0);
+			1.5, 0.0,
+			2.0, 0.0,
+			2.5, 5.0,
+			3.0, 7.0,
+			3.5, 12.0,
+			4.0, 20.0,
+			4.5, 22.0,
+			5.0, 25.0);
 
-	// Distance to the pass target in meters -> shooter velocity in rps. Flat until the
-	// shooter is tuned, the halved 2910 table is on main
+	// Distance to the pass target in meters -> shooter velocity in rps. Measured on the
+	// robot, Oct 12
 	public static final InterpolatingTable DistanceToShooterForPass = new InterpolatingTable(
 			2.0, 23.0,
-			10.0, 23.0);
+			5.0, 30.0,
+			10.0, 35.0);
 
-	// Passes leave with the hood all the way up. Down until the shooter is tuned
-	public static final Angle HoodForPass = HoodConstants.States.Min;
+	// Distance to the pass target in meters -> hood angle in degrees. Measured on the
+	// robot, Oct 12, at the same distances as the pass speed table
+	public static final InterpolatingTable DistanceToHoodForPass = new InterpolatingTable(
+			2.0, 30.0,
+			5.0, 33.0,
+			10.0, 37.0);
 
 	// Distance to the pass target in meters -> seconds the fuel spends in the air.
 	// Only passes lead the target, the hub is shot at standing still

@@ -46,7 +46,7 @@ public class VisionAlignCmd extends Command {
 	private final DoubleSupplier multiSupplier;
 	private final BooleanSupplier tagVisible;
 
-	// Gains in LaunchConstants, shared with the aim-only tuning binding
+	// Gains in LaunchConstants
 	private final ProfiledPIDController headingController = LaunchConstants.newHeadingController();
 	private final HeadingSpeedsHelper headingSpeedsHelper;
 
@@ -155,7 +155,7 @@ public class VisionAlignCmd extends Command {
 		double shooterSpeed;
 
 		if (launchMode == LaunchModes.PASS) {
-			hoodAngle = LaunchConstants.HoodForPass.in(Degrees);
+			hoodAngle = LaunchConstants.DistanceToHoodForPass.get(distanceToTarget);
 			shooterSpeed = LaunchConstants.DistanceToShooterForPass.get(distanceToTarget);
 			translationScalar = LaunchConstants.PassTranslationScalar;
 		} else {

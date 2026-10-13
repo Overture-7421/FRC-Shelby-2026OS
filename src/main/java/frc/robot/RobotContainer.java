@@ -39,7 +39,8 @@ import frc.robot.commands.DriveCommand;
 import frc.robot.commands.LaunchCommand;
 import frc.robot.commands.LaunchConstants;
 import frc.robot.commands.LaunchModes;
-import frc.robot.commands.VisionAlignCmd;
+import frc.robot.commands.autos.AutoCommands;
+import frc.robot.commands.autos.DoublePassAuto;
 
 public class RobotContainer implements OverContainer {
 
@@ -82,6 +83,10 @@ public class RobotContainer implements OverContainer {
 	private final BooleanSupplier tagVisible = () -> isAnyTagVisible();
 	private final BooleanSupplier intakeInUse = driver.leftTrigger().or(driver.x());
 
+	// The building blocks the autos share. Needs tagVisible, so it comes after it
+	private final AutoCommands autos = new AutoCommands(shooter, hood, chassis, indexer, pivot, roller,
+			() -> getShooterMulti(LaunchModes.HUB), tagVisible);
+
 	public RobotContainer() {
 		// Only sets them if the dashboard does not already have them, so a trim
 		// survives a code restart
@@ -119,7 +124,7 @@ public class RobotContainer implements OverContainer {
 		driver.leftTrigger().onFalse(roller.setVoltage(RollerConstants.OffVoltage));
 
 		driver.x().whileTrue(Commands.parallel(
-				pivot.setPosition(PivotConstants.States.Closed),
+				pivot.setPositionSlow(PivotConstants.States.Closed),
 				roller.setVoltage(RollerConstants.CompressingVoltage)));
 		driver.x().onFalse(Commands.parallel(
 				pivot.setPosition(PivotConstants.States.Open),
@@ -152,7 +157,11 @@ public class RobotContainer implements OverContainer {
 
 		// Each entry is a path file in deploy/autos/paths. The first path of an auto
 		// resets the pose to its start, later ones follow from wherever the robot is
-		autoChooser.addOption("Testing", paths.resetAndFollow("testing"));
+
+		// Autos are drawn once on the right side of the blue field. Mirrored runs the same
+		// file on the left, red is flipped automatically on top of that
+		autoChooser.addOption("Double pass right", DoublePassAuto.DoublePass(paths, autos, false));
+		autoChooser.addOption("Double pass left", DoublePassAuto.DoublePass(paths, autos, true));
 
 		SmartDashboard.putData("Auto Chooser", autoChooser);
 	}

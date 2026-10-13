@@ -60,7 +60,7 @@ public class EjectCommand extends Command {
 			indexer.setTarget(IndexerConstants.shootVoltage);
 
 			if (!intakeInUse.getAsBoolean()) {
-				pivot.setMotor(PivotConstants.States.Closed);
+				pivot.setMotorSlow(PivotConstants.States.Closed);
 				roller.setTarget(RollerConstants.CompressingVoltage);
 				compressing = true;
 			}
@@ -70,7 +70,6 @@ public class EjectCommand extends Command {
 		}
 	}
 
-	// Only undoes what this command did, and never takes the intake from the driver
 	private void openIntake() {
 		if (compressing && !intakeInUse.getAsBoolean()) {
 			pivot.setMotor(PivotConstants.States.Open);
