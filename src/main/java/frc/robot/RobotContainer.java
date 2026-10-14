@@ -82,13 +82,12 @@ public class RobotContainer implements OverContainer {
 	private static final String hubShooterMultiKey = "LaunchCommand/HubShooterMulti";
 	private static final String passShooterMultiKey = "LaunchCommand/PassShooterMulti";
 
-	// What the launch command needs to know from the cameras and the driver
-	private final BooleanSupplier tagVisible = () -> isAnyTagVisible();
+	// Whether the driver is holding one of the intake buttons
 	private final BooleanSupplier intakeInUse = driver.leftTrigger().or(driver.x());
 
-	// The building blocks the autos share. Needs tagVisible, so it comes after it
+	// The building blocks the autos share
 	private final AutoCommands autos = new AutoCommands(shooter, hood, chassis, indexer, pivot, roller,
-			() -> getShooterMulti(LaunchModes.HUB), tagVisible);
+			() -> getShooterMulti(LaunchModes.HUB));
 
 	public RobotContainer() {
 		// Only sets them if the dashboard does not already have them, so a trim
@@ -106,15 +105,15 @@ public class RobotContainer implements OverContainer {
 	public void configDriverBindings() {
 		chassis.setDefaultCommand(new DriveCommand(chassis, driver));
 
-		shooter.setDefaultCommand(shooter.trackVelocity(
-				() -> RotationsPerSecond.of(LaunchConstants.DistanceToShooterForHub.get(getHubDistance()))));
+		// shooter.setDefaultCommand(shooter.trackVelocity(
+		// 		() -> RotationsPerSecond.of(LaunchConstants.DistanceToShooterForHub.get(getHubDistance()))));
 
 		hood.setDefaultCommand(
 				Commands.either(hood.holdPosition(HoodConstants.States.Close), hood.HoodHoming(), hood::isHomed));
 
 		// Between shots the indexer keeps the fuel ready at the shooter
 		
-		// indexer.setDefaultCommand(indexer.preloadShooter());
+		indexer.setDefaultCommand(indexer.preloadShooter());
 
 		driver.back().onTrue(Commands.runOnce(() -> {
 			chassis.resetHeading(UtilityFunctions.isRedAlliance() ? 180.0 : 0.0);
@@ -135,9 +134,9 @@ public class RobotContainer implements OverContainer {
 		driver.start().onTrue(hood.HoodHoming());
 
 		driver.rightTrigger().whileTrue(new LaunchCommand(shooter, hood, chassis, indexer, pivot, roller,
-				LaunchModes.HUB, () -> getShooterMulti(LaunchModes.HUB), tagVisible, intakeInUse));
+				LaunchModes.HUB, () -> getShooterMulti(LaunchModes.HUB), intakeInUse));
 		driver.leftBumper().whileTrue(new LaunchCommand(shooter, hood, chassis, indexer, pivot, roller,
-				LaunchModes.PASS, () -> getShooterMulti(LaunchModes.PASS), tagVisible, intakeInUse));
+				LaunchModes.PASS, () -> getShooterMulti(LaunchModes.PASS), intakeInUse));
 
 
 		

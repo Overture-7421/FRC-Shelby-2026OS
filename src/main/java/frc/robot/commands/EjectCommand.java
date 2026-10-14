@@ -65,8 +65,7 @@ public class EjectCommand extends Command {
 				compressing = true;
 			}
 		} else {
-			// Preload off while the hopper CANrange is blocked, Oct 13. Put setMotorPreload back
-			indexer.setTarget(IndexerConstants.OffVoltage);
+			// indexer.setMotorPreload();
 			openIntake();
 		}
 	}

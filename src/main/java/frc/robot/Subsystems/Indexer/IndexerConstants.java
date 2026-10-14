@@ -21,7 +21,8 @@ public class IndexerConstants {
 	// Seconds the hopper sensor has to stay covered before the hopper counts as full
 	public static final double fuelDebouncingTime = 0.25;
 
-	public static final double hopperFuelDistance = 0.25; // Meters
+	public static final double hopperFuelDistance = 0.15
+	; // Meters
 	public static final double shooterFuelDistance = 0.35; // Meters
 
 	public static final int leaderCanId = 20; // Front left

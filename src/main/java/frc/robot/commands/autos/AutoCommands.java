@@ -21,7 +21,6 @@ import frc.robot.commands.LaunchConstants;
 import frc.robot.commands.LaunchModes;
 import frc.robot.lib.BLine.FollowPath;
 
-import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
 /**
@@ -37,14 +36,12 @@ public final class AutoCommands {
 	private final Pivot pivot;
 	private final Roller roller;
 	private final DoubleSupplier hubMulti;
-	private final BooleanSupplier tagVisible;
 
 	/**
 	 * @param hubMulti   the hub shooter trim from the dashboard, read fresh each loop
-	 * @param tagVisible whether any camera sees a tag, for the hub shot
 	 */
 	public AutoCommands(Shooter shooter, Hood hood, Chassis chassis, Indexer indexer, Pivot pivot, Roller roller,
-			DoubleSupplier hubMulti, BooleanSupplier tagVisible) {
+			DoubleSupplier hubMulti) {
 		this.shooter = shooter;
 		this.hood = hood;
 		this.chassis = chassis;
@@ -52,7 +49,6 @@ public final class AutoCommands {
 		this.pivot = pivot;
 		this.roller = roller;
 		this.hubMulti = hubMulti;
-		this.tagVisible = tagVisible;
 
 		FollowPath.registerEventTrigger("intakeOn", () -> roller.setTarget(RollerConstants.IntakingVoltage));
 		FollowPath.registerEventTrigger("intakeOff", () -> roller.setTarget(RollerConstants.OffVoltage));
@@ -68,7 +64,7 @@ public final class AutoCommands {
 	 */
 	public Command hubShot(double seconds) {
 		return new LaunchCommand(shooter, hood, chassis, indexer, pivot, roller,
-				LaunchModes.HUB, hubMulti, tagVisible, () -> false)
+				LaunchModes.HUB, hubMulti, () -> false)
 				.withTimeout(seconds);
 	}
 
@@ -91,8 +87,8 @@ public final class AutoCommands {
 				Commands.parallel(
 						pivot.setPosition(PivotConstants.States.Open),
 						roller.setVoltage(RollerConstants.IntakingVoltage)),
-				homeHood(),
-				preSpin())
+				homeHood())
+				// preSpin())
 				.andThen(roller.setVoltage(RollerConstants.OffVoltage));
 	}
 

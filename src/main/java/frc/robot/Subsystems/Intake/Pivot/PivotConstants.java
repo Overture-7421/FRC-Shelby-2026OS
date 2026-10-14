@@ -34,7 +34,7 @@ public class PivotConstants {
         protected static Velocity<AngularAccelerationUnit> JerkLimit = RadiansPerSecondPerSecond.per(Second).of(0);
         
         protected static Angle AcceptedError = Degrees.of(1); 
-		protected static Angle EncoderOffSet = Rotations.of(-0.200439453125);           
+		protected static Angle EncoderOffSet = Rotations.of(0.125732421875);           
 		
     }
 

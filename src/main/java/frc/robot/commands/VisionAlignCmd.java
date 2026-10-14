@@ -5,7 +5,6 @@ import static edu.wpi.first.units.Units.Meters;
 import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.RotationsPerSecond;
 
-import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
 import com.overture.lib.math.ChassisAccels;
@@ -44,7 +43,6 @@ public class VisionAlignCmd extends Command {
 	private final LaunchModes launchMode;
 
 	private final DoubleSupplier multiSupplier;
-	private final BooleanSupplier tagVisible;
 
 	// Gains in LaunchConstants
 	private final ProfiledPIDController headingController = LaunchConstants.newHeadingController();
@@ -61,7 +59,6 @@ public class VisionAlignCmd extends Command {
 			LaunchConstants.LeftPass, LaunchConstants.RightPass, LaunchConstants.PassOverlap);
 
 	private double chassisError = 0.0;
-	private boolean tagSeen = false;
 	private boolean readyToLaunch = false;
 	// The shooter gate latches: tight band to start feeding, wider band to keep going
 	private boolean shooterReady = false;
@@ -78,17 +75,14 @@ public class VisionAlignCmd extends Command {
 	 * @param launchMode    whether this is a hub shot or a pass. Each launch
 	 *                      button builds its own
 	 * @param multiSupplier multiplier for the shooter velocity
-	 * @param tagVisible    whether a camera is looking at an AprilTag. A hub shot
-	 *                      waits to see one
 	 */
 	public VisionAlignCmd(Shooter shooter, Hood hood, Chassis chassis, LaunchModes launchMode,
-			DoubleSupplier multiSupplier, BooleanSupplier tagVisible) {
+			DoubleSupplier multiSupplier) {
 		this.shooter = shooter;
 		this.hood = hood;
 		this.chassis = chassis;
 		this.launchMode = launchMode;
 		this.multiSupplier = multiSupplier;
-		this.tagVisible = tagVisible;
 
 		headingSpeedsHelper = new HeadingSpeedsHelper(headingController, chassis);
 		alignSpeedsHelper = new SpeedsHelper() {
@@ -111,7 +105,6 @@ public class VisionAlignCmd extends Command {
 
 	@Override
 	public void initialize() {
-		tagSeen = false;
 		readyToLaunch = false;
 		shooterReady = false;
 
@@ -195,20 +188,10 @@ public class VisionAlignCmd extends Command {
 					&& chassisSpeed <= LaunchConstants.HubSpeedTolerance.in(MetersPerSecond);
 		}
 
-		// A hub shot also wants a camera to have seen a tag once everything else is
-		// in place, so the pose it aims with is fresh. One sighting is enough, it
-		// holds until the shot conditions are lost
-		if (check && launchMode == LaunchModes.HUB) {
-			tagSeen = tagSeen || tagVisible.getAsBoolean();
-		} else {
-			tagSeen = false;
-		}
-
-		readyToLaunch = check && (launchMode == LaunchModes.PASS || tagSeen);
+		readyToLaunch = check;
 
 		// SmartDashboard.putNumber("LaunchCommand/ChassisError", chassisError);
 		// SmartDashboard.putBoolean("LaunchCommand/ShotConditions", shotConditions);
-		// SmartDashboard.putBoolean("LaunchCommand/TagSeen", tagSeen);
 		SmartDashboard.putBoolean("LaunchCommand/ReadyToLaunch", readyToLaunch);
 		// targetPublisher.set(movingGoalLocation);
 	}
@@ -226,6 +209,7 @@ public class VisionAlignCmd extends Command {
 	public void end(boolean interrupted) {
 		readyToLaunch = false;
 		SmartDashboard.putBoolean("LaunchCommand/ReadyToLaunch", readyToLaunch);
+		shooter.stop();
 
 		chassis.disableSpeedHelper();
 	}
