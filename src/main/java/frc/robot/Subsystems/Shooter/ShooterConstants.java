@@ -21,7 +21,9 @@ public class ShooterConstants {
 
 	protected class Control {
 
-		protected static double kP = 0.35;
+		// Volts per rps of error. 0.35 is what 2910 runs, our wheel is heavier so the
+		// same gain recovered from a fuel hit too slowly, Oct 13 logs. Back off if it hunts
+		protected static double kP = 0.8;
 		protected static double kV = 0.2;
 
 		protected static AngularAcceleration AccelerationLimit = RotationsPerSecondPerSecond.of(400.0);

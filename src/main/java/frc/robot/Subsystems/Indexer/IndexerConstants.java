@@ -14,14 +14,14 @@ import static edu.wpi.first.units.Units.*;
 public class IndexerConstants {
 
 	public static Voltage OffVoltage = Volts.of(0.0);
-	public static Voltage shootVoltage = Volts.of(6);
+	public static Voltage shootVoltage = Volts.of(5);
 	public static Voltage preloadVoltage = Volts.of(1);
 
 	// Seconds the hopper sensor has to stay covered before the hopper counts as full
 	public static final double fuelDebouncingTime = 0.25;
 
 	public static final double hopperFuelDistance = 0.10;
-	; // Meters
+	 // Meters
 	public static final double shooterFuelDistance = 0.35; // Meters
 
 	public static final int leaderCanId = 20; // Front left
