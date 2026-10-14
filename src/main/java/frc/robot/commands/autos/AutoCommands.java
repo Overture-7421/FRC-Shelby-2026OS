@@ -4,6 +4,8 @@
 
 package frc.robot.commands.autos;
 
+import static edu.wpi.first.units.Units.RotationsPerSecond;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.Subsystems.Chassis.Chassis;
@@ -15,6 +17,7 @@ import frc.robot.Subsystems.Intake.Rollers.Roller;
 import frc.robot.Subsystems.Intake.Rollers.RollerConstants;
 import frc.robot.Subsystems.Shooter.Shooter;
 import frc.robot.commands.LaunchCommand;
+import frc.robot.commands.LaunchConstants;
 import frc.robot.commands.LaunchModes;
 import frc.robot.lib.BLine.FollowPath;
 
@@ -70,8 +73,14 @@ public final class AutoCommands {
 	}
 
 	/**
-	 * Intake out and rollers in for as long as a path runs, then rollers off. The
-	 * pivot stays out, the next launch closes it.
+	 * Drives a path with the intake out and the rollers in, then rollers off. The
+	 * pivot stays out, the next launch closes it. Meanwhile the hood homes if it has
+	 * not since boot and the shooter spins up to what a hub shot needs from where
+	 * the robot is, so the shot after the path starts ready.
+	 *
+	 * <p>
+	 * The homing has to be here: an auto is one group and it holds the hood for its
+	 * whole life, so the hood default command that homes in teleop never runs in auto.
 	 *
 	 * @param path the path command to drive while intaking
 	 * @return the command
@@ -81,7 +90,19 @@ public final class AutoCommands {
 				path,
 				Commands.parallel(
 						pivot.setPosition(PivotConstants.States.Open),
-						roller.setVoltage(RollerConstants.IntakingVoltage)))
+						roller.setVoltage(RollerConstants.IntakingVoltage)),
+				homeHood(),
+				preSpin())
 				.andThen(roller.setVoltage(RollerConstants.OffVoltage));
+	}
+
+	private Command homeHood() {
+		return Commands.either(Commands.none(), hood.HoodHoming(), hood::isHomed);
+	}
+
+
+	private Command preSpin() {
+		return shooter.trackVelocity(() -> RotationsPerSecond.of(LaunchConstants.DistanceToShooterForHub
+				.get(chassis.getEstimatedPose().getTranslation().getDistance(LaunchConstants.getHubPose()))));
 	}
 }

@@ -63,6 +63,8 @@ public class VisionAlignCmd extends Command {
 	private double chassisError = 0.0;
 	private boolean tagSeen = false;
 	private boolean readyToLaunch = false;
+	// The shooter gate latches: tight band to start feeding, wider band to keep going
+	private boolean shooterReady = false;
 
 	// private final StructPublisher<Translation2d> targetPublisher = NetworkTableInstance.getDefault()
 			// .getStructTopic("SmartDashboard/MovingTarget", Translation2d.struct).publish();
@@ -111,6 +113,7 @@ public class VisionAlignCmd extends Command {
 	public void initialize() {
 		tagSeen = false;
 		readyToLaunch = false;
+		shooterReady = false;
 
 		chassis.enableSpeedHelper(alignSpeedsHelper);
 	}
@@ -175,7 +178,10 @@ public class VisionAlignCmd extends Command {
 		ChassisSpeeds currentSpeeds = chassis.getCurrentSpeeds();
 		double chassisSpeed = Math.hypot(currentSpeeds.vxMetersPerSecond, currentSpeeds.vyMetersPerSecond);
 
-		boolean shotConditions = shooter.isAtTarget() && hood.isAtTarget();
+		// Once the wheel was at speed, a dip from fuel going through does not stop the
+		// feed unless it falls out of the wider band
+		shooterReady = shooter.isAtTarget() || (shooterReady && shooter.isNearTarget());
+		boolean shotConditions = shooterReady && hood.isAtTarget();
 		boolean check;
 
 		if (launchMode == LaunchModes.PASS) {

@@ -1,7 +1,7 @@
 package frc.robot.Subsystems.Hood;
 
-import static edu.wpi.first.units.Units.Amps;
 import static edu.wpi.first.units.Units.Degrees;
+import static edu.wpi.first.units.Units.DegreesPerSecond;
 import static edu.wpi.first.units.Units.Volts;
 
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
@@ -29,8 +29,9 @@ public class Hood extends SubsystemBase {
 	private final Debouncer touchingDebouncer = new Debouncer(HoodConstants.Control.HomingSettleTime,
 			DebounceType.kRising);
 
-	private int multiplier = 1;
-	private final double manualOffset = 0;
+
+	private int multiplier = 0;
+	private final double manualOffset = 1.0;
 	
 	public Hood() {
 		hoodMotor = new OverTalonFX(HoodConstants.motorConfig(), HoodConstants.motorCanId,
@@ -58,7 +59,7 @@ public class Hood extends SubsystemBase {
 		} else if (estimatedAngle.lt(HoodConstants.States.Min)) {
 			target = HoodConstants.States.Min;
 		} else {
-			estimatedAngle = position;
+			target = estimatedAngle;
 		}
 
 		if (homed) {
@@ -78,12 +79,12 @@ public class Hood extends SubsystemBase {
 		return target.in(Degrees);
 	}
 
-	public double getAmps() {
-		return hoodMotor.getStatorCurrent().getValueAsDouble();
-	}
-
 	public double getPosition() {
 		return hoodMotor.getPosition().getValue().in(Degrees);
+	}
+
+	public double getVelocity() {
+		return hoodMotor.getVelocity().getValue().in(DegreesPerSecond);
 	}
 
 	public double getError() {
@@ -99,7 +100,8 @@ public class Hood extends SubsystemBase {
 	}
 
 	private boolean isHome() {
-		return touchingDebouncer.calculate(getAmps() > HoodConstants.Control.TouchingCurrentThreshold.in(Amps));
+		return touchingDebouncer.calculate(
+				Math.abs(getVelocity()) < HoodConstants.Control.HomingSpeedThreshold.in(DegreesPerSecond));
 	}
 
 	public Command HoodHoming() {
@@ -133,7 +135,7 @@ public class Hood extends SubsystemBase {
 		// SmartDashboard.putNumber("Subsystems/Hood/Error", getError());
 		SmartDashboard.putBoolean("Subsystems/Hood/AtTarget", isAtTarget());
 
-		// SmartDashboard.putNumber("Subsystems/Hood/Amps", getAmps());
+		SmartDashboard.putNumber("Subsystems/Hood/Velocity", getVelocity());
 		SmartDashboard.putBoolean("Subsystems/Hood/Homed", homed);
 	}
 

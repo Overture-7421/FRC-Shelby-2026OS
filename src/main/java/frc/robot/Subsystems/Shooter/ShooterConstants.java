@@ -28,9 +28,11 @@ public class ShooterConstants {
 		protected static AngularVelocity CruiseVelocity = RotationsPerSecond.of(0.0);
 		protected static Velocity<AngularAccelerationUnit> JerkLimit = RotationsPerSecondPerSecond.per(Second).of(0);
 
-		// 2910 uses 3000 RPM, which never blocks a shot. Tighten once tuned
-		protected static AngularVelocity AcceptedError = RPM.of(3000);
+		protected static AngularVelocity AcceptedError = RotationsPerSecond.of(1.5);
+
+		protected static AngularVelocity FeedingError = RotationsPerSecond.of(10.0);
 		protected static double SensorToMechanismRatio = 1.6666666666;
+		protected static double VelocityFilterTimeConstant = 0.1; // Seconds
 
 	}
 
@@ -59,7 +61,9 @@ public class ShooterConstants {
 								.withNeutralMode(NeutralModeValue.Coast))
 				.withFeedback(
 						new FeedbackConfigs()
-								.withSensorToMechanismRatio(Control.SensorToMechanismRatio))
+								.withSensorToMechanismRatio(Control.SensorToMechanismRatio)
+								// Smooths the velocity reading so the at-speed bands do not flicker
+								.withVelocityFilterTimeConstant(Control.VelocityFilterTimeConstant))
 				.withSlot0(
 						new Slot0Configs()
 								.withKP(Control.kP)

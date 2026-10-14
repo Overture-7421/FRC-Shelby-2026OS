@@ -41,7 +41,7 @@ import frc.robot.commands.LaunchCommand;
 import frc.robot.commands.LaunchConstants;
 import frc.robot.commands.LaunchModes;
 import frc.robot.commands.autos.AutoCommands;
-import frc.robot.commands.autos.DoublePassAuto;
+import frc.robot.commands.autos.AutoRoutines;
 
 public class RobotContainer implements OverContainer {
 
@@ -105,8 +105,6 @@ public class RobotContainer implements OverContainer {
 	public void configDriverBindings() {
 		chassis.setDefaultCommand(new DriveCommand(chassis, driver));
 
-		// The wheel never stops. Between shots it follows the velocity a hub shot
-		// would need from wherever the robot is, so launching does not wait for it
 		shooter.setDefaultCommand(shooter.trackVelocity(
 				() -> RotationsPerSecond.of(LaunchConstants.DistanceToShooterForHub.get(getHubDistance()))));
 
@@ -114,7 +112,8 @@ public class RobotContainer implements OverContainer {
 				Commands.either(hood.holdPosition(HoodConstants.States.Close), hood.HoodHoming(), hood::isHomed));
 
 		// Between shots the indexer keeps the fuel ready at the shooter
-		indexer.setDefaultCommand(indexer.preloadShooter());
+		
+		// indexer.setDefaultCommand(indexer.preloadShooter());
 
 		driver.back().onTrue(Commands.runOnce(() -> {
 			chassis.resetHeading(UtilityFunctions.isRedAlliance() ? 180.0 : 0.0);
@@ -167,8 +166,10 @@ public class RobotContainer implements OverContainer {
 
 		// Autos are drawn once on the right side of the blue field. Mirrored runs the same
 		// file on the left, red is flipped automatically on top of that
-		autoChooser.addOption("Double pass right", DoublePassAuto.DoublePass(paths, autos, false));
-		autoChooser.addOption("Double pass left", DoublePassAuto.DoublePass(paths, autos, true));
+		autoChooser.addOption("Double pass right", AutoRoutines.DoublePass(paths, autos, false));
+		autoChooser.addOption("Double pass left", AutoRoutines.DoublePass(paths, autos, true));
+		autoChooser.addOption("Alternate double pass right", AutoRoutines.AlternateDoublePass(paths, autos, false));
+		autoChooser.addOption("Alternate double pass left", AutoRoutines.AlternateDoublePass(paths, autos, true));
 
 		SmartDashboard.putData("Auto Chooser", autoChooser);
 	}
