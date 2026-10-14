@@ -1,10 +1,7 @@
 package frc.robot.commands;
 
-import java.util.function.BooleanSupplier;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Subsystems.Indexer.Indexer;
-import frc.robot.Subsystems.Indexer.IndexerConstants;
 import frc.robot.Subsystems.Intake.Pivot.Pivot;
 import frc.robot.Subsystems.Intake.Pivot.PivotConstants;
 import frc.robot.Subsystems.Intake.Rollers.Roller;
