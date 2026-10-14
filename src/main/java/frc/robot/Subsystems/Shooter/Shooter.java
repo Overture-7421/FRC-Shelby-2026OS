@@ -71,6 +71,13 @@ public class Shooter extends SubsystemBase {
 		shooterMotorLead.setControl(velocityRequest.withVelocity(target));
 	}
 
+	// Lets the wheel coast down. Called when a launch ends, the shooter has no
+	// default command that would do it
+	public void stop() {
+		target = RotationsPerSecond.of(0.0);
+		shooterMotorLead.setControl(voltageRequest.withOutput(ShooterConstants.OffVoltage));
+	}
+
 	public double getTarget() {
 		return target.in(RotationsPerSecond);
 	}
