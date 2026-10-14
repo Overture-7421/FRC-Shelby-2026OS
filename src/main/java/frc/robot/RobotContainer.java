@@ -5,6 +5,7 @@
 package frc.robot;
 
 import static edu.wpi.first.units.Units.RotationsPerSecond;
+import static edu.wpi.first.units.Units.Volts;
 
 import com.overture.lib.gamepads.OverXboxController;
 import com.overture.lib.robots.OverContainer;
@@ -150,6 +151,8 @@ public class RobotContainer implements OverContainer {
 		operator.povDown().onTrue(hood.AddOffset(-1));
 		operator.povRight().onTrue(shooter.AddOffset(1));
 		operator.povLeft().onTrue(shooter.AddOffset(-1));
+		operator.a().whileTrue(indexer.setVoltage(Volts.of(0.0)));
+		operator.b().whileTrue(shooter.setVoltage(Volts.of(0.0)));
 	
 	}
 
