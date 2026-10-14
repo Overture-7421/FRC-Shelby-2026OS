@@ -3,7 +3,6 @@ package frc.robot.Subsystems.Indexer;
 import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 import com.ctre.phoenix6.configs.FeedbackConfigs;
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
-import com.ctre.phoenix6.configs.OpenLoopRampsConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.configs.VoltageConfigs;
 import com.ctre.phoenix6.signals.InvertedValue;
@@ -55,11 +54,7 @@ public class IndexerConstants {
 								.withNeutralMode(NeutralModeValue.Brake))
 				.withFeedback(
 						new FeedbackConfigs()
-								.withSensorToMechanismRatio(GearRatio))
-				.withOpenLoopRamps(
-						new OpenLoopRampsConfigs()
-								.withVoltageOpenLoopRampPeriod(1.0)
-				);
+								.withSensorToMechanismRatio(GearRatio));
 	}
 
 
