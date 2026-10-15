@@ -23,7 +23,7 @@ public class ShooterConstants {
 
 		// Volts per rps of error. 0.35 is what 2910 runs, our wheel is heavier so the
 		// same gain recovered from a fuel hit too slowly, Oct 13 logs. Back off if it hunts
-		protected static double kP = 0.8;
+		protected static double kP = 1.0;
 		protected static double kV = 0.2;
 
 		protected static AngularAcceleration AccelerationLimit = RotationsPerSecondPerSecond.of(400.0);
@@ -34,7 +34,6 @@ public class ShooterConstants {
 
 		protected static AngularVelocity FeedingError = RotationsPerSecond.of(10.0);
 		protected static double SensorToMechanismRatio = 1.6666666666;
-		protected static double VelocityFilterTimeConstant = 0.1; // Seconds
 
 	}
 
@@ -50,7 +49,8 @@ public class ShooterConstants {
 				.withCurrentLimits(
 						new CurrentLimitsConfigs()
 								.withStatorCurrentLimitEnable(true)
-								.withStatorCurrentLimit(60)
+								// Recovery torque after a fuel hit. Peaks were 41 to 48 A at 60, Oct 14 logs
+								.withStatorCurrentLimit(80)
 								.withSupplyCurrentLimitEnable(true)
 								.withSupplyCurrentLimit(35))
 				.withVoltage(
@@ -63,9 +63,7 @@ public class ShooterConstants {
 								.withNeutralMode(NeutralModeValue.Coast))
 				.withFeedback(
 						new FeedbackConfigs()
-								.withSensorToMechanismRatio(Control.SensorToMechanismRatio)
-								// Smooths the velocity reading so the at-speed bands do not flicker
-								.withVelocityFilterTimeConstant(Control.VelocityFilterTimeConstant))
+								.withSensorToMechanismRatio(Control.SensorToMechanismRatio))
 				.withSlot0(
 						new Slot0Configs()
 								.withKP(Control.kP)

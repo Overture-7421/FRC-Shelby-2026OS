@@ -14,7 +14,8 @@ import static edu.wpi.first.units.Units.*;
 public class IndexerConstants {
 
 	public static Voltage OffVoltage = Volts.of(0.0);
-	public static Voltage shootVoltage = Volts.of(5);
+
+	public static Voltage shootVoltage = Volts.of(3);
 	public static Voltage preloadVoltage = Volts.of(1);
 
 	// Seconds the hopper sensor has to stay covered before the hopper counts as full
