@@ -67,6 +67,11 @@ public class RobotContainer implements OverContainer {
 	private static final String limelightRightName = "limelight-right";
 	private static final String limelightLeftName = "limelight-left";
 
+	
+	private static final int bluePipeline = 0;
+	private static final int redPipeline = 1;
+	private int limelightPipeline = -1;
+
 	// The PhotonVision cameras are not on the robot yet. Uncomment these two and the
 	// two photonSeesTag terms in isAnyTagVisible when they are mounted
 	// private final AprilTags camRight = new AprilTags(tagLayout, chassis, camRightConfig());
@@ -198,6 +203,8 @@ public class RobotContainer implements OverContainer {
 
 		SmartDashboard.putNumber("MatchTime", DriverStation.getMatchTime());
 		SmartDashboard.putBoolean("Vision/AnyTagVisible", isAnyTagVisible());
+
+		updateLimelightPipelines();
 	}
 
 	// Read fresh every time so a trim typed mid-match takes effect on the next loop
@@ -210,6 +217,16 @@ public class RobotContainer implements OverContainer {
 
 	private double getHubDistance() {
 		return chassis.getEstimatedPose().getTranslation().getDistance(LaunchConstants.getHubPose());
+	}
+
+	// Switches both Limelights to the alliance pipeline, once per change
+	private void updateLimelightPipelines() {
+		int wanted = UtilityFunctions.isRedAlliance() ? redPipeline : bluePipeline;
+		if (wanted != limelightPipeline) {
+			LimelightHelpers.setPipelineIndex(limelightRightName, wanted);
+			LimelightHelpers.setPipelineIndex(limelightLeftName, wanted);
+			limelightPipeline = wanted;
+		}
 	}
 
 	// A tag in front of any of the four cameras counts
@@ -229,9 +246,9 @@ public class RobotContainer implements OverContainer {
 		config.backend = AprilTags.VisionBackend.PhotonVision;
 		config.cameraName = camRightName;
 		config.cameraToRobotSupplier = () -> new Transform3d(
-				Units.inchesToMeters(0.0), Units.inchesToMeters(0.0), Units.inchesToMeters(0.0),
-				new Rotation3d(Units.degreesToRadians(0.0), Units.degreesToRadians(0.0),
-						Units.degreesToRadians(0.0)));
+				Units.inchesToMeters(-5.973731), Units.inchesToMeters(-13.455644), Units.inchesToMeters(10.624462),
+				new Rotation3d(Units.degreesToRadians(-90.0), Units.degreesToRadians(0.0),
+						Units.degreesToRadians(-10)));
 		return config;
 	}
 
@@ -240,9 +257,9 @@ public class RobotContainer implements OverContainer {
 		config.backend = AprilTags.VisionBackend.PhotonVision;
 		config.cameraName = camLeftName;
 		config.cameraToRobotSupplier = () -> new Transform3d(
-				Units.inchesToMeters(0.0), Units.inchesToMeters(0.0), Units.inchesToMeters(0.0),
-				new Rotation3d(Units.degreesToRadians(0.0), Units.degreesToRadians(0.0),
-						Units.degreesToRadians(0.0)));
+				Units.inchesToMeters(-5.973731), Units.inchesToMeters(13.455644), Units.inchesToMeters(10.624462),
+				new Rotation3d(Units.degreesToRadians(90.0), Units.degreesToRadians(0.0),
+						Units.degreesToRadians(-10)));
 		return config;
 	}
 
