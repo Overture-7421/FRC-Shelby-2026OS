@@ -40,7 +40,7 @@ public class PivotConstants {
 
     public class States {
 
-        public static Angle Open = Degree.of(118);
+        public static Angle Open = Degree.of(114);
         public static Angle Closed = Degree.of(5);
 
     }
