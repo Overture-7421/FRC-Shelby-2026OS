@@ -56,7 +56,7 @@ public class RobotContainer implements OverContainer {
 
 	// Controllers. There is no operator controller, the driver does everything
 	private final OverXboxController driver = new OverXboxController(0, 0.20, 0.2);
-	private final OverXboxController operator = new OverXboxController(0, 0.20, 0.2);
+	private final OverXboxController operator = new OverXboxController(1, 0.20, 0.2);
 
 	// Vision. One field layout shared by the four cameras, each one feeding the
 	// chassis pose estimator on its own
