@@ -27,13 +27,13 @@ public final class LaunchConstants {
 
 	// Blue alliance coordinates, flip them for red
 	public static final Translation2d HubPose = new Translation2d(4.626, 4.035);
-	public static final Translation2d RightPass = new Translation2d(4.0, 2.5);
+	public static final Translation2d RightPass = new Translation2d(4.0, 1.5);
 	public static final Translation2d LeftPass = AllianceFlip.mirrorLeftRight(RightPass);
 
 	// The pass target changes side when the robot crosses the middle of the field
-	// by this much, so it does not flicker while driving along the midline
+	// by this much, so it does not swap while driving near the midline
 	public static final double FieldMidline = AllianceFlip.getFieldWidth() / 2.0;
-	public static final double PassOverlap = 0.2;
+	public static final double PassOverlap = 1.0;
 
 	private static final double ShooterPassOffset = -2;
 	private static final double HoodShootOffset = 1;
@@ -88,7 +88,7 @@ public final class LaunchConstants {
 	public static final LinearVelocity HubSpeedTolerance = MetersPerSecond.of(0.15);
 	public static final Distance HubMinimumDistance = Meters.of(1.5);
 
-	public static final Angle PassChassisTolerance = Degrees.of(15.0);
+	public static final Angle PassChassisTolerance = Degrees.of(5.0);
 	public static final LinearVelocity PassSpeedTolerance = MetersPerSecond.of(10.0);
 
 	// How much of the driver's translation gets through while the chassis aligns
