@@ -25,7 +25,7 @@
       "default_auto_velocity_merge_tolerance_meters_per_sec": 0.3
     }
   },
-  "active_path_file_name": "firstpass.json",
+  "active_path_file_name": "secondpass.json",
   "active_path_group_id": null,
   "path_groups": [
     {
@@ -34,7 +34,8 @@
       "path_file_names": [
         "firstpass.json",
         "secondpass.json",
-        "ThirdPass.json"
+        "ThirdPass.json",
+        "FirstSecondPass.json"
       ]
     }
   ],
@@ -57,6 +58,32 @@
     }
   ],
   "paths": {
+    "firstpass.json": {
+      "display_name": "FirstPass",
+      "editor_metadata": {
+        "ranged_constraints": [
+          {
+            "key": "max_velocity_meters_per_sec",
+            "value": 2.25,
+            "start_ordinal": 1,
+            "end_ordinal": 1,
+            "source": "auto_velocity",
+            "auto_velocity": {
+              "velocity_safety_factor": 0.6,
+              "acceleration_safety_factor": 0.8,
+              "merge_tolerance_meters_per_sec": 0.3,
+              "input_signature": "{\"pathElements\":[{\"type\":\"waypoint\",\"xMeters\":4.51,\"yMeters\":0.52654,\"handoffRadiusMeters\":0.45,\"rotationRadians\":0,\"profiledRotation\":true},{\"type\":\"waypoint\",\"xMeters\":7.4540265832681785,\"yMeters\":0.6271110242376867,\"handoffRadiusMeters\":0.45,\"rotationRadians\":1.5708,\"profiledRotation\":true},{\"type\":\"waypoint\",\"xMeters\":7.8288720722213405,\"yMeters\":3.241882423478426,\"handoffRadiusMeters\":0.45,\"rotationRadians\":1.5708,\"profiledRotation\":true},{\"type\":\"event_trigger\",\"tRatio\":1},{\"type\":\"translation\",\"xMeters\":6.74122,\"yMeters\":2.94276,\"handoffRadiusMeters\":0.45},{\"type\":\"waypoint\",\"xMeters\":5.936361880447829,\"yMeters\":2.62018867069152,\"handoffRadiusMeters\":0.45,\"rotationRadians\":-3.13929,\"profiledRotation\":true},{\"type\":\"rotation\",\"rotationRadians\":-3.13788,\"tRatio\":0.68097,\"profiledRotation\":true},{\"type\":\"waypoint\",\"xMeters\":2.94,\"yMeters\":2.56533,\"handoffRadiusMeters\":0.45,\"rotationRadians\":-2.36946,\"profiledRotation\":true}],\"scalarConstraints\":{\"maxVelocityMps\":null,\"maxAccelerationMps2\":null,\"maxVelocityDegPerSec\":null,\"maxAccelerationDegPerSec\":null},\"rotationRangedConstraints\":[],\"config\":{\"maxVelocityMps\":4.5,\"maxAccelerationMps2\":10,\"handoffRadiusMeters\":0.45,\"maxVelocityDegPerSec\":540,\"maxAccelerationDegPerSec\":1500,\"autoVelocityVelocitySafetyFactor\":0.9,\"autoVelocityAccelerationSafetyFactor\":0.8},\"options\":{\"velocitySafetyFactor\":0.6,\"accelerationSafetyFactor\":0.8,\"sampleStepMeters\":null}}"
+            }
+          }
+        ],
+        "linked_targets": [
+          {
+            "element_index": 7.0,
+            "target_id": "target-1cc45549"
+          }
+        ]
+      }
+    },
     "ThirdPass.json": {
       "display_name": "ThirdPass",
       "editor_metadata": {
@@ -103,6 +130,75 @@
         ]
       }
     },
+    "FirstSecondPass.json": {
+      "display_name": "FirstSecondPass",
+      "editor_metadata": {
+        "ranged_constraints": [
+          {
+            "key": "max_velocity_meters_per_sec",
+            "value": 2.25,
+            "start_ordinal": 1,
+            "end_ordinal": 2,
+            "source": "auto_velocity",
+            "auto_velocity": {
+              "velocity_safety_factor": 0.6,
+              "acceleration_safety_factor": 0.8,
+              "merge_tolerance_meters_per_sec": 0.3,
+              "input_signature": "{\"pathElements\":[{\"type\":\"waypoint\",\"xMeters\":2.94,\"yMeters\":2.56533,\"handoffRadiusMeters\":0.25,\"rotationRadians\":-2.36946,\"profiledRotation\":true},{\"type\":\"waypoint\",\"xMeters\":2.9741726701272664,\"yMeters\":0.6179681859378068,\"handoffRadiusMeters\":0.45,\"rotationRadians\":0,\"profiledRotation\":true},{\"type\":\"waypoint\",\"xMeters\":4.51,\"yMeters\":0.52654,\"handoffRadiusMeters\":0.45,\"rotationRadians\":0,\"profiledRotation\":true},{\"type\":\"waypoint\",\"xMeters\":7.655163166681428,\"yMeters\":0.7185360591312806,\"handoffRadiusMeters\":0.45,\"rotationRadians\":1.5708,\"profiledRotation\":true},{\"type\":\"waypoint\",\"xMeters\":7.7923,\"yMeters\":3.26931,\"handoffRadiusMeters\":0.45,\"rotationRadians\":1.5708,\"profiledRotation\":true},{\"type\":\"event_trigger\",\"tRatio\":1},{\"type\":\"translation\",\"xMeters\":6.74122,\"yMeters\":2.94276,\"handoffRadiusMeters\":0.45},{\"type\":\"waypoint\",\"xMeters\":5.9708,\"yMeters\":2.70472,\"handoffRadiusMeters\":0.45,\"rotationRadians\":-1.5708,\"profiledRotation\":true},{\"type\":\"rotation\",\"rotationRadians\":-1.5708,\"tRatio\":0.65291,\"profiledRotation\":true},{\"type\":\"waypoint\",\"xMeters\":2.94,\"yMeters\":2.56533,\"handoffRadiusMeters\":0.45,\"rotationRadians\":-2.36946,\"profiledRotation\":true}],\"scalarConstraints\":{\"maxVelocityMps\":null,\"maxAccelerationMps2\":null,\"maxVelocityDegPerSec\":null,\"maxAccelerationDegPerSec\":null},\"rotationRangedConstraints\":[],\"config\":{\"maxVelocityMps\":4.5,\"maxAccelerationMps2\":10,\"handoffRadiusMeters\":0.45,\"maxVelocityDegPerSec\":540,\"maxAccelerationDegPerSec\":1500,\"autoVelocityVelocitySafetyFactor\":0.9,\"autoVelocityAccelerationSafetyFactor\":0.8},\"options\":{\"velocitySafetyFactor\":0.6,\"accelerationSafetyFactor\":0.8,\"sampleStepMeters\":null}}"
+            }
+          },
+          {
+            "key": "max_velocity_meters_per_sec",
+            "value": 2.7,
+            "start_ordinal": 3,
+            "end_ordinal": 3,
+            "source": "auto_velocity",
+            "auto_velocity": {
+              "velocity_safety_factor": 0.6,
+              "acceleration_safety_factor": 0.8,
+              "merge_tolerance_meters_per_sec": 0.3,
+              "input_signature": "{\"pathElements\":[{\"type\":\"waypoint\",\"xMeters\":2.94,\"yMeters\":2.56533,\"handoffRadiusMeters\":0.25,\"rotationRadians\":-2.36946,\"profiledRotation\":true},{\"type\":\"waypoint\",\"xMeters\":2.9741726701272664,\"yMeters\":0.6179681859378068,\"handoffRadiusMeters\":0.45,\"rotationRadians\":0,\"profiledRotation\":true},{\"type\":\"waypoint\",\"xMeters\":4.51,\"yMeters\":0.52654,\"handoffRadiusMeters\":0.45,\"rotationRadians\":0,\"profiledRotation\":true},{\"type\":\"waypoint\",\"xMeters\":7.655163166681428,\"yMeters\":0.7185360591312806,\"handoffRadiusMeters\":0.45,\"rotationRadians\":1.5708,\"profiledRotation\":true},{\"type\":\"waypoint\",\"xMeters\":7.7923,\"yMeters\":3.26931,\"handoffRadiusMeters\":0.45,\"rotationRadians\":1.5708,\"profiledRotation\":true},{\"type\":\"event_trigger\",\"tRatio\":1},{\"type\":\"translation\",\"xMeters\":6.74122,\"yMeters\":2.94276,\"handoffRadiusMeters\":0.45},{\"type\":\"waypoint\",\"xMeters\":5.9708,\"yMeters\":2.70472,\"handoffRadiusMeters\":0.45,\"rotationRadians\":-1.5708,\"profiledRotation\":true},{\"type\":\"rotation\",\"rotationRadians\":-1.5708,\"tRatio\":0.65291,\"profiledRotation\":true},{\"type\":\"waypoint\",\"xMeters\":2.94,\"yMeters\":2.56533,\"handoffRadiusMeters\":0.45,\"rotationRadians\":-2.36946,\"profiledRotation\":true}],\"scalarConstraints\":{\"maxVelocityMps\":null,\"maxAccelerationMps2\":null,\"maxVelocityDegPerSec\":null,\"maxAccelerationDegPerSec\":null},\"rotationRangedConstraints\":[],\"config\":{\"maxVelocityMps\":4.5,\"maxAccelerationMps2\":10,\"handoffRadiusMeters\":0.45,\"maxVelocityDegPerSec\":540,\"maxAccelerationDegPerSec\":1500,\"autoVelocityVelocitySafetyFactor\":0.9,\"autoVelocityAccelerationSafetyFactor\":0.8},\"options\":{\"velocitySafetyFactor\":0.6,\"accelerationSafetyFactor\":0.8,\"sampleStepMeters\":null}}"
+            }
+          },
+          {
+            "key": "max_velocity_meters_per_sec",
+            "value": 2.16,
+            "start_ordinal": 5,
+            "end_ordinal": 6,
+            "source": "auto_velocity",
+            "auto_velocity": {
+              "velocity_safety_factor": 0.6,
+              "acceleration_safety_factor": 0.8,
+              "merge_tolerance_meters_per_sec": 0.3,
+              "input_signature": "{\"pathElements\":[{\"type\":\"waypoint\",\"xMeters\":2.94,\"yMeters\":2.56533,\"handoffRadiusMeters\":0.25,\"rotationRadians\":-2.36946,\"profiledRotation\":true},{\"type\":\"waypoint\",\"xMeters\":2.9741726701272664,\"yMeters\":0.6179681859378068,\"handoffRadiusMeters\":0.45,\"rotationRadians\":0,\"profiledRotation\":true},{\"type\":\"waypoint\",\"xMeters\":4.51,\"yMeters\":0.52654,\"handoffRadiusMeters\":0.45,\"rotationRadians\":0,\"profiledRotation\":true},{\"type\":\"waypoint\",\"xMeters\":7.655163166681428,\"yMeters\":0.7185360591312806,\"handoffRadiusMeters\":0.45,\"rotationRadians\":1.5708,\"profiledRotation\":true},{\"type\":\"waypoint\",\"xMeters\":7.7923,\"yMeters\":3.26931,\"handoffRadiusMeters\":0.45,\"rotationRadians\":1.5708,\"profiledRotation\":true},{\"type\":\"event_trigger\",\"tRatio\":1},{\"type\":\"translation\",\"xMeters\":6.74122,\"yMeters\":2.94276,\"handoffRadiusMeters\":0.45},{\"type\":\"waypoint\",\"xMeters\":5.9708,\"yMeters\":2.70472,\"handoffRadiusMeters\":0.45,\"rotationRadians\":-1.5708,\"profiledRotation\":true},{\"type\":\"rotation\",\"rotationRadians\":-1.5708,\"tRatio\":0.65291,\"profiledRotation\":true},{\"type\":\"waypoint\",\"xMeters\":2.94,\"yMeters\":2.56533,\"handoffRadiusMeters\":0.45,\"rotationRadians\":-2.36946,\"profiledRotation\":true}],\"scalarConstraints\":{\"maxVelocityMps\":null,\"maxAccelerationMps2\":null,\"maxVelocityDegPerSec\":null,\"maxAccelerationDegPerSec\":null},\"rotationRangedConstraints\":[],\"config\":{\"maxVelocityMps\":4.5,\"maxAccelerationMps2\":10,\"handoffRadiusMeters\":0.45,\"maxVelocityDegPerSec\":540,\"maxAccelerationDegPerSec\":1500,\"autoVelocityVelocitySafetyFactor\":0.9,\"autoVelocityAccelerationSafetyFactor\":0.8},\"options\":{\"velocitySafetyFactor\":0.6,\"accelerationSafetyFactor\":0.8,\"sampleStepMeters\":null}}"
+            }
+          },
+          {
+            "key": "max_velocity_meters_per_sec",
+            "value": 2.7,
+            "start_ordinal": 7,
+            "end_ordinal": 8,
+            "source": "auto_velocity",
+            "auto_velocity": {
+              "velocity_safety_factor": 0.6,
+              "acceleration_safety_factor": 0.8,
+              "merge_tolerance_meters_per_sec": 0.3,
+              "input_signature": "{\"pathElements\":[{\"type\":\"waypoint\",\"xMeters\":2.94,\"yMeters\":2.56533,\"handoffRadiusMeters\":0.25,\"rotationRadians\":-2.36946,\"profiledRotation\":true},{\"type\":\"waypoint\",\"xMeters\":2.9741726701272664,\"yMeters\":0.6179681859378068,\"handoffRadiusMeters\":0.45,\"rotationRadians\":0,\"profiledRotation\":true},{\"type\":\"waypoint\",\"xMeters\":4.51,\"yMeters\":0.52654,\"handoffRadiusMeters\":0.45,\"rotationRadians\":0,\"profiledRotation\":true},{\"type\":\"waypoint\",\"xMeters\":7.655163166681428,\"yMeters\":0.7185360591312806,\"handoffRadiusMeters\":0.45,\"rotationRadians\":1.5708,\"profiledRotation\":true},{\"type\":\"waypoint\",\"xMeters\":7.7923,\"yMeters\":3.26931,\"handoffRadiusMeters\":0.45,\"rotationRadians\":1.5708,\"profiledRotation\":true},{\"type\":\"event_trigger\",\"tRatio\":1},{\"type\":\"translation\",\"xMeters\":6.74122,\"yMeters\":2.94276,\"handoffRadiusMeters\":0.45},{\"type\":\"waypoint\",\"xMeters\":5.9708,\"yMeters\":2.70472,\"handoffRadiusMeters\":0.45,\"rotationRadians\":-1.5708,\"profiledRotation\":true},{\"type\":\"rotation\",\"rotationRadians\":-1.5708,\"tRatio\":0.65291,\"profiledRotation\":true},{\"type\":\"waypoint\",\"xMeters\":2.94,\"yMeters\":2.56533,\"handoffRadiusMeters\":0.45,\"rotationRadians\":-2.36946,\"profiledRotation\":true}],\"scalarConstraints\":{\"maxVelocityMps\":null,\"maxAccelerationMps2\":null,\"maxVelocityDegPerSec\":null,\"maxAccelerationDegPerSec\":null},\"rotationRangedConstraints\":[],\"config\":{\"maxVelocityMps\":4.5,\"maxAccelerationMps2\":10,\"handoffRadiusMeters\":0.45,\"maxVelocityDegPerSec\":540,\"maxAccelerationDegPerSec\":1500,\"autoVelocityVelocitySafetyFactor\":0.9,\"autoVelocityAccelerationSafetyFactor\":0.8},\"options\":{\"velocitySafetyFactor\":0.6,\"accelerationSafetyFactor\":0.8,\"sampleStepMeters\":null}}"
+            }
+          }
+        ],
+        "linked_targets": [
+          {
+            "element_index": 0.0,
+            "target_id": "target-1cc45549"
+          },
+          {
+            "element_index": 9.0,
+            "target_id": "target-1cc45549"
+          }
+        ]
+      }
+    },
     "secondpass.json": {
       "display_name": "SecondPass",
       "editor_metadata": {
@@ -117,7 +213,7 @@
               "velocity_safety_factor": 0.9,
               "acceleration_safety_factor": 0.8,
               "merge_tolerance_meters_per_sec": 0.3,
-              "input_signature": "{\"pathElements\":[{\"type\":\"waypoint\",\"xMeters\":2.94,\"yMeters\":2.56533,\"handoffRadiusMeters\":0.25,\"rotationRadians\":-2.36946,\"profiledRotation\":true},{\"type\":\"waypoint\",\"xMeters\":2.9833150899139853,\"yMeters\":0.6545387021110489,\"handoffRadiusMeters\":0.45,\"rotationRadians\":0.00882289439931712,\"profiledRotation\":true},{\"type\":\"waypoint\",\"xMeters\":5.899791774661275,\"yMeters\":0.6809313401921528,\"handoffRadiusMeters\":0.45,\"rotationRadians\":0,\"profiledRotation\":true},{\"type\":\"rotation\",\"rotationRadians\":1.55924,\"tRatio\":0.4708864416524559,\"profiledRotation\":true},{\"type\":\"waypoint\",\"xMeters\":6.068441197515558,\"yMeters\":3.3260604156876754,\"handoffRadiusMeters\":0.45,\"rotationRadians\":1.56643,\"profiledRotation\":true},{\"type\":\"waypoint\",\"xMeters\":7.666170005671196,\"yMeters\":3.352689229156936,\"handoffRadiusMeters\":0.45,\"rotationRadians\":0,\"profiledRotation\":true},{\"type\":\"waypoint\",\"xMeters\":5.9352967238458065,\"yMeters\":2.5715770965096585,\"handoffRadiusMeters\":0.45,\"rotationRadians\":-1.5707963267948966,\"profiledRotation\":true},{\"type\":\"waypoint\",\"xMeters\":2.94,\"yMeters\":2.56533,\"handoffRadiusMeters\":0.45,\"rotationRadians\":-2.36946,\"profiledRotation\":true}],\"scalarConstraints\":{\"maxVelocityMps\":null,\"maxAccelerationMps2\":null,\"maxVelocityDegPerSec\":null,\"maxAccelerationDegPerSec\":null},\"rotationRangedConstraints\":[],\"config\":{\"maxVelocityMps\":4.5,\"maxAccelerationMps2\":10,\"handoffRadiusMeters\":0.45,\"maxVelocityDegPerSec\":540,\"maxAccelerationDegPerSec\":1500,\"autoVelocityVelocitySafetyFactor\":0.9,\"autoVelocityAccelerationSafetyFactor\":0.8},\"options\":{\"velocitySafetyFactor\":0.9,\"accelerationSafetyFactor\":0.8,\"sampleStepMeters\":null}}"
+              "input_signature": "{\"pathElements\":[{\"type\":\"waypoint\",\"xMeters\":2.94,\"yMeters\":2.56533,\"handoffRadiusMeters\":0.25,\"rotationRadians\":-2.36946,\"profiledRotation\":true},{\"type\":\"waypoint\",\"xMeters\":2.98332,\"yMeters\":0.65454,\"handoffRadiusMeters\":0.45,\"rotationRadians\":0.00882,\"profiledRotation\":true},{\"type\":\"waypoint\",\"xMeters\":6.05069,\"yMeters\":0.69868,\"handoffRadiusMeters\":0.45,\"rotationRadians\":0,\"profiledRotation\":true},{\"type\":\"rotation\",\"rotationRadians\":1.55924,\"tRatio\":0.47089,\"profiledRotation\":true},{\"type\":\"waypoint\",\"xMeters\":6.06844,\"yMeters\":3.32606,\"handoffRadiusMeters\":0.45,\"rotationRadians\":1.56643,\"profiledRotation\":true},{\"type\":\"waypoint\",\"xMeters\":7.710018522428106,\"yMeters\":3.479589523064895,\"handoffRadiusMeters\":0.45,\"rotationRadians\":0,\"profiledRotation\":true},{\"type\":\"waypoint\",\"xMeters\":7.655163166681428,\"yMeters\":2.7298993821848736,\"handoffRadiusMeters\":0.45,\"rotationRadians\":-3.1384049549275015,\"profiledRotation\":true},{\"type\":\"waypoint\",\"xMeters\":5.9353,\"yMeters\":2.57158,\"handoffRadiusMeters\":0.45,\"rotationRadians\":-3.111028121071616,\"profiledRotation\":true},{\"type\":\"rotation\",\"rotationRadians\":-3.111276121046725,\"tRatio\":0.77186,\"profiledRotation\":true},{\"type\":\"waypoint\",\"xMeters\":2.94,\"yMeters\":2.56533,\"handoffRadiusMeters\":0.45,\"rotationRadians\":-2.36946,\"profiledRotation\":true}],\"scalarConstraints\":{\"maxVelocityMps\":null,\"maxAccelerationMps2\":null,\"maxVelocityDegPerSec\":null,\"maxAccelerationDegPerSec\":null},\"rotationRangedConstraints\":[],\"config\":{\"maxVelocityMps\":4.5,\"maxAccelerationMps2\":10,\"handoffRadiusMeters\":0.45,\"maxVelocityDegPerSec\":540,\"maxAccelerationDegPerSec\":1500,\"autoVelocityVelocitySafetyFactor\":0.9,\"autoVelocityAccelerationSafetyFactor\":0.8},\"options\":{\"velocitySafetyFactor\":0.9,\"accelerationSafetyFactor\":0.8,\"sampleStepMeters\":null}}"
             }
           },
           {
@@ -130,20 +226,20 @@
               "velocity_safety_factor": 0.9,
               "acceleration_safety_factor": 0.8,
               "merge_tolerance_meters_per_sec": 0.3,
-              "input_signature": "{\"pathElements\":[{\"type\":\"waypoint\",\"xMeters\":2.94,\"yMeters\":2.56533,\"handoffRadiusMeters\":0.25,\"rotationRadians\":-2.36946,\"profiledRotation\":true},{\"type\":\"waypoint\",\"xMeters\":2.9833150899139853,\"yMeters\":0.6545387021110489,\"handoffRadiusMeters\":0.45,\"rotationRadians\":0.00882289439931712,\"profiledRotation\":true},{\"type\":\"waypoint\",\"xMeters\":5.899791774661275,\"yMeters\":0.6809313401921528,\"handoffRadiusMeters\":0.45,\"rotationRadians\":0,\"profiledRotation\":true},{\"type\":\"rotation\",\"rotationRadians\":1.55924,\"tRatio\":0.4708864416524559,\"profiledRotation\":true},{\"type\":\"waypoint\",\"xMeters\":6.068441197515558,\"yMeters\":3.3260604156876754,\"handoffRadiusMeters\":0.45,\"rotationRadians\":1.56643,\"profiledRotation\":true},{\"type\":\"waypoint\",\"xMeters\":7.666170005671196,\"yMeters\":3.352689229156936,\"handoffRadiusMeters\":0.45,\"rotationRadians\":0,\"profiledRotation\":true},{\"type\":\"waypoint\",\"xMeters\":5.9352967238458065,\"yMeters\":2.5715770965096585,\"handoffRadiusMeters\":0.45,\"rotationRadians\":-1.5707963267948966,\"profiledRotation\":true},{\"type\":\"waypoint\",\"xMeters\":2.94,\"yMeters\":2.56533,\"handoffRadiusMeters\":0.45,\"rotationRadians\":-2.36946,\"profiledRotation\":true}],\"scalarConstraints\":{\"maxVelocityMps\":null,\"maxAccelerationMps2\":null,\"maxVelocityDegPerSec\":null,\"maxAccelerationDegPerSec\":null},\"rotationRangedConstraints\":[],\"config\":{\"maxVelocityMps\":4.5,\"maxAccelerationMps2\":10,\"handoffRadiusMeters\":0.45,\"maxVelocityDegPerSec\":540,\"maxAccelerationDegPerSec\":1500,\"autoVelocityVelocitySafetyFactor\":0.9,\"autoVelocityAccelerationSafetyFactor\":0.8},\"options\":{\"velocitySafetyFactor\":0.9,\"accelerationSafetyFactor\":0.8,\"sampleStepMeters\":null}}"
+              "input_signature": "{\"pathElements\":[{\"type\":\"waypoint\",\"xMeters\":2.94,\"yMeters\":2.56533,\"handoffRadiusMeters\":0.25,\"rotationRadians\":-2.36946,\"profiledRotation\":true},{\"type\":\"waypoint\",\"xMeters\":2.98332,\"yMeters\":0.65454,\"handoffRadiusMeters\":0.45,\"rotationRadians\":0.00882,\"profiledRotation\":true},{\"type\":\"waypoint\",\"xMeters\":6.05069,\"yMeters\":0.69868,\"handoffRadiusMeters\":0.45,\"rotationRadians\":0,\"profiledRotation\":true},{\"type\":\"rotation\",\"rotationRadians\":1.55924,\"tRatio\":0.47089,\"profiledRotation\":true},{\"type\":\"waypoint\",\"xMeters\":6.06844,\"yMeters\":3.32606,\"handoffRadiusMeters\":0.45,\"rotationRadians\":1.56643,\"profiledRotation\":true},{\"type\":\"waypoint\",\"xMeters\":7.710018522428106,\"yMeters\":3.479589523064895,\"handoffRadiusMeters\":0.45,\"rotationRadians\":0,\"profiledRotation\":true},{\"type\":\"waypoint\",\"xMeters\":7.655163166681428,\"yMeters\":2.7298993821848736,\"handoffRadiusMeters\":0.45,\"rotationRadians\":-3.1384049549275015,\"profiledRotation\":true},{\"type\":\"waypoint\",\"xMeters\":5.9353,\"yMeters\":2.57158,\"handoffRadiusMeters\":0.45,\"rotationRadians\":-3.111028121071616,\"profiledRotation\":true},{\"type\":\"rotation\",\"rotationRadians\":-3.111276121046725,\"tRatio\":0.77186,\"profiledRotation\":true},{\"type\":\"waypoint\",\"xMeters\":2.94,\"yMeters\":2.56533,\"handoffRadiusMeters\":0.45,\"rotationRadians\":-2.36946,\"profiledRotation\":true}],\"scalarConstraints\":{\"maxVelocityMps\":null,\"maxAccelerationMps2\":null,\"maxVelocityDegPerSec\":null,\"maxAccelerationDegPerSec\":null},\"rotationRangedConstraints\":[],\"config\":{\"maxVelocityMps\":4.5,\"maxAccelerationMps2\":10,\"handoffRadiusMeters\":0.45,\"maxVelocityDegPerSec\":540,\"maxAccelerationDegPerSec\":1500,\"autoVelocityVelocitySafetyFactor\":0.9,\"autoVelocityAccelerationSafetyFactor\":0.8},\"options\":{\"velocitySafetyFactor\":0.9,\"accelerationSafetyFactor\":0.8,\"sampleStepMeters\":null}}"
             }
           },
           {
             "key": "max_velocity_meters_per_sec",
-            "value": 2.02,
-            "start_ordinal": 5,
-            "end_ordinal": 5,
+            "value": 4.05,
+            "start_ordinal": 6,
+            "end_ordinal": 6,
             "source": "auto_velocity",
             "auto_velocity": {
               "velocity_safety_factor": 0.9,
               "acceleration_safety_factor": 0.8,
               "merge_tolerance_meters_per_sec": 0.3,
-              "input_signature": "{\"pathElements\":[{\"type\":\"waypoint\",\"xMeters\":2.94,\"yMeters\":2.56533,\"handoffRadiusMeters\":0.25,\"rotationRadians\":-2.36946,\"profiledRotation\":true},{\"type\":\"waypoint\",\"xMeters\":2.9833150899139853,\"yMeters\":0.6545387021110489,\"handoffRadiusMeters\":0.45,\"rotationRadians\":0.00882289439931712,\"profiledRotation\":true},{\"type\":\"waypoint\",\"xMeters\":5.899791774661275,\"yMeters\":0.6809313401921528,\"handoffRadiusMeters\":0.45,\"rotationRadians\":0,\"profiledRotation\":true},{\"type\":\"rotation\",\"rotationRadians\":1.55924,\"tRatio\":0.4708864416524559,\"profiledRotation\":true},{\"type\":\"waypoint\",\"xMeters\":6.068441197515558,\"yMeters\":3.3260604156876754,\"handoffRadiusMeters\":0.45,\"rotationRadians\":1.56643,\"profiledRotation\":true},{\"type\":\"waypoint\",\"xMeters\":7.666170005671196,\"yMeters\":3.352689229156936,\"handoffRadiusMeters\":0.45,\"rotationRadians\":0,\"profiledRotation\":true},{\"type\":\"waypoint\",\"xMeters\":5.9352967238458065,\"yMeters\":2.5715770965096585,\"handoffRadiusMeters\":0.45,\"rotationRadians\":-1.5707963267948966,\"profiledRotation\":true},{\"type\":\"waypoint\",\"xMeters\":2.94,\"yMeters\":2.56533,\"handoffRadiusMeters\":0.45,\"rotationRadians\":-2.36946,\"profiledRotation\":true}],\"scalarConstraints\":{\"maxVelocityMps\":null,\"maxAccelerationMps2\":null,\"maxVelocityDegPerSec\":null,\"maxAccelerationDegPerSec\":null},\"rotationRangedConstraints\":[],\"config\":{\"maxVelocityMps\":4.5,\"maxAccelerationMps2\":10,\"handoffRadiusMeters\":0.45,\"maxVelocityDegPerSec\":540,\"maxAccelerationDegPerSec\":1500,\"autoVelocityVelocitySafetyFactor\":0.9,\"autoVelocityAccelerationSafetyFactor\":0.8},\"options\":{\"velocitySafetyFactor\":0.9,\"accelerationSafetyFactor\":0.8,\"sampleStepMeters\":null}}"
+              "input_signature": "{\"pathElements\":[{\"type\":\"waypoint\",\"xMeters\":2.94,\"yMeters\":2.56533,\"handoffRadiusMeters\":0.25,\"rotationRadians\":-2.36946,\"profiledRotation\":true},{\"type\":\"waypoint\",\"xMeters\":2.98332,\"yMeters\":0.65454,\"handoffRadiusMeters\":0.45,\"rotationRadians\":0.00882,\"profiledRotation\":true},{\"type\":\"waypoint\",\"xMeters\":6.05069,\"yMeters\":0.69868,\"handoffRadiusMeters\":0.45,\"rotationRadians\":0,\"profiledRotation\":true},{\"type\":\"rotation\",\"rotationRadians\":1.55924,\"tRatio\":0.47089,\"profiledRotation\":true},{\"type\":\"waypoint\",\"xMeters\":6.06844,\"yMeters\":3.32606,\"handoffRadiusMeters\":0.45,\"rotationRadians\":1.56643,\"profiledRotation\":true},{\"type\":\"waypoint\",\"xMeters\":7.710018522428106,\"yMeters\":3.479589523064895,\"handoffRadiusMeters\":0.45,\"rotationRadians\":0,\"profiledRotation\":true},{\"type\":\"waypoint\",\"xMeters\":7.655163166681428,\"yMeters\":2.7298993821848736,\"handoffRadiusMeters\":0.45,\"rotationRadians\":-3.1384049549275015,\"profiledRotation\":true},{\"type\":\"waypoint\",\"xMeters\":5.9353,\"yMeters\":2.57158,\"handoffRadiusMeters\":0.45,\"rotationRadians\":-3.111028121071616,\"profiledRotation\":true},{\"type\":\"rotation\",\"rotationRadians\":-3.111276121046725,\"tRatio\":0.77186,\"profiledRotation\":true},{\"type\":\"waypoint\",\"xMeters\":2.94,\"yMeters\":2.56533,\"handoffRadiusMeters\":0.45,\"rotationRadians\":-2.36946,\"profiledRotation\":true}],\"scalarConstraints\":{\"maxVelocityMps\":null,\"maxAccelerationMps2\":null,\"maxVelocityDegPerSec\":null,\"maxAccelerationDegPerSec\":null},\"rotationRangedConstraints\":[],\"config\":{\"maxVelocityMps\":4.5,\"maxAccelerationMps2\":10,\"handoffRadiusMeters\":0.45,\"maxVelocityDegPerSec\":540,\"maxAccelerationDegPerSec\":1500,\"autoVelocityVelocitySafetyFactor\":0.9,\"autoVelocityAccelerationSafetyFactor\":0.8},\"options\":{\"velocitySafetyFactor\":0.9,\"accelerationSafetyFactor\":0.8,\"sampleStepMeters\":null}}"
             }
           }
         ],
@@ -157,59 +253,7 @@
             "target_id": "target-71c12f5d"
           },
           {
-            "element_index": 7.0,
-            "target_id": "target-1cc45549"
-          }
-        ]
-      }
-    },
-    "firstpass.json": {
-      "display_name": "FirstPass",
-      "editor_metadata": {
-        "ranged_constraints": [
-          {
-            "key": "max_velocity_meters_per_sec",
-            "value": 2.25,
-            "start_ordinal": 1,
-            "end_ordinal": 1,
-            "source": "auto_velocity",
-            "auto_velocity": {
-              "velocity_safety_factor": 0.6,
-              "acceleration_safety_factor": 0.8,
-              "merge_tolerance_meters_per_sec": 0.3,
-              "input_signature": "{\"pathElements\":[{\"type\":\"waypoint\",\"xMeters\":4.51,\"yMeters\":0.52654,\"handoffRadiusMeters\":0.45,\"rotationRadians\":0,\"profiledRotation\":true},{\"type\":\"waypoint\",\"xMeters\":7.563737294761532,\"yMeters\":0.681966379984364,\"handoffRadiusMeters\":0.45,\"rotationRadians\":1.5708,\"profiledRotation\":true},{\"type\":\"waypoint\",\"xMeters\":7.7923015560481215,\"yMeters\":3.2693101013517643,\"handoffRadiusMeters\":0.45,\"rotationRadians\":1.5708,\"profiledRotation\":true},{\"type\":\"event_trigger\",\"tRatio\":1},{\"type\":\"translation\",\"xMeters\":6.741217236194506,\"yMeters\":2.942760992818181,\"handoffRadiusMeters\":0.45},{\"type\":\"waypoint\",\"xMeters\":5.970801673030338,\"yMeters\":2.704721163855962,\"handoffRadiusMeters\":0.45,\"rotationRadians\":-1.5707963267948966,\"profiledRotation\":true},{\"type\":\"rotation\",\"rotationRadians\":-1.5707963267948966,\"tRatio\":0.6529123156522267,\"profiledRotation\":true},{\"type\":\"waypoint\",\"xMeters\":2.94,\"yMeters\":2.56533,\"handoffRadiusMeters\":0.45,\"rotationRadians\":-2.36946,\"profiledRotation\":true}],\"scalarConstraints\":{\"maxVelocityMps\":null,\"maxAccelerationMps2\":null,\"maxVelocityDegPerSec\":null,\"maxAccelerationDegPerSec\":null},\"rotationRangedConstraints\":[],\"config\":{\"maxVelocityMps\":4.5,\"maxAccelerationMps2\":10,\"handoffRadiusMeters\":0.45,\"maxVelocityDegPerSec\":540,\"maxAccelerationDegPerSec\":1500,\"autoVelocityVelocitySafetyFactor\":0.9,\"autoVelocityAccelerationSafetyFactor\":0.8},\"options\":{\"velocitySafetyFactor\":0.6,\"accelerationSafetyFactor\":0.8,\"sampleStepMeters\":null}}"
-            }
-          },
-          {
-            "key": "max_velocity_meters_per_sec",
-            "value": 2.11,
-            "start_ordinal": 3,
-            "end_ordinal": 3,
-            "source": "auto_velocity",
-            "auto_velocity": {
-              "velocity_safety_factor": 0.6,
-              "acceleration_safety_factor": 0.8,
-              "merge_tolerance_meters_per_sec": 0.3,
-              "input_signature": "{\"pathElements\":[{\"type\":\"waypoint\",\"xMeters\":4.51,\"yMeters\":0.52654,\"handoffRadiusMeters\":0.45,\"rotationRadians\":0,\"profiledRotation\":true},{\"type\":\"waypoint\",\"xMeters\":7.563737294761532,\"yMeters\":0.681966379984364,\"handoffRadiusMeters\":0.45,\"rotationRadians\":1.5708,\"profiledRotation\":true},{\"type\":\"waypoint\",\"xMeters\":7.7923015560481215,\"yMeters\":3.2693101013517643,\"handoffRadiusMeters\":0.45,\"rotationRadians\":1.5708,\"profiledRotation\":true},{\"type\":\"event_trigger\",\"tRatio\":1},{\"type\":\"translation\",\"xMeters\":6.741217236194506,\"yMeters\":2.942760992818181,\"handoffRadiusMeters\":0.45},{\"type\":\"waypoint\",\"xMeters\":5.970801673030338,\"yMeters\":2.704721163855962,\"handoffRadiusMeters\":0.45,\"rotationRadians\":-1.5707963267948966,\"profiledRotation\":true},{\"type\":\"rotation\",\"rotationRadians\":-1.5707963267948966,\"tRatio\":0.6529123156522267,\"profiledRotation\":true},{\"type\":\"waypoint\",\"xMeters\":2.94,\"yMeters\":2.56533,\"handoffRadiusMeters\":0.45,\"rotationRadians\":-2.36946,\"profiledRotation\":true}],\"scalarConstraints\":{\"maxVelocityMps\":null,\"maxAccelerationMps2\":null,\"maxVelocityDegPerSec\":null,\"maxAccelerationDegPerSec\":null},\"rotationRangedConstraints\":[],\"config\":{\"maxVelocityMps\":4.5,\"maxAccelerationMps2\":10,\"handoffRadiusMeters\":0.45,\"maxVelocityDegPerSec\":540,\"maxAccelerationDegPerSec\":1500,\"autoVelocityVelocitySafetyFactor\":0.9,\"autoVelocityAccelerationSafetyFactor\":0.8},\"options\":{\"velocitySafetyFactor\":0.6,\"accelerationSafetyFactor\":0.8,\"sampleStepMeters\":null}}"
-            }
-          },
-          {
-            "key": "max_velocity_meters_per_sec",
-            "value": 2.7,
-            "start_ordinal": 4,
-            "end_ordinal": 6,
-            "source": "auto_velocity",
-            "auto_velocity": {
-              "velocity_safety_factor": 0.6,
-              "acceleration_safety_factor": 0.8,
-              "merge_tolerance_meters_per_sec": 0.3,
-              "input_signature": "{\"pathElements\":[{\"type\":\"waypoint\",\"xMeters\":4.51,\"yMeters\":0.52654,\"handoffRadiusMeters\":0.45,\"rotationRadians\":0,\"profiledRotation\":true},{\"type\":\"waypoint\",\"xMeters\":7.563737294761532,\"yMeters\":0.681966379984364,\"handoffRadiusMeters\":0.45,\"rotationRadians\":1.5708,\"profiledRotation\":true},{\"type\":\"waypoint\",\"xMeters\":7.7923015560481215,\"yMeters\":3.2693101013517643,\"handoffRadiusMeters\":0.45,\"rotationRadians\":1.5708,\"profiledRotation\":true},{\"type\":\"event_trigger\",\"tRatio\":1},{\"type\":\"translation\",\"xMeters\":6.741217236194506,\"yMeters\":2.942760992818181,\"handoffRadiusMeters\":0.45},{\"type\":\"waypoint\",\"xMeters\":5.970801673030338,\"yMeters\":2.704721163855962,\"handoffRadiusMeters\":0.45,\"rotationRadians\":-1.5707963267948966,\"profiledRotation\":true},{\"type\":\"rotation\",\"rotationRadians\":-1.5707963267948966,\"tRatio\":0.6529123156522267,\"profiledRotation\":true},{\"type\":\"waypoint\",\"xMeters\":2.94,\"yMeters\":2.56533,\"handoffRadiusMeters\":0.45,\"rotationRadians\":-2.36946,\"profiledRotation\":true}],\"scalarConstraints\":{\"maxVelocityMps\":null,\"maxAccelerationMps2\":null,\"maxVelocityDegPerSec\":null,\"maxAccelerationDegPerSec\":null},\"rotationRangedConstraints\":[],\"config\":{\"maxVelocityMps\":4.5,\"maxAccelerationMps2\":10,\"handoffRadiusMeters\":0.45,\"maxVelocityDegPerSec\":540,\"maxAccelerationDegPerSec\":1500,\"autoVelocityVelocitySafetyFactor\":0.9,\"autoVelocityAccelerationSafetyFactor\":0.8},\"options\":{\"velocitySafetyFactor\":0.6,\"accelerationSafetyFactor\":0.8,\"sampleStepMeters\":null}}"
-            }
-          }
-        ],
-        "linked_targets": [
-          {
-            "element_index": 7.0,
+            "element_index": 9.0,
             "target_id": "target-1cc45549"
           }
         ]

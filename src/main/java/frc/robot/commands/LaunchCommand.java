@@ -30,14 +30,13 @@ public class LaunchCommand extends ParallelCommandGroup {
 	 * @param roller        the intake rollers
 	 * @param launchMode    whether this is a hub shot or a pass
 	 * @param multiSupplier multiplier for the shooter velocity
-	 * @param tagVisible    whether a camera is looking at an AprilTag
 	 * @param intakeInUse   whether the driver is holding an intake button
 	 */
 	public LaunchCommand(Shooter shooter, Hood hood, Chassis chassis, Indexer indexer, Pivot pivot, Roller roller,
-			LaunchModes launchMode, DoubleSupplier multiSupplier, BooleanSupplier tagVisible,
+			LaunchModes launchMode, DoubleSupplier multiSupplier,
 			BooleanSupplier intakeInUse) {
 		VisionAlignCmd visionAlignCmd = new VisionAlignCmd(shooter, hood, chassis, launchMode,
-				multiSupplier, tagVisible);
+				multiSupplier);
 
 		// The order matters. The align command has to decide whether the shot is
 		// ready before the eject command asks

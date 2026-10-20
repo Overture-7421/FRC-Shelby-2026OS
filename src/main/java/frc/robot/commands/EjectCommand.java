@@ -65,7 +65,7 @@ public class EjectCommand extends Command {
 				compressing = true;
 			}
 		} else {
-			indexer.setMotorPreload();
+			// indexer.setMotorPreload();
 			openIntake();
 		}
 	}

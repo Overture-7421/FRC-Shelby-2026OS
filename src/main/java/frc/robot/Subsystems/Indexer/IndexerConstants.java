@@ -3,7 +3,6 @@ package frc.robot.Subsystems.Indexer;
 import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 import com.ctre.phoenix6.configs.FeedbackConfigs;
 import com.ctre.phoenix6.configs.MotorOutputConfigs;
-import com.ctre.phoenix6.configs.OpenLoopRampsConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.configs.VoltageConfigs;
 import com.ctre.phoenix6.signals.InvertedValue;
@@ -15,13 +14,15 @@ import static edu.wpi.first.units.Units.*;
 public class IndexerConstants {
 
 	public static Voltage OffVoltage = Volts.of(0.0);
-	public static Voltage shootVoltage = Volts.of(5);
+
+	public static Voltage shootVoltage = Volts.of(3);
 	public static Voltage preloadVoltage = Volts.of(1);
 
 	// Seconds the hopper sensor has to stay covered before the hopper counts as full
 	public static final double fuelDebouncingTime = 0.25;
 
-	public static final double hopperFuelDistance = 0.25; // Meters
+	public static final double hopperFuelDistance = 0.10;
+	 // Meters
 	public static final double shooterFuelDistance = 0.35; // Meters
 
 	public static final int leaderCanId = 20; // Front left
@@ -54,11 +55,7 @@ public class IndexerConstants {
 								.withNeutralMode(NeutralModeValue.Brake))
 				.withFeedback(
 						new FeedbackConfigs()
-								.withSensorToMechanismRatio(GearRatio))
-				.withOpenLoopRamps(
-						new OpenLoopRampsConfigs()
-								.withVoltageOpenLoopRampPeriod(1.0)
-				);
+								.withSensorToMechanismRatio(GearRatio));
 	}
 
 

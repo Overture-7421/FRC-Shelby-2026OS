@@ -21,15 +21,18 @@ public class ShooterConstants {
 
 	protected class Control {
 
-		protected static double kP = 0.35;
+		// Volts per rps of error. 0.35 is what 2910 runs, our wheel is heavier so the
+		// same gain recovered from a fuel hit too slowly, Oct 13 logs. Back off if it hunts
+		protected static double kP = 1.0;
 		protected static double kV = 0.2;
 
 		protected static AngularAcceleration AccelerationLimit = RotationsPerSecondPerSecond.of(400.0);
 		protected static AngularVelocity CruiseVelocity = RotationsPerSecond.of(0.0);
 		protected static Velocity<AngularAccelerationUnit> JerkLimit = RotationsPerSecondPerSecond.per(Second).of(0);
 
-		// 2910 uses 3000 RPM, which never blocks a shot. Tighten once tuned
-		protected static AngularVelocity AcceptedError = RPM.of(3000);
+		protected static AngularVelocity AcceptedError = RotationsPerSecond.of(1.5);
+
+		protected static AngularVelocity FeedingError = RotationsPerSecond.of(10.0);
 		protected static double SensorToMechanismRatio = 1.6666666666;
 
 	}
@@ -46,7 +49,8 @@ public class ShooterConstants {
 				.withCurrentLimits(
 						new CurrentLimitsConfigs()
 								.withStatorCurrentLimitEnable(true)
-								.withStatorCurrentLimit(60)
+								// Recovery torque after a fuel hit. Peaks were 41 to 48 A at 60, Oct 14 logs
+								.withStatorCurrentLimit(80)
 								.withSupplyCurrentLimitEnable(true)
 								.withSupplyCurrentLimit(35))
 				.withVoltage(

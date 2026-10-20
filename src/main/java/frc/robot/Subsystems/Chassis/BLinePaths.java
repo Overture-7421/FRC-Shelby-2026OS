@@ -6,11 +6,11 @@ package frc.robot.Subsystems.Chassis;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.networktables.StructArrayPublisher;
-import edu.wpi.first.networktables.StructPublisher;
+// import edu.wpi.first.math.geometry.Translation2d;
+// import edu.wpi.first.networktables.NetworkTable;
+// import edu.wpi.first.networktables.NetworkTableInstance;
+// import edu.wpi.first.networktables.StructArrayPublisher;
+// import edu.wpi.first.networktables.StructPublisher;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.lib.BLine.FollowPath;
@@ -44,20 +44,22 @@ public final class BLinePaths {
 	// still disabled. Same idea as PathPlanner's warm-up command
 	private boolean warmedUp = false;
 
-	private static final NetworkTable table = NetworkTableInstance.getDefault().getTable("BLine");
-	private static final Map<String, StructPublisher<Pose2d>> posePublishers = new HashMap<>();
-	private static final Map<String, StructArrayPublisher<Translation2d>> pointsPublishers = new HashMap<>();
-
-	static {
-		FollowPath.setPoseLoggingConsumer(entry -> posePublishers
-				.computeIfAbsent(entry.getFirst(), key -> table.getStructTopic(key, Pose2d.struct).publish())
-				.set(entry.getSecond()));
-		FollowPath.setTranslationListLoggingConsumer(entry -> pointsPublishers
-				.computeIfAbsent(entry.getFirst(), key -> table.getStructArrayTopic(key, Translation2d.struct).publish())
-				.set(entry.getSecond()));
-		FollowPath.setDoubleLoggingConsumer(entry -> table.getEntry(entry.getFirst()).setDouble(entry.getSecond()));
-		FollowPath.setBooleanLoggingConsumer(entry -> table.getEntry(entry.getFirst()).setBoolean(entry.getSecond()));
-	}
+	// BLine telemetry (poses, remaining distance, controller outputs under /BLine) is off
+	// for now, Oct 13. Uncomment this block and the imports above to get it back
+	// private static final NetworkTable table = NetworkTableInstance.getDefault().getTable("BLine");
+	// private static final Map<String, StructPublisher<Pose2d>> posePublishers = new HashMap<>();
+	// private static final Map<String, StructArrayPublisher<Translation2d>> pointsPublishers = new HashMap<>();
+	//
+	// static {
+	// 	FollowPath.setPoseLoggingConsumer(entry -> posePublishers
+	// 			.computeIfAbsent(entry.getFirst(), key -> table.getStructTopic(key, Pose2d.struct).publish())
+	// 			.set(entry.getSecond()));
+	// 	FollowPath.setTranslationListLoggingConsumer(entry -> pointsPublishers
+	// 			.computeIfAbsent(entry.getFirst(), key -> table.getStructArrayTopic(key, Translation2d.struct).publish())
+	// 			.set(entry.getSecond()));
+	// 	FollowPath.setDoubleLoggingConsumer(entry -> table.getEntry(entry.getFirst()).setDouble(entry.getSecond()));
+	// 	FollowPath.setBooleanLoggingConsumer(entry -> table.getEntry(entry.getFirst()).setBoolean(entry.getSecond()));
+	// }
 
 	/**
 	 * Wires BLine to the chassis.

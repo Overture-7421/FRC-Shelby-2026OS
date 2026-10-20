@@ -27,13 +27,16 @@ public final class LaunchConstants {
 
 	// Blue alliance coordinates, flip them for red
 	public static final Translation2d HubPose = new Translation2d(4.626, 4.035);
-	public static final Translation2d RightPass = new Translation2d(4.0, 2.5);
+	public static final Translation2d RightPass = new Translation2d(4.0, 1.5);
 	public static final Translation2d LeftPass = AllianceFlip.mirrorLeftRight(RightPass);
 
 	// The pass target changes side when the robot crosses the middle of the field
-	// by this much, so it does not flicker while driving along the midline
+	// by this much, so it does not swap while driving near the midline
 	public static final double FieldMidline = AllianceFlip.getFieldWidth() / 2.0;
-	public static final double PassOverlap = 0.2;
+	public static final double PassOverlap = 1.0;
+
+	private static final double ShooterPassOffset = -2;
+	private static final double HoodShootOffset = 1;
 
 	// Distance to the hub in meters -> shooter velocity in rps. Measured on the robot, Oct 12
 	public static final InterpolatingTable DistanceToShooterForHub = new InterpolatingTable(
@@ -49,22 +52,22 @@ public final class LaunchConstants {
 
 	// Distance to the hub in meters -> hood angle in degrees. Measured on the robot, Oct 12
 	public static final InterpolatingTable DistanceToHoodForHub = new InterpolatingTable(
-			1.3, 0.0,
-			1.5, 0.0,
-			2.0, 0.0,
-			2.5, 5.0,
-			3.0, 7.0,
-			3.5, 12.0,
-			4.0, 20.0,
-			4.5, 22.0,
-			5.0, 25.0);
+			1.3, 0.0 + HoodShootOffset,
+			1.5, 0.0 + HoodShootOffset,
+			2.0, 0.0 + HoodShootOffset,
+			2.5, 5.0 + HoodShootOffset,
+			3.0, 7.0 + HoodShootOffset,
+			3.5, 12.0 + HoodShootOffset,
+			4.0, 20.0 + HoodShootOffset,
+			4.5, 22.0 + HoodShootOffset,
+			5.0, 25.0 + HoodShootOffset);
 
 	// Distance to the pass target in meters -> shooter velocity in rps. Measured on the
 	// robot, Oct 12
 	public static final InterpolatingTable DistanceToShooterForPass = new InterpolatingTable(
-			2.0, 23.0,
-			5.0, 30.0,
-			10.0, 35.0);
+			2.0, 23.0 + ShooterPassOffset,
+			5.0, 30.0 + ShooterPassOffset,
+			10.0, 35.0 + ShooterPassOffset);
 
 	// Distance to the pass target in meters -> hood angle in degrees. Measured on the
 	// robot, Oct 12, at the same distances as the pass speed table
@@ -85,7 +88,7 @@ public final class LaunchConstants {
 	public static final LinearVelocity HubSpeedTolerance = MetersPerSecond.of(0.15);
 	public static final Distance HubMinimumDistance = Meters.of(1.5);
 
-	public static final Angle PassChassisTolerance = Degrees.of(15.0);
+	public static final Angle PassChassisTolerance = Degrees.of(5.0);
 	public static final LinearVelocity PassSpeedTolerance = MetersPerSecond.of(10.0);
 
 	// How much of the driver's translation gets through while the chassis aligns

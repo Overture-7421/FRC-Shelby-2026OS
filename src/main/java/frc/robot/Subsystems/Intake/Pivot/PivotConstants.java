@@ -34,13 +34,13 @@ public class PivotConstants {
         protected static Velocity<AngularAccelerationUnit> JerkLimit = RadiansPerSecondPerSecond.per(Second).of(0);
         
         protected static Angle AcceptedError = Degrees.of(1); 
-		protected static Angle EncoderOffSet = Rotations.of(-0.200439453125);           
+		protected static Angle EncoderOffSet = Rotations.of(0.125244140625);           
 		
     }
 
     public class States {
 
-        public static Angle Open = Degree.of(118);
+        public static Angle Open = Degree.of(114);
         public static Angle Closed = Degree.of(5);
 
     }

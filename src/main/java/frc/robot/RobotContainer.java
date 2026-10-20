@@ -5,6 +5,7 @@
 package frc.robot;
 
 import static edu.wpi.first.units.Units.RotationsPerSecond;
+import static edu.wpi.first.units.Units.Volts;
 
 import com.overture.lib.gamepads.OverXboxController;
 import com.overture.lib.robots.OverContainer;
@@ -41,7 +42,7 @@ import frc.robot.commands.LaunchCommand;
 import frc.robot.commands.LaunchConstants;
 import frc.robot.commands.LaunchModes;
 import frc.robot.commands.autos.AutoCommands;
-import frc.robot.commands.autos.DoublePassAuto;
+import frc.robot.commands.autos.AutoRoutines;
 
 public class RobotContainer implements OverContainer {
 
@@ -55,7 +56,7 @@ public class RobotContainer implements OverContainer {
 
 	// Controllers. There is no operator controller, the driver does everything
 	private final OverXboxController driver = new OverXboxController(0, 0.20, 0.2);
-	private final OverXboxController operator = new OverXboxController(0, 0.20, 0.2);
+	private final OverXboxController operator = new OverXboxController(1, 0.20, 0.2);
 
 	// Vision. One field layout shared by the four cameras, each one feeding the
 	// chassis pose estimator on its own
@@ -65,6 +66,11 @@ public class RobotContainer implements OverContainer {
 	private static final String camLeftName = "camLeft";
 	private static final String limelightRightName = "limelight-right";
 	private static final String limelightLeftName = "limelight-left";
+
+	
+	private static final int bluePipeline = 0;
+	private static final int redPipeline = 1;
+	private int limelightPipeline = -1;
 
 	// The PhotonVision cameras are not on the robot yet. Uncomment these two and the
 	// two photonSeesTag terms in isAnyTagVisible when they are mounted
@@ -81,13 +87,12 @@ public class RobotContainer implements OverContainer {
 	private static final String hubShooterMultiKey = "LaunchCommand/HubShooterMulti";
 	private static final String passShooterMultiKey = "LaunchCommand/PassShooterMulti";
 
-	// What the launch command needs to know from the cameras and the driver
-	private final BooleanSupplier tagVisible = () -> isAnyTagVisible();
+	// Whether the driver is holding one of the intake buttons
 	private final BooleanSupplier intakeInUse = driver.leftTrigger().or(driver.x());
 
-	// The building blocks the autos share. Needs tagVisible, so it comes after it
+	// The building blocks the autos share
 	private final AutoCommands autos = new AutoCommands(shooter, hood, chassis, indexer, pivot, roller,
-			() -> getShooterMulti(LaunchModes.HUB), tagVisible);
+			() -> getShooterMulti(LaunchModes.HUB));
 
 	public RobotContainer() {
 		// Only sets them if the dashboard does not already have them, so a trim
@@ -105,15 +110,14 @@ public class RobotContainer implements OverContainer {
 	public void configDriverBindings() {
 		chassis.setDefaultCommand(new DriveCommand(chassis, driver));
 
-		// The wheel never stops. Between shots it follows the velocity a hub shot
-		// would need from wherever the robot is, so launching does not wait for it
-		shooter.setDefaultCommand(shooter.trackVelocity(
-				() -> RotationsPerSecond.of(LaunchConstants.DistanceToShooterForHub.get(getHubDistance()))));
+		// shooter.setDefaultCommand(shooter.trackVelocity(
+		// 		() -> RotationsPerSecond.of(LaunchConstants.DistanceToShooterForHub.get(getHubDistance()))));
 
 		hood.setDefaultCommand(
 				Commands.either(hood.holdPosition(HoodConstants.States.Close), hood.HoodHoming(), hood::isHomed));
 
 		// Between shots the indexer keeps the fuel ready at the shooter
+		
 		indexer.setDefaultCommand(indexer.preloadShooter());
 
 		driver.back().onTrue(Commands.runOnce(() -> {
@@ -135,9 +139,9 @@ public class RobotContainer implements OverContainer {
 		driver.start().onTrue(hood.HoodHoming());
 
 		driver.rightTrigger().whileTrue(new LaunchCommand(shooter, hood, chassis, indexer, pivot, roller,
-				LaunchModes.HUB, () -> getShooterMulti(LaunchModes.HUB), tagVisible, intakeInUse));
+				LaunchModes.HUB, () -> getShooterMulti(LaunchModes.HUB), intakeInUse));
 		driver.leftBumper().whileTrue(new LaunchCommand(shooter, hood, chassis, indexer, pivot, roller,
-				LaunchModes.PASS, () -> getShooterMulti(LaunchModes.PASS), tagVisible, intakeInUse));
+				LaunchModes.PASS, () -> getShooterMulti(LaunchModes.PASS), intakeInUse));
 
 
 		
@@ -151,6 +155,8 @@ public class RobotContainer implements OverContainer {
 		operator.povDown().onTrue(hood.AddOffset(-1));
 		operator.povRight().onTrue(shooter.AddOffset(1));
 		operator.povLeft().onTrue(shooter.AddOffset(-1));
+		operator.a().whileTrue(indexer.setVoltage(Volts.of(0.0)));
+		operator.b().whileTrue(shooter.setVoltage(Volts.of(0.0)));
 	
 	}
 
@@ -167,8 +173,10 @@ public class RobotContainer implements OverContainer {
 
 		// Autos are drawn once on the right side of the blue field. Mirrored runs the same
 		// file on the left, red is flipped automatically on top of that
-		autoChooser.addOption("Double pass right", DoublePassAuto.DoublePass(paths, autos, false));
-		autoChooser.addOption("Double pass left", DoublePassAuto.DoublePass(paths, autos, true));
+		autoChooser.addOption("Double pass right", AutoRoutines.DoublePass(paths, autos, false));
+		autoChooser.addOption("Double pass left", AutoRoutines.DoublePass(paths, autos, true));
+		autoChooser.addOption("Alternate double pass right", AutoRoutines.AlternateDoublePass(paths, autos, false));
+		autoChooser.addOption("Alternate double pass left", AutoRoutines.AlternateDoublePass(paths, autos, true));
 
 		SmartDashboard.putData("Auto Chooser", autoChooser);
 	}
@@ -195,6 +203,8 @@ public class RobotContainer implements OverContainer {
 
 		SmartDashboard.putNumber("MatchTime", DriverStation.getMatchTime());
 		SmartDashboard.putBoolean("Vision/AnyTagVisible", isAnyTagVisible());
+
+		updateLimelightPipelines();
 	}
 
 	// Read fresh every time so a trim typed mid-match takes effect on the next loop
@@ -207,6 +217,16 @@ public class RobotContainer implements OverContainer {
 
 	private double getHubDistance() {
 		return chassis.getEstimatedPose().getTranslation().getDistance(LaunchConstants.getHubPose());
+	}
+
+	// Switches both Limelights to the alliance pipeline, once per change
+	private void updateLimelightPipelines() {
+		int wanted = UtilityFunctions.isRedAlliance() ? redPipeline : bluePipeline;
+		if (wanted != limelightPipeline) {
+			LimelightHelpers.setPipelineIndex(limelightRightName, wanted);
+			LimelightHelpers.setPipelineIndex(limelightLeftName, wanted);
+			limelightPipeline = wanted;
+		}
 	}
 
 	// A tag in front of any of the four cameras counts
@@ -226,9 +246,9 @@ public class RobotContainer implements OverContainer {
 		config.backend = AprilTags.VisionBackend.PhotonVision;
 		config.cameraName = camRightName;
 		config.cameraToRobotSupplier = () -> new Transform3d(
-				Units.inchesToMeters(0.0), Units.inchesToMeters(0.0), Units.inchesToMeters(0.0),
-				new Rotation3d(Units.degreesToRadians(0.0), Units.degreesToRadians(0.0),
-						Units.degreesToRadians(0.0)));
+				Units.inchesToMeters(-5.973731), Units.inchesToMeters(-13.455644), Units.inchesToMeters(10.624462),
+				new Rotation3d(Units.degreesToRadians(-90.0), Units.degreesToRadians(0.0),
+						Units.degreesToRadians(-10)));
 		return config;
 	}
 
@@ -237,9 +257,9 @@ public class RobotContainer implements OverContainer {
 		config.backend = AprilTags.VisionBackend.PhotonVision;
 		config.cameraName = camLeftName;
 		config.cameraToRobotSupplier = () -> new Transform3d(
-				Units.inchesToMeters(0.0), Units.inchesToMeters(0.0), Units.inchesToMeters(0.0),
-				new Rotation3d(Units.degreesToRadians(0.0), Units.degreesToRadians(0.0),
-						Units.degreesToRadians(0.0)));
+				Units.inchesToMeters(-5.973731), Units.inchesToMeters(13.455644), Units.inchesToMeters(10.624462),
+				new Rotation3d(Units.degreesToRadians(90.0), Units.degreesToRadians(0.0),
+						Units.degreesToRadians(-10)));
 		return config;
 	}
 

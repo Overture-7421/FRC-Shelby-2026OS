@@ -15,7 +15,6 @@ import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularAcceleration;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Velocity;
-import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.Voltage;
 import static edu.wpi.first.units.Units.*;
 
@@ -33,19 +32,19 @@ public class HoodConstants {
 		protected static AngularVelocity CruiseVelocity = RotationsPerSecond.of(1.23);
 		protected static Velocity<AngularAccelerationUnit> JerkLimit = RotationsPerSecondPerSecond.per(Second).of(0);
 
-		protected static Angle AcceptedError = Degrees.of(3);
+		protected static Angle AcceptedError = Degrees.of(1.5);
 
 
-		protected static Voltage HomingVoltage = Volts.of(-2.0);
-		protected static Current TouchingCurrentThreshold = Amps.of(40.0);
-		protected static double HomingSettleTime = 0.1; // Seconds
+		protected static Voltage HomingVoltage = Volts.of(-4.0);
+		protected static AngularVelocity HomingSpeedThreshold = DegreesPerSecond.of(1.0);
+		protected static double HomingSettleTime = 0.2; // Seconds
 		protected static Angle HomedPosition = Degrees.of(0.0);
 
 	}
 
 	public class States {
 		public static Angle Max = Degree.of(37);
-		public static Angle Min = Degree.of(0);
+		public static Angle Min = Degree.of(1);
 		public static Angle Close = Degree.of(1);
 
 	}

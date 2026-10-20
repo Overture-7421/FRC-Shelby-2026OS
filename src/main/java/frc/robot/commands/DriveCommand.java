@@ -27,8 +27,10 @@ public class DriveCommand extends Command {
 	// Stick-driven heading control
 	// private final HeadingSpeedsHelper headingSpeedsHelper;
 
-	private final SlewRateLimiter xInput = new SlewRateLimiter(11.0);
-	private final SlewRateLimiter yInput = new SlewRateLimiter(11.0);
+	private static final double kTranslationSlewRate = 6.0;
+
+	private final SlewRateLimiter xInput = new SlewRateLimiter(kTranslationSlewRate);
+	private final SlewRateLimiter yInput = new SlewRateLimiter(kTranslationSlewRate);
 
 	private int allianceMulti = 1;
 	private final double slowMulti = 1.0;

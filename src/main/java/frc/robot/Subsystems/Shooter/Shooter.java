@@ -9,7 +9,6 @@ import com.ctre.phoenix6.controls.MotionMagicVelocityVoltage;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.overture.lib.motorcontrollers.OverTalonFX;
 
-import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -29,8 +28,9 @@ public class Shooter extends SubsystemBase {
 	private MotionMagicVelocityVoltage velocityRequest = new MotionMagicVelocityVoltage(0.0)
 			.withEnableFOC(true);
 
-	private int multiplier = 1;
-	private final double manualOffset = 0;
+
+	private int multiplier = 0;
+	private final double manualOffset = 1.0;
 
 	public Shooter() {
 		shooterMotorLead = new OverTalonFX(ShooterConstants.motorConfig(), ShooterConstants.leaderCanId,
@@ -65,9 +65,16 @@ public class Shooter extends SubsystemBase {
 	}
 
 	public void setMotor(AngularVelocity rps) {
-		target = rps.plus(RevolutionsPerSecond.of(manualOffset * multiplier));;
+		target = rps.plus(RevolutionsPerSecond.of(manualOffset * multiplier));
 
 		shooterMotorLead.setControl(velocityRequest.withVelocity(target));
+	}
+
+	// Lets the wheel coast down. Called when a launch ends, the shooter has no
+	// default command that would do it
+	public void stop() {
+		target = RotationsPerSecond.of(0.0);
+		shooterMotorLead.setControl(voltageRequest.withOutput(ShooterConstants.OffVoltage));
 	}
 
 	public double getTarget() {
@@ -80,8 +87,10 @@ public class Shooter extends SubsystemBase {
 
 	public boolean isAtTarget() {
 		return (Math.abs(getTarget() - getVelocity()) < ShooterConstants.Control.AcceptedError.in(RotationsPerSecond));
+	}
 
-		
+	public boolean isNearTarget() {
+		return (Math.abs(getTarget() - getVelocity()) < ShooterConstants.Control.FeedingError.in(RotationsPerSecond));
 	}
 
 	private void addOffset(int addedOffset){

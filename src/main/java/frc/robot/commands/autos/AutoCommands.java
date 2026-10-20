@@ -4,6 +4,8 @@
 
 package frc.robot.commands.autos;
 
+import static edu.wpi.first.units.Units.RotationsPerSecond;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.Subsystems.Chassis.Chassis;
@@ -15,10 +17,10 @@ import frc.robot.Subsystems.Intake.Rollers.Roller;
 import frc.robot.Subsystems.Intake.Rollers.RollerConstants;
 import frc.robot.Subsystems.Shooter.Shooter;
 import frc.robot.commands.LaunchCommand;
+import frc.robot.commands.LaunchConstants;
 import frc.robot.commands.LaunchModes;
 import frc.robot.lib.BLine.FollowPath;
 
-import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
 /**
@@ -34,14 +36,12 @@ public final class AutoCommands {
 	private final Pivot pivot;
 	private final Roller roller;
 	private final DoubleSupplier hubMulti;
-	private final BooleanSupplier tagVisible;
 
 	/**
 	 * @param hubMulti   the hub shooter trim from the dashboard, read fresh each loop
-	 * @param tagVisible whether any camera sees a tag, for the hub shot
 	 */
 	public AutoCommands(Shooter shooter, Hood hood, Chassis chassis, Indexer indexer, Pivot pivot, Roller roller,
-			DoubleSupplier hubMulti, BooleanSupplier tagVisible) {
+			DoubleSupplier hubMulti) {
 		this.shooter = shooter;
 		this.hood = hood;
 		this.chassis = chassis;
@@ -49,7 +49,6 @@ public final class AutoCommands {
 		this.pivot = pivot;
 		this.roller = roller;
 		this.hubMulti = hubMulti;
-		this.tagVisible = tagVisible;
 
 		FollowPath.registerEventTrigger("intakeOn", () -> roller.setTarget(RollerConstants.IntakingVoltage));
 		FollowPath.registerEventTrigger("intakeOff", () -> roller.setTarget(RollerConstants.OffVoltage));
@@ -65,13 +64,19 @@ public final class AutoCommands {
 	 */
 	public Command hubShot(double seconds) {
 		return new LaunchCommand(shooter, hood, chassis, indexer, pivot, roller,
-				LaunchModes.HUB, hubMulti, tagVisible, () -> false)
+				LaunchModes.HUB, hubMulti, () -> false)
 				.withTimeout(seconds);
 	}
 
 	/**
-	 * Intake out and rollers in for as long as a path runs, then rollers off. The
-	 * pivot stays out, the next launch closes it.
+	 * Drives a path with the intake out and the rollers in, then rollers off. The
+	 * pivot stays out, the next launch closes it. Meanwhile the hood homes if it has
+	 * not since boot and the shooter spins up to what a hub shot needs from where
+	 * the robot is, so the shot after the path starts ready.
+	 *
+	 * <p>
+	 * The homing has to be here: an auto is one group and it holds the hood for its
+	 * whole life, so the hood default command that homes in teleop never runs in auto.
 	 *
 	 * @param path the path command to drive while intaking
 	 * @return the command
@@ -81,7 +86,19 @@ public final class AutoCommands {
 				path,
 				Commands.parallel(
 						pivot.setPosition(PivotConstants.States.Open),
-						roller.setVoltage(RollerConstants.IntakingVoltage)))
+						roller.setVoltage(RollerConstants.IntakingVoltage)),
+				homeHood())
+				// preSpin())
 				.andThen(roller.setVoltage(RollerConstants.OffVoltage));
+	}
+
+	private Command homeHood() {
+		return Commands.either(Commands.none(), hood.HoodHoming(), hood::isHomed);
+	}
+
+
+	private Command preSpin() {
+		return shooter.trackVelocity(() -> RotationsPerSecond.of(LaunchConstants.DistanceToShooterForHub
+				.get(chassis.getEstimatedPose().getTranslation().getDistance(LaunchConstants.getHubPose()))));
 	}
 }
