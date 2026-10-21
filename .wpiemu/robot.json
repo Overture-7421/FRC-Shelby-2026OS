@@ -920,7 +920,7 @@
             "absolute": true
           },
           {
-            "mechanism": "indexer",
+            "mechanism": "hood",
             "value": "velocity",
             "op": "above",
             "threshold": 10.0,
