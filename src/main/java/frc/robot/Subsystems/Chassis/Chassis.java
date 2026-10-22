@@ -23,9 +23,6 @@ import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.util.Units;
 import frc.robot.Constants.RobotConstants;
 
-import org.ironmaple.simulation.drivesims.COTS;
-import org.ironmaple.simulation.drivesims.configs.DriveTrainSimulationConfig;
-import org.ironmaple.simulation.drivesims.configs.SwerveModuleSimulationConfig;
 
 /**
  * Port of the C++ Chassis subsystem, the OvertureLib SwerveChassis subclass.
@@ -115,38 +112,7 @@ public class Chassis extends SwerveChassis {
 	 * repository, where a drive
 	 * ratio could sit at 6.03 against a robot geared 7.03 without anyone noticing.
 	 */
-	@Override
-	protected DriveTrainSimulationConfig getSimulationConfig() {
-		return DriveTrainSimulationConfig.Default()
-				.withRobotMass(Kilograms.of(61.235))
-				.withGyro(COTS.ofPigeon2())
-				.withSwerveModule(
-						new SwerveModuleSimulationConfig(
-								DCMotor.getKrakenX60(1),
-								DCMotor.getFalcon500(1),
-								kDriveGearRatio,
-								kTurnGearRatio,
-								Volts.of(0.01),
-								Volts.of(0.01),
-								Inches.of(kWheelRadiusInches),
-								KilogramSquareMeters.of(0.03),
-								// Conservative tyre friction. The COTS value was flagged as abnormal by the
-								// simulation (~2.106); 0.9 is realistic for rubber on carpet.
-								0.9))
-				.withCustomModuleTranslations(
-						new Translation2d[] {
-								new Translation2d(Inches.of(kTrackXInches), Inches.of(kTrackYInches)),
-								new Translation2d(Inches.of(kTrackXInches), Inches.of(-kTrackYInches)),
-								new Translation2d(Inches.of(-kTrackXInches), Inches.of(kTrackYInches)),
-								new Translation2d(Inches.of(-kTrackXInches), Inches.of(-kTrackYInches))
-						})
-				.withBumperSize(Inches.of(30.5), Inches.of(31.5));
-	}
-
-	@Override
-	protected Pigeon2 getSimulationPigeon() {
-		return pigeon;
-	}
+	
 
 	@Override
 	public double getMaxModuleSpeed() {
