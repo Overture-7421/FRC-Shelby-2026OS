@@ -113,6 +113,16 @@ public class Chassis extends SwerveChassis {
 		return 4.541;
 	}
 
+	/**
+	 * Distance from the robot centre to the modules, in meters. Spinning at ω rad/s
+	 * adds ω times this to every module's speed.
+	 *
+	 * @return the drive base radius
+	 */
+	public double getDriveBaseRadius() {
+		return Units.inchesToMeters(Math.hypot(kTrackXInches, kTrackYInches));
+	}
+
 	@Override
 	protected SwerveModule getFrontLeftModule() {
 		return frontLeftModule;

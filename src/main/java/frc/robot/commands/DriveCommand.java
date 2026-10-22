@@ -7,52 +7,62 @@ package frc.robot.commands;
 import com.overture.lib.gamepads.OverXboxController;
 import com.overture.lib.math.Utils;
 import com.overture.lib.utils.UtilityFunctions;
-import edu.wpi.first.math.filter.SlewRateLimiter;
+import edu.wpi.first.math.MathSharedStore;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Subsystems.Chassis.Chassis;
 
-/** Port of the C++ DriveCommand: the default teleop drive. */
 public class DriveCommand extends Command {
 	private final Chassis chassis;
 	private final OverXboxController gamepad;
 
-	// Heading control is disabled for now
-	// private final ProfiledPIDController headingController = new
-	// ProfiledPIDController(
-	// 4.75, 0.0, 0.15, new TrapezoidProfile.Constraints(13.0, 18.0 * 2));
+	/**
+	 * How fast the robot may speed up or change direction, in m/s per second. This
+	 * is what pulls current from the battery.
+	 */
+	private static final double kTranslationAccelLimit = 6.0;
 
-	// Stick-driven heading control
-	// private final HeadingSpeedsHelper headingSpeedsHelper;
+	/**
+	 * How fast the robot may slow down, in m/s per second. Braking takes energy out
+	 * rather than putting it in, so it can be quicker without costing battery; past
+	 * about 11 the tires slide instead.
+	 */
+	private static final double kTranslationDecelLimit = 11.0;
 
-	private static final double kTranslationSlewRate = 13.0;
+	private static final double kTranslationDeadband = 0.11;
+	private static final double kTranslationExpo = 0.2;
 
-	private final SlewRateLimiter xInput = new SlewRateLimiter(kTranslationSlewRate);
-	private final SlewRateLimiter yInput = new SlewRateLimiter(kTranslationSlewRate);
+	/**
+	 * Rotation always available, even at full translation, in rad/s. Above what
+	 * translation leaves free, rotation is capped so the modules do not saturate;
+	 * this much is kept anyway and paid for with a little translation.
+	 */
+	private static final double kMinRotationRadPerSec = Units.rotationsToRadians(0.3);
+
+	/**
+	 * The velocity actually requested, after the slew limit. One limit on the whole
+	 * vector rather than one per axis: per axis, diagonals accelerated √2 faster
+	 * and a
+	 * change of direction drove a curve while each axis caught up on its own.
+	 */
+	private double limitedVx = 0.0;
+	private double limitedVy = 0.0;
+	private double lastTimestamp = 0.0;
 
 	private int allianceMulti = 1;
 	private final double slowMulti = 1.0;
 
 	/**
-	 * While the right bumper is held, translation is capped so the shooter can
-	 * solve for it.
-	 */
-	private static final double kShootWhileMoveMaxSpeed = 2.0;
-
-	/**
 	 * Builds the drive command.
 	 *
-	 * @param chassis   the drivetrain
-	 * @param gamepad   the driver's controller
+	 * @param chassis the drivetrain
+	 * @param gamepad the driver's controller
 	 */
 	public DriveCommand(Chassis chassis, OverXboxController gamepad) {
 		this.chassis = chassis;
 		this.gamepad = gamepad;
-		// Stick-driven heading control
-		// this.headingSpeedsHelper = new HeadingSpeedsHelper(headingController,
-		// chassis);
 
 		addRequirements(chassis);
 	}
@@ -60,72 +70,110 @@ public class DriveCommand extends Command {
 	@Override
 	public void initialize() {
 		allianceMulti = UtilityFunctions.isRedAlliance() ? -1 : 1;
+
+		// Start the limit from how the robot is actually moving, so taking over from an
+		// auto or another command does not jump or brake to a stop
+		ChassisSpeeds current = ChassisSpeeds.fromRobotRelativeSpeeds(
+				chassis.getCurrentSpeeds(), chassis.getEstimatedPose().getRotation());
+		limitedVx = current.vxMetersPerSecond;
+		limitedVy = current.vyMetersPerSecond;
+		lastTimestamp = MathSharedStore.getTimestamp();
 	}
 
 	@Override
 	public void execute() {
-		// Stick-driven heading control
-		//
-		// Rotation2d targetAngle = gamepad.getRightStickDirection();
-		// if (allianceMulti == -1) {
-		// targetAngle = targetAngle.rotateBy(Rotation2d.fromDegrees(180));
-		// }
-		// double squares = Math.hypot(gamepad.getRightY(), gamepad.getRightX());
-		// if (squares > 0.71) {
-		// if (!speedHelperMoved) {
-		// speedHelperMoved = true;
-		// chassis.enableSpeedHelper(headingSpeedsHelper);
-		// }
-		// } else if (speedHelperMoved) {
-		// speedHelperMoved = false;
-		// chassis.disableSpeedHelper();
-		// }
-		// headingSpeedsHelper.setTargetAngle(targetAngle);
+		// Both sticks shaped as one vector: the deadband and the expo act on how far
+		// the
+		// stick is pushed, and the direction is kept exactly as the stick points.
+		// Shaping
+		// each axis on its own made the deadband a square that cut small diagonal
+		// moves,
+		// and bent the direction, since the curve changes the ratio between the axes.
+		double stickX = allianceMulti * -gamepad.getHID().getRawAxis(1);
+		double stickY = allianceMulti * -gamepad.getHID().getRawAxis(0);
+		// Many sticks read a little past 1 in the corners
+		double stickMagnitude = Math.min(1.0, Math.hypot(stickX, stickY));
+		double shapedMagnitude = Utils.applyAxisFilter(stickMagnitude, kTranslationDeadband, kTranslationExpo);
+		double stickScale = stickMagnitude > 0.0
+				? shapedMagnitude / Math.hypot(stickX, stickY) * chassis.getMaxModuleSpeed() * slowMulti
+				: 0.0;
 
-		double xSpeed = Utils.applyAxisFilter(allianceMulti * -gamepad.getHID().getRawAxis(1), 0.11, 0.5)
-				* chassis.getMaxModuleSpeed()
-				* slowMulti;
-		double ySpeed = Utils.applyAxisFilter(allianceMulti * -gamepad.getHID().getRawAxis(0), 0.11, 0.5)
-				* chassis.getMaxModuleSpeed()
-				* slowMulti;
+		// Shooting while moving needs no cap here: a pass scales this translation
+		// itself
+		// through VisionAlignCmd's speeds helper
+		limitTranslation(stickX * stickScale, stickY * stickScale);
 
-		if (gamepad.getHID().getRightBumperButton()) {
-			double vMag = Math.hypot(xSpeed, ySpeed);
-
-			if (vMag > kShootWhileMoveMaxSpeed) {
-				// Carried over exactly as the C++ had it: a ratio of squares, not of
-				// magnitudes. Capping a
-				// vector at vMax normally scales by vMax/vMag; this scales by its square, so it
-				// slows the
-				// robot more than the cap asks for. It is what the robot drove at Worlds, so it
-				// is
-				// preserved rather than corrected here.
-				double vMaxFactor = (kShootWhileMoveMaxSpeed * kShootWhileMoveMaxSpeed)
-						/ (xSpeed * xSpeed + ySpeed * ySpeed);
-				xSpeed *= vMaxFactor;
-				ySpeed *= vMaxFactor;
-			}
-		}
-
-		// The C++ wrote this as turns per second and handed it straight to
-		// ChassisSpeeds, which takes
-		// radians per second; the units library converted on the way. Java carries
-		// plain doubles, so
-		// the conversion has to be explicit or the robot would spin 2*pi times too
-		// slowly.
 		double rotationSpeedRadPerSec = Units
-				.rotationsToRadians(Utils.applyAxisFilter(gamepad.getRightX(), 0.06, 0.75) * -1.75);
+				.rotationsToRadians(Utils.applyAxisFilter(gamepad.getRightX(), 0.06, 0.3) * -1.0);
+
+		// Translation keeps priority. Spinning adds ω times the drive base radius to
+		// every module's speed, and once a module would pass its maximum the chassis
+		// scales the whole request down, so spinning at speed used to slow the robot.
+		// Rotation only gets the module speed translation leaves free, with a floor
+		double translationSpeed = Math.hypot(limitedVx, limitedVy);
+		double freeRotation = Math.max(0.0, chassis.getMaxModuleSpeed() - translationSpeed)
+				/ chassis.getDriveBaseRadius();
+		double rotationLimit = Math.max(freeRotation, kMinRotationRadPerSec);
+		rotationSpeedRadPerSec = Math.max(-rotationLimit, Math.min(rotationLimit, rotationSpeedRadPerSec));
 
 		SmartDashboard.putNumber(
 				"DriveCommand/RotationSpeed", Units.radiansToRotations(rotationSpeedRadPerSec));
 
 		ChassisSpeeds speeds = ChassisSpeeds.fromFieldRelativeSpeeds(
-				xInput.calculate(xSpeed),
-				yInput.calculate(ySpeed),
+				limitedVx,
+				limitedVy,
 				rotationSpeedRadPerSec,
 				chassis.getEstimatedPose().getRotation());
 
 		chassis.setTargetSpeeds(speeds);
+	}
+
+	/**
+	 * Moves the requested velocity toward the target. The part of the change that
+	 * slows the robot down is limited by the decel limit; speeding up and turning
+	 * the direction of travel share the accel limit.
+	 */
+	private void limitTranslation(double targetVx, double targetVy) {
+		double now = MathSharedStore.getTimestamp();
+		double dt = now - lastTimestamp;
+		lastTimestamp = now;
+		double accelBudget = kTranslationAccelLimit * dt;
+		double decelBudget = kTranslationDecelLimit * dt;
+
+		double changeX = targetVx - limitedVx;
+		double changeY = targetVy - limitedVy;
+		double speed = Math.hypot(limitedVx, limitedVy);
+
+		if (speed < 1e-6) {
+			// Standing still: everything is speeding up
+			double change = Math.hypot(changeX, changeY);
+			if (change > accelBudget) {
+				changeX *= accelBudget / change;
+				changeY *= accelBudget / change;
+			}
+		} else {
+			// Split the change along the current velocity (negative slows down, positive
+			// speeds up) and across it (turns the direction of travel)
+			double unitX = limitedVx / speed;
+			double unitY = limitedVy / speed;
+			double along = changeX * unitX + changeY * unitY;
+			double acrossX = changeX - along * unitX;
+			double acrossY = changeY - along * unitY;
+
+			// Braking stops at zero: a reversal brakes first, then speeds up the other way
+			// at the accel limit on the next loops
+			double slowing = Math.max(-Math.min(decelBudget, speed), Math.min(0.0, along));
+
+			double speedingUp = Math.max(0.0, along);
+			double growth = Math.hypot(speedingUp, Math.hypot(acrossX, acrossY));
+			double growthScale = growth > accelBudget ? accelBudget / growth : 1.0;
+
+			double alongResult = slowing + speedingUp * growthScale;
+			changeX = alongResult * unitX + acrossX * growthScale;
+			changeY = alongResult * unitY + acrossY * growthScale;
+		}
+		limitedVx += changeX;
+		limitedVy += changeY;
 	}
 
 	@Override
