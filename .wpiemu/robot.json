@@ -1,0 +1,1124 @@
+{
+  "schemaVersion": 1,
+  "name": "Shelby 2026",
+  "project": {
+    "path": "C:\\Users\\alber\\Documents\\Gits\\FRC-Shelby-2026OS",
+    "language": "java",
+    "wpilibYear": 2026,
+    "gradleRioVersion": "2026.2.1"
+  },
+  "gamePluginId": "",
+  "startPose": {
+    "xM": 4.51,
+    "yM": 0.52654,
+    "headingRad": 0.0
+  },
+  "chassis": {
+    "sizeM": {
+      "x": 0.774954,
+      "y": 0.8001,
+      "z": 0.1
+    },
+    "massKg": 61.23497,
+    "comHeightM": 0.2,
+    "comOffsetM": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    },
+    "groundClearanceM": 0.0762,
+    "inertiaDiagKgM2": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    },
+    "material": {
+      "friction": 0.3,
+      "restitution": 0.1,
+      "rollingResistance": 0.0
+    },
+    "primitives": []
+  },
+  "drivetrain": {
+    "kind": "swerve",
+    "tireModel": "brush",
+    "loadTransferTauS": 0.02,
+    "wheels": [
+      {
+        "name": "fl",
+        "kind": "swerve",
+        "positionM": {
+          "x": 0.323977,
+          "y": 0.33655,
+          "z": 0.0508
+        },
+        "radiusM": 0.0508,
+        "widthM": 0.038,
+        "inertiaKgM2": 0.0015,
+        "tire": {
+          "mu": 1.1,
+          "slideRatio": 0.85,
+          "peakSlipLong": 0.15,
+          "peakSlipLat": 0.2,
+          "vRefMps": 0.5,
+          "lateralScale": 1.0,
+          "tractionAngleRad": 0.0
+        },
+        "steered": true,
+        "driveMotor": {
+          "name": "Kraken X60",
+          "nominalVoltageV": 12.0,
+          "stallTorqueNm": 7.09,
+          "stallCurrentA": 366.0,
+          "freeCurrentA": 2.0,
+          "freeSpeedRadPerSec": 628.3185307179587
+        },
+        "driveMotorCount": 1,
+        "driveGearRatio": 6.88,
+        "driveEfficiency": 0.9,
+        "driveCurrentLimitA": 60.0,
+        "steerMotor": {
+          "name": "Kraken X44",
+          "nominalVoltageV": 12.0,
+          "stallTorqueNm": 4.11,
+          "stallCurrentA": 279.0,
+          "freeCurrentA": 2.0,
+          "freeSpeedRadPerSec": 812.4158602183205
+        },
+        "steerGearRatio": 26.09,
+        "steerInertiaKgM2": 0.004
+      },
+      {
+        "name": "fr",
+        "kind": "swerve",
+        "positionM": {
+          "x": 0.323977,
+          "y": -0.33655,
+          "z": 0.0508
+        },
+        "radiusM": 0.0508,
+        "widthM": 0.038,
+        "inertiaKgM2": 0.0015,
+        "tire": {
+          "mu": 1.1,
+          "slideRatio": 0.85,
+          "peakSlipLong": 0.15,
+          "peakSlipLat": 0.2,
+          "vRefMps": 0.5,
+          "lateralScale": 1.0,
+          "tractionAngleRad": 0.0
+        },
+        "steered": true,
+        "driveMotor": {
+          "name": "Kraken X60",
+          "nominalVoltageV": 12.0,
+          "stallTorqueNm": 7.09,
+          "stallCurrentA": 366.0,
+          "freeCurrentA": 2.0,
+          "freeSpeedRadPerSec": 628.3185307179587
+        },
+        "driveMotorCount": 1,
+        "driveGearRatio": 6.88,
+        "driveEfficiency": 0.9,
+        "driveCurrentLimitA": 60.0,
+        "steerMotor": {
+          "name": "Kraken X44",
+          "nominalVoltageV": 12.0,
+          "stallTorqueNm": 4.11,
+          "stallCurrentA": 279.0,
+          "freeCurrentA": 2.0,
+          "freeSpeedRadPerSec": 812.4158602183205
+        },
+        "steerGearRatio": 26.09,
+        "steerInertiaKgM2": 0.004
+      },
+      {
+        "name": "bl",
+        "kind": "swerve",
+        "positionM": {
+          "x": -0.323977,
+          "y": 0.33655,
+          "z": 0.0508
+        },
+        "radiusM": 0.0508,
+        "widthM": 0.038,
+        "inertiaKgM2": 0.0015,
+        "tire": {
+          "mu": 1.1,
+          "slideRatio": 0.85,
+          "peakSlipLong": 0.15,
+          "peakSlipLat": 0.2,
+          "vRefMps": 0.5,
+          "lateralScale": 1.0,
+          "tractionAngleRad": 0.0
+        },
+        "steered": true,
+        "driveMotor": {
+          "name": "Kraken X60",
+          "nominalVoltageV": 12.0,
+          "stallTorqueNm": 7.09,
+          "stallCurrentA": 366.0,
+          "freeCurrentA": 2.0,
+          "freeSpeedRadPerSec": 628.3185307179587
+        },
+        "driveMotorCount": 1,
+        "driveGearRatio": 6.88,
+        "driveEfficiency": 0.9,
+        "driveCurrentLimitA": 60.0,
+        "steerMotor": {
+          "name": "Kraken X44",
+          "nominalVoltageV": 12.0,
+          "stallTorqueNm": 4.11,
+          "stallCurrentA": 279.0,
+          "freeCurrentA": 2.0,
+          "freeSpeedRadPerSec": 812.4158602183205
+        },
+        "steerGearRatio": 26.09,
+        "steerInertiaKgM2": 0.004
+      },
+      {
+        "name": "br",
+        "kind": "swerve",
+        "positionM": {
+          "x": -0.323977,
+          "y": -0.33655,
+          "z": 0.0508
+        },
+        "radiusM": 0.0508,
+        "widthM": 0.038,
+        "inertiaKgM2": 0.0015,
+        "tire": {
+          "mu": 1.1,
+          "slideRatio": 0.85,
+          "peakSlipLong": 0.15,
+          "peakSlipLat": 0.2,
+          "vRefMps": 0.5,
+          "lateralScale": 1.0,
+          "tractionAngleRad": 0.0
+        },
+        "steered": true,
+        "driveMotor": {
+          "name": "Kraken X60",
+          "nominalVoltageV": 12.0,
+          "stallTorqueNm": 7.09,
+          "stallCurrentA": 366.0,
+          "freeCurrentA": 2.0,
+          "freeSpeedRadPerSec": 628.3185307179587
+        },
+        "driveMotorCount": 1,
+        "driveGearRatio": 6.88,
+        "driveEfficiency": 0.9,
+        "driveCurrentLimitA": 60.0,
+        "steerMotor": {
+          "name": "Kraken X44",
+          "nominalVoltageV": 12.0,
+          "stallTorqueNm": 4.11,
+          "stallCurrentA": 279.0,
+          "freeCurrentA": 2.0,
+          "freeSpeedRadPerSec": 812.4158602183205
+        },
+        "steerGearRatio": 26.09,
+        "steerInertiaKgM2": 0.004
+      }
+    ],
+    "mappings": [
+      {
+        "owner": "drivetrain",
+        "slot": "fl.drive",
+        "device": {
+          "family": "phoenix6",
+          "type": "talonfx",
+          "id": 4,
+          "bus": "OverCANivore",
+          "channel": -1
+        }
+      },
+      {
+        "owner": "drivetrain",
+        "slot": "fl.steer",
+        "device": {
+          "family": "phoenix6",
+          "type": "talonfx",
+          "id": 3,
+          "bus": "OverCANivore",
+          "channel": -1
+        }
+      },
+      {
+        "owner": "drivetrain",
+        "slot": "fl.steerEncoder",
+        "device": {
+          "family": "phoenix6",
+          "type": "cancoder",
+          "id": 12,
+          "bus": "OverCANivore",
+          "channel": -1
+        }
+      },
+      {
+        "owner": "drivetrain",
+        "slot": "fr.drive",
+        "device": {
+          "family": "phoenix6",
+          "type": "talonfx",
+          "id": 8,
+          "bus": "OverCANivore",
+          "channel": -1
+        }
+      },
+      {
+        "owner": "drivetrain",
+        "slot": "fr.steer",
+        "device": {
+          "family": "phoenix6",
+          "type": "talonfx",
+          "id": 7,
+          "bus": "OverCANivore",
+          "channel": -1
+        }
+      },
+      {
+        "owner": "drivetrain",
+        "slot": "fr.steerEncoder",
+        "device": {
+          "family": "phoenix6",
+          "type": "cancoder",
+          "id": 11,
+          "bus": "OverCANivore",
+          "channel": -1
+        }
+      },
+      {
+        "owner": "drivetrain",
+        "slot": "bl.drive",
+        "device": {
+          "family": "phoenix6",
+          "type": "talonfx",
+          "id": 2,
+          "bus": "OverCANivore",
+          "channel": -1
+        }
+      },
+      {
+        "owner": "drivetrain",
+        "slot": "bl.steer",
+        "device": {
+          "family": "phoenix6",
+          "type": "talonfx",
+          "id": 1,
+          "bus": "OverCANivore",
+          "channel": -1
+        }
+      },
+      {
+        "owner": "drivetrain",
+        "slot": "bl.steerEncoder",
+        "device": {
+          "family": "phoenix6",
+          "type": "cancoder",
+          "id": 9,
+          "bus": "OverCANivore",
+          "channel": -1
+        }
+      },
+      {
+        "owner": "drivetrain",
+        "slot": "br.drive",
+        "device": {
+          "family": "phoenix6",
+          "type": "talonfx",
+          "id": 6,
+          "bus": "OverCANivore",
+          "channel": -1
+        }
+      },
+      {
+        "owner": "drivetrain",
+        "slot": "br.steer",
+        "device": {
+          "family": "phoenix6",
+          "type": "talonfx",
+          "id": 5,
+          "bus": "OverCANivore",
+          "channel": -1
+        }
+      },
+      {
+        "owner": "drivetrain",
+        "slot": "br.steerEncoder",
+        "device": {
+          "family": "phoenix6",
+          "type": "cancoder",
+          "id": 10,
+          "bus": "OverCANivore",
+          "channel": -1
+        }
+      }
+    ]
+  },
+  "mechanisms": [
+    {
+      "id": "hood",
+      "type": "mechanism",
+      "label": "hood",
+      "attachment": {
+        "parentMechanismId": "chassis",
+        "parentLink": "root"
+      },
+      "mount": {
+        "position": {
+          "x": -0.25,
+          "y": 0.0,
+          "z": 0.2
+        },
+        "rotation": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 1.0
+        }
+      },
+      "geometry": [],
+      "properties": {
+        "motion": "arm",
+        "motorModel": "kraken_x60",
+        "gearRatio": 94.9,
+        "motorCount": 1,
+        "simulateGravity": false,
+        "minPosition": 0.0,
+        "maxPosition": 0.6457718232379019,
+        "startPosition": 0.0,
+        "statorCurrentLimitA": 60.0,
+        "momentOfInertiaKgM2": 0.08,
+        "neutralMode": "brake",
+        "efficiency": 1.0,
+        "reportMotorLimits": false,
+        "massKg": 2.0,
+        "lengthM": 0.3,
+        "drumRadiusM": 0.02,
+        "comFraction": 0.5,
+        "viscousFrictionNmS": 0.001,
+        "coulombFrictionNm": 0.0,
+        "limitMargin": 1e-06,
+        "limitPressedValue": true,
+        "sensorRatio": 1.0,
+        "sensorInverted": false,
+        "sensorOffsetRot": 0.0,
+        "axis": "z"
+      },
+      "mappings": [
+        {
+          "owner": "hood",
+          "slot": "motor",
+          "reversed": true,
+          "device": {
+            "family": "phoenix6",
+            "type": "talonfx",
+            "id": 24,
+            "bus": "rio",
+            "channel": -1
+          }
+        }
+      ]
+    },
+    {
+      "id": "pivot",
+      "type": "mechanism",
+      "label": "pivot",
+      "attachment": {
+        "parentMechanismId": "chassis",
+        "parentLink": "root"
+      },
+      "mount": {
+        "position": {
+          "x": 0.26,
+          "y": 0.0,
+          "z": -0.02
+        },
+        "rotation": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 1.0
+        }
+      },
+      "geometry": [
+        {
+          "name": "box1",
+          "kind": "box",
+          "local": {
+            "position": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0
+            },
+            "rotation": {
+              "x": 0.0,
+              "y": 0.0,
+              "z": 0.0,
+              "w": 1.0
+            }
+          },
+          "sizeM": {
+            "x": 0.2794,
+            "y": 0.6858,
+            "z": 0.1
+          },
+          "radiusM": 0.05,
+          "heightM": 0.1,
+          "color": "#808080",
+          "collides": false,
+          "massKg": 0.0
+        }
+      ],
+      "properties": {
+        "motion": "arm",
+        "motorModel": "kraken_x60",
+        "gearRatio": 40.0,
+        "motorCount": 1,
+        "simulateGravity": true,
+        "minPosition": 0.0,
+        "maxPosition": 2.1816615649929116,
+        "startPosition": 0.08726646259971647,
+        "momentOfInertiaKgM2": 0.4,
+        "statorCurrentLimitA": 75.0,
+        "neutralMode": "brake",
+        "efficiency": 1.0,
+        "reportMotorLimits": false,
+        "massKg": 2.0,
+        "lengthM": 0.3,
+        "drumRadiusM": 0.02,
+        "comFraction": 0.5,
+        "viscousFrictionNmS": 0.001,
+        "coulombFrictionNm": 0.0,
+        "limitMargin": 1e-06,
+        "limitPressedValue": true,
+        "sensorRatio": 1.0,
+        "sensorInverted": false,
+        "sensorOffsetRot": 0.0,
+        "axis": "z"
+      },
+      "mappings": [
+        {
+          "owner": "pivot",
+          "slot": "motor",
+          "reversed": true,
+          "device": {
+            "family": "phoenix6",
+            "type": "talonfx",
+            "id": 29,
+            "bus": "rio",
+            "channel": -1
+          }
+        },
+        {
+          "owner": "pivot",
+          "slot": "encoder",
+          "device": {
+            "family": "phoenix6",
+            "type": "cancoder",
+            "id": 30,
+            "bus": "rio",
+            "channel": -1
+          }
+        }
+      ]
+    },
+    {
+      "id": "roller",
+      "type": "mechanism",
+      "label": "roller",
+      "attachment": {
+        "parentMechanismId": "chassis",
+        "parentLink": "root"
+      },
+      "mount": {
+        "position": {
+          "x": 0.52,
+          "y": 0.0,
+          "z": -0.05
+        },
+        "rotation": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 1.0
+        }
+      },
+      "geometry": [],
+      "properties": {
+        "motion": "rotary",
+        "motorModel": "kraken_x60",
+        "gearRatio": 1.0,
+        "motorCount": 2,
+        "simulateGravity": false,
+        "neutralMode": "brake",
+        "statorCurrentLimitA": 0.0,
+        "efficiency": 1.0,
+        "reportMotorLimits": false,
+        "momentOfInertiaKgM2": 0.01,
+        "massKg": 2.0,
+        "lengthM": 0.3,
+        "drumRadiusM": 0.02,
+        "comFraction": 0.5,
+        "viscousFrictionNmS": 0.001,
+        "coulombFrictionNm": 0.0,
+        "minPosition": 0.0,
+        "maxPosition": 0.0,
+        "startPosition": 0.0,
+        "limitMargin": 1e-06,
+        "limitPressedValue": true,
+        "sensorRatio": 1.0,
+        "sensorInverted": false,
+        "sensorOffsetRot": 0.0,
+        "axis": "z"
+      },
+      "mappings": [
+        {
+          "owner": "roller",
+          "slot": "motor",
+          "reversed": true,
+          "device": {
+            "family": "phoenix6",
+            "type": "talonfx",
+            "id": 32,
+            "bus": "rio",
+            "channel": -1
+          }
+        },
+        {
+          "owner": "roller",
+          "slot": "motor2",
+          "device": {
+            "family": "phoenix6",
+            "type": "talonfx",
+            "id": 31,
+            "bus": "rio",
+            "channel": -1
+          }
+        }
+      ]
+    },
+    {
+      "id": "indexer",
+      "type": "mechanism",
+      "label": "indexer",
+      "attachment": {
+        "parentMechanismId": "chassis",
+        "parentLink": "root"
+      },
+      "mount": {
+        "position": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.03
+        },
+        "rotation": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 1.0
+        }
+      },
+      "geometry": [],
+      "properties": {
+        "motion": "rotary",
+        "motorModel": "kraken_x60",
+        "gearRatio": 1.0,
+        "motorCount": 4,
+        "simulateGravity": false,
+        "neutralMode": "brake",
+        "statorCurrentLimitA": 0.0,
+        "efficiency": 1.0,
+        "reportMotorLimits": false,
+        "momentOfInertiaKgM2": 0.01,
+        "massKg": 2.0,
+        "lengthM": 0.3,
+        "drumRadiusM": 0.02,
+        "comFraction": 0.5,
+        "viscousFrictionNmS": 0.001,
+        "coulombFrictionNm": 0.0,
+        "minPosition": 0.0,
+        "maxPosition": 0.0,
+        "startPosition": 0.0,
+        "limitMargin": 1e-06,
+        "limitPressedValue": true,
+        "sensorRatio": 1.0,
+        "sensorInverted": false,
+        "sensorOffsetRot": 0.0,
+        "axis": "z"
+      },
+      "mappings": [
+        {
+          "owner": "indexer",
+          "slot": "motor",
+          "device": {
+            "family": "phoenix6",
+            "type": "talonfx",
+            "id": 20,
+            "bus": "rio",
+            "channel": -1
+          }
+        },
+        {
+          "owner": "indexer",
+          "slot": "motor2",
+          "reversed": true,
+          "device": {
+            "family": "phoenix6",
+            "type": "talonfx",
+            "id": 21,
+            "bus": "rio",
+            "channel": -1
+          }
+        },
+        {
+          "owner": "indexer",
+          "slot": "motor3",
+          "reversed": true,
+          "device": {
+            "family": "phoenix6",
+            "type": "talonfx",
+            "id": 22,
+            "bus": "rio",
+            "channel": -1
+          }
+        },
+        {
+          "owner": "indexer",
+          "slot": "motor4",
+          "device": {
+            "family": "phoenix6",
+            "type": "talonfx",
+            "id": 23,
+            "bus": "rio",
+            "channel": -1
+          }
+        }
+      ]
+    },
+    {
+      "id": "shooter",
+      "type": "mechanism",
+      "label": "shooter",
+      "attachment": {
+        "parentMechanismId": "chassis",
+        "parentLink": "root"
+      },
+      "mount": {
+        "position": {
+          "x": -0.3,
+          "y": 0.0,
+          "z": 0.2
+        },
+        "rotation": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 1.0
+        }
+      },
+      "geometry": [],
+      "properties": {
+        "motion": "rotary",
+        "motorModel": "kraken_x60",
+        "gearRatio": 1.6666666666666667,
+        "motorCount": 4,
+        "simulateGravity": false,
+        "momentOfInertiaKgM2": 0.04,
+        "neutralMode": "coast",
+        "statorCurrentLimitA": 60.0,
+        "efficiency": 1.0,
+        "reportMotorLimits": false,
+        "massKg": 2.0,
+        "lengthM": 0.3,
+        "drumRadiusM": 0.02,
+        "comFraction": 0.5,
+        "viscousFrictionNmS": 0.001,
+        "coulombFrictionNm": 0.0,
+        "minPosition": 0.0,
+        "maxPosition": 0.0,
+        "startPosition": 0.0,
+        "limitMargin": 1e-06,
+        "limitPressedValue": true,
+        "sensorRatio": 1.0,
+        "sensorInverted": false,
+        "sensorOffsetRot": 0.0,
+        "axis": "z"
+      },
+      "mappings": [
+        {
+          "owner": "shooter",
+          "slot": "motor",
+          "reversed": true,
+          "device": {
+            "family": "phoenix6",
+            "type": "talonfx",
+            "id": 25,
+            "bus": "rio",
+            "channel": -1
+          }
+        },
+        {
+          "owner": "shooter",
+          "slot": "motor2",
+          "reversed": true,
+          "device": {
+            "family": "phoenix6",
+            "type": "talonfx",
+            "id": 26,
+            "bus": "rio",
+            "channel": -1
+          }
+        },
+        {
+          "owner": "shooter",
+          "slot": "motor3",
+          "device": {
+            "family": "phoenix6",
+            "type": "talonfx",
+            "id": 27,
+            "bus": "rio",
+            "channel": -1
+          }
+        },
+        {
+          "owner": "shooter",
+          "slot": "motor4",
+          "device": {
+            "family": "phoenix6",
+            "type": "talonfx",
+            "id": 28,
+            "bus": "rio",
+            "channel": -1
+          }
+        }
+      ]
+    }
+  ],
+  "robotMappings": [
+    {
+      "owner": "robot",
+      "slot": "imu",
+      "device": {
+        "family": "phoenix6",
+        "type": "pigeon2",
+        "id": 13,
+        "bus": "OverCANivore",
+        "channel": -1
+      }
+    }
+  ],
+  "zones": [
+    {
+      "id": "intake_pickup",
+      "kind": "game_2026.pickup",
+      "label": "",
+      "attachment": {
+        "parentMechanismId": "chassis",
+        "parentLink": "root"
+      },
+      "pose": {
+        "position": {
+          "x": 0.52,
+          "y": 0.0,
+          "z": -0.05
+        },
+        "rotation": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0,
+          "w": 1.0
+        }
+      },
+      "sizeM": {
+        "x": 0.45,
+        "y": 0.76,
+        "z": 0.3
+      },
+      "properties": {
+        "intakeRateHz": 60.0
+      },
+      "activation": {
+        "mode": "all",
+        "conditions": [
+          {
+            "mechanism": "roller",
+            "value": "velocity",
+            "op": "above",
+            "threshold": 20.0,
+            "tolerance": 0.1,
+            "absolute": false
+          },
+          {
+            "mechanism": "pivot",
+            "value": "position",
+            "op": "within",
+            "threshold": 2.0594885173533086,
+            "tolerance": 0.2,
+            "absolute": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "shooter_muzzle",
+      "kind": "game_2026.shooter",
+      "label": "",
+      "attachment": {
+        "parentMechanismId": "chassis",
+        "parentLink": "root"
+      },
+      "pose": {
+        "position": {
+          "x": -0.3,
+          "y": 0.0,
+          "z": 0.2
+        },
+        "rotation": {
+          "x": -0.0,
+          "y": 0.0,
+          "z": 1.0,
+          "w": -4.371139e-08
+        }
+      },
+      "sizeM": {
+        "x": 0.3,
+        "y": 0.3,
+        "z": 0.3
+      },
+      "properties": {
+        "flywheelMechanism": "shooter",
+        "hoodMechanism": "hood",
+        "flywheelRadiusM": 0.0508,
+        "efficiency": 0.848264,
+        "hoodAngleRad": 1.350254,
+        "hoodGain": -0.745514,
+        "fireRateHz": 30.0,
+        "flywheelValue": "velocity",
+        "minExitSpeedMps": 2.0,
+        "fixedExitSpeedMps": 0.0,
+        "hoodValue": "position",
+        "turretMechanism": "",
+        "turretValue": "position",
+        "turretGain": 1.0,
+        "turretYawOffsetRad": 0.0,
+        "exitSpeedJitter": 0.0,
+        "aimJitterRad": 0.0,
+        "inheritRobotVelocity": true,
+        "parallelBalls": 4
+      },
+      "activation": {
+        "mode": "all",
+        "conditions": [
+          {
+            "mechanism": "shooter",
+            "value": "velocity",
+            "op": "above",
+            "threshold": 90.0,
+            "tolerance": 0.1,
+            "absolute": true
+          },
+          {
+            "mechanism": "indexer",
+            "value": "velocity",
+            "op": "above",
+            "threshold": 10.0,
+            "tolerance": 0.1,
+            "absolute": true
+          }
+        ]
+      }
+    }
+  ],
+  "cameras": [
+    {
+      "id": "left",
+      "label": "",
+      "name": "left",
+      "kind": "limelight",
+      "attachment": {
+        "parentMechanismId": "chassis",
+        "parentLink": "root"
+      },
+      "pose": {
+        "position": {
+          "x": -0.347,
+          "y": 0.044,
+          "z": 0.176
+        },
+        "rotation": {
+          "x": 0.1305262,
+          "y": 5.7054814e-09,
+          "z": 0.9914449,
+          "w": -4.3337433e-08
+        }
+      },
+      "hFovDeg": 75.0,
+      "vFovDeg": 50.0,
+      "maxRangeM": 6.0,
+      "maxIncidenceDeg": 75.0,
+      "fps": 30.0,
+      "latencyMs": 40.0,
+      "widthPx": 1280,
+      "heightPx": 800,
+      "positionNoiseM": 0.0,
+      "yawNoiseDeg": 0.0
+    },
+    {
+      "id": "right",
+      "label": "",
+      "name": "right",
+      "kind": "limelight",
+      "attachment": {
+        "parentMechanismId": "chassis",
+        "parentLink": "root"
+      },
+      "pose": {
+        "position": {
+          "x": -0.342,
+          "y": -0.044,
+          "z": 0.181
+        },
+        "rotation": {
+          "x": 0.25881904,
+          "y": 1.131334e-08,
+          "z": 0.9659258,
+          "w": -4.222196e-08
+        }
+      },
+      "hFovDeg": 75.0,
+      "vFovDeg": 50.0,
+      "maxRangeM": 6.0,
+      "maxIncidenceDeg": 75.0,
+      "fps": 30.0,
+      "latencyMs": 40.0,
+      "widthPx": 1280,
+      "heightPx": 800,
+      "positionNoiseM": 0.0,
+      "yawNoiseDeg": 0.0
+    }
+  ],
+  "sensors": [
+    {
+      "id": "hopper_sensor",
+      "label": "",
+      "kind": "distance",
+      "source": "game_2026.fuel.fraction",
+      "properties": {
+        "mode": "threshold",
+        "threshold": 1.0,
+        "nearM": 0.1,
+        "farM": 1.0,
+        "inputMin": 0.0,
+        "inputMax": 1.0,
+        "distanceAtMinM": 1.0,
+        "distanceAtMaxM": 0.1
+      },
+      "mappings": [
+        {
+          "owner": "hopper_sensor",
+          "slot": "sensor",
+          "device": {
+            "family": "phoenix6",
+            "type": "canrange",
+            "id": 33,
+            "bus": "rio",
+            "channel": -1
+          }
+        }
+      ]
+    },
+    {
+      "id": "feed_sensor",
+      "label": "",
+      "kind": "distance",
+      "source": "game_2026.fuel.count",
+      "properties": {
+        "mode": "threshold",
+        "threshold": 1,
+        "nearM": 0.1,
+        "farM": 1.0,
+        "inputMin": 0.0,
+        "inputMax": 1.0,
+        "distanceAtMinM": 1.0,
+        "distanceAtMaxM": 0.1
+      },
+      "mappings": [
+        {
+          "owner": "feed_sensor",
+          "slot": "sensor",
+          "device": {
+            "family": "phoenix6",
+            "type": "canrange",
+            "id": 34,
+            "bus": "rio",
+            "channel": -1
+          }
+        }
+      ]
+    }
+  ],
+  "startPositions": [
+    {
+      "id": "start",
+      "label": "Start 1",
+      "alliance": "blue",
+      "xM": 2.0,
+      "yM": 4.0,
+      "headingRad": 0.0
+    },
+    {
+      "id": "start_red",
+      "label": "Start 1 (Red)",
+      "alliance": "red",
+      "xM": 14.541,
+      "yM": 4.0690002,
+      "headingRad": 3.1415927
+    }
+  ],
+  "motionLinks": [],
+  "battery": {
+    "nominalVoltageV": 12.6,
+    "internalResistanceOhm": 0.015,
+    "brownoutVoltageV": 6.8
+  },
+  "sim": {
+    "stepUs": 5000,
+    "seed": 1,
+    "physics": {
+      "subSteps": 4,
+      "sleeping": true,
+      "gravity": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": -9.81
+      }
+    }
+  },
+  "plugins": {
+    "game_2026": {
+      "schemaVersion": 1,
+      "data": {
+        "capacity": 120,
+        "preloadFuel": 8,
+        "neutralFuel": 360,
+        "depotFuel": 24,
+        "outpostChuteFuel": 24,
+        "humanPlayer": "timed",
+        "humanPlayerPeriodS": 2.0,
+        "maxFuelOnField": 800,
+        "fuelMassKg": 0.2150000035762787,
+        "fuelFriction": 0.6000000238418579,
+        "fuelRestitution": 0.550000011920929,
+        "fuelRollingResistance": 0.019999999552965164,
+        "fuelSleeping": true,
+        "shotGhostS": 1.0,
+        "enforceHubShifts": true,
+        "firstInactiveHub": "auto",
+        "hubProcessingDelayS": 1.0,
+        "recycleScoredFuel": true
+      }
+    }
+  }
+}
