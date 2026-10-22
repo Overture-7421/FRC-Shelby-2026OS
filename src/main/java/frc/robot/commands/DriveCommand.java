@@ -27,7 +27,7 @@ public class DriveCommand extends Command {
 	// Stick-driven heading control
 	// private final HeadingSpeedsHelper headingSpeedsHelper;
 
-	private static final double kTranslationSlewRate = 6.0;
+	private static final double kTranslationSlewRate = 13.0;
 
 	private final SlewRateLimiter xInput = new SlewRateLimiter(kTranslationSlewRate);
 	private final SlewRateLimiter yInput = new SlewRateLimiter(kTranslationSlewRate);
@@ -114,7 +114,7 @@ public class DriveCommand extends Command {
 		// the conversion has to be explicit or the robot would spin 2*pi times too
 		// slowly.
 		double rotationSpeedRadPerSec = Units
-				.rotationsToRadians(Utils.applyAxisFilter(gamepad.getRightX(), 0.06, 0.75) * -1.0);
+				.rotationsToRadians(Utils.applyAxisFilter(gamepad.getRightX(), 0.06, 0.75) * -1.75);
 
 		SmartDashboard.putNumber(
 				"DriveCommand/RotationSpeed", Units.radiansToRotations(rotationSpeedRadPerSec));
