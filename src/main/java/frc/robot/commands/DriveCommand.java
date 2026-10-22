@@ -31,15 +31,27 @@ public class DriveCommand extends Command {
 	 */
 	private static final double kTranslationDecelLimit = 11.0;
 
+	/**
+	 * How far the limited velocity may drift from how the robot is really moving,
+	 * in m/s, before it is snapped back to the measured speed. The limiter only
+	 * remembers what it asked for; after hitting something the robot is stopped
+	 * but the limiter still believes it is at speed, so a reversal first spent
+	 * half a second braking a velocity that no longer existed. Normal driving stays
+	 * well inside this, since open loop the wheels run a little under the request.
+	 */
+	private static final double kReseedThreshold = 1.0;
+
 	private static final double kTranslationDeadband = 0.11;
 	private static final double kTranslationExpo = 0.2;
 
 	/**
 	 * Rotation always available, even at full translation, in rad/s. Above what
 	 * translation leaves free, rotation is capped so the modules do not saturate;
-	 * this much is kept anyway and paid for with a little translation.
+	 * this much is kept anyway and paid for with a little translation. At full
+	 * translation the drivers asked for more turn than 0.3 gave; 0.45 costs about a
+	 * fifth of the translation while both sticks are pinned.
 	 */
-	private static final double kMinRotationRadPerSec = Units.rotationsToRadians(0.3);
+	private static final double kMinRotationRadPerSec = Units.rotationsToRadians(0.45);
 
 	/**
 	 * The velocity actually requested, after the slew limit. One limit on the whole
@@ -139,6 +151,16 @@ public class DriveCommand extends Command {
 		lastTimestamp = now;
 		double accelBudget = kTranslationAccelLimit * dt;
 		double decelBudget = kTranslationDecelLimit * dt;
+
+		// The limiter remembers what it asked for, not what the robot did. When the two
+		// part ways, as against a wall, start again from the measured speed
+		ChassisSpeeds measured = ChassisSpeeds.fromRobotRelativeSpeeds(
+				chassis.getCurrentSpeeds(), chassis.getEstimatedPose().getRotation());
+		if (Math.hypot(limitedVx - measured.vxMetersPerSecond,
+				limitedVy - measured.vyMetersPerSecond) > kReseedThreshold) {
+			limitedVx = measured.vxMetersPerSecond;
+			limitedVy = measured.vyMetersPerSecond;
+		}
 
 		double changeX = targetVx - limitedVx;
 		double changeY = targetVy - limitedVy;
