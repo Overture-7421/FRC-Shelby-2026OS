@@ -27,7 +27,7 @@ public final class LaunchConstants {
 
 	// Blue alliance coordinates, flip them for red
 	public static final Translation2d HubPose = new Translation2d(4.626, 4.035);
-	public static final Translation2d RightPass = new Translation2d(4.0, 1.5);
+	public static final Translation2d RightPass = new Translation2d(4.0, 2.0);
 	public static final Translation2d LeftPass = AllianceFlip.mirrorLeftRight(RightPass);
 
 	// The pass target changes side when the robot crosses the middle of the field
