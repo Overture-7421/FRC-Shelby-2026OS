@@ -915,7 +915,7 @@
             "mechanism": "shooter",
             "value": "velocity",
             "op": "above",
-            "threshold": 100.0,
+            "threshold": 90.0,
             "tolerance": 0.1,
             "absolute": true
           },
@@ -1087,7 +1087,6 @@
     "stepUs": 5000,
     "seed": 1,
     "physics": {
-      "workerCount": 1,
       "subSteps": 4,
       "sleeping": true,
       "gravity": {
