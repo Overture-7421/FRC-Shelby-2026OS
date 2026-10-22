@@ -149,8 +149,8 @@ public class Chassis extends SwerveChassis {
 		config.DriveGearRatio = kDriveGearRatio;
 		config.TurnGearRatio = kTurnGearRatio;
 		config.WheelDiameter = Units.inchesToMeters(4.0);
-		config.DriveMotorConfig.CurrentLimits.SupplyCurrentLowerLimit = 60.0;
-		config.DriveMotorConfig.CurrentLimits.SupplyCurrentLimit = 70.0;
+		config.DriveMotorConfig.CurrentLimits.SupplyCurrentLowerLimit = 40.0;
+		config.DriveMotorConfig.CurrentLimits.SupplyCurrentLimit = 40.0;
 		config.TurnMotorConfig.Slot0.withKP(40).withKS(0.15);
 		config.TurnMotorConfig.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
 		config.DriveMotorConfig.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
