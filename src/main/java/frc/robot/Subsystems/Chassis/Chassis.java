@@ -10,13 +10,11 @@ import com.overture.lib.sensors.OverPigeon;
 import com.overture.lib.subsystems.swerve.SwerveChassis;
 import com.overture.lib.subsystems.swerve.SwerveModule;
 import com.overture.lib.subsystems.swerve.SwerveModuleConfig;
-import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
 import frc.robot.Constants.RobotConstants;
-
 
 /**
  * Port of the C++ Chassis subsystem, the OvertureLib SwerveChassis subclass.
@@ -62,26 +60,6 @@ public class Chassis extends SwerveChassis {
 			new Translation2d(
 					Units.inchesToMeters(-kTrackXInches), Units.inchesToMeters(-kTrackYInches)));
 
-	/**
-	 * Drive feedforward: ks volts, kv volts per m/s, ka volts per m/s^2.
-	 *
-	 * <p>
-	 * The C++ declared four separate SimpleMotorFeedforward objects and then handed
-	 * them to the
-	 * wrong modules - FrontRightConfig() took feedForwardFrontLeft,
-	 * BackRightConfig() took
-	 * feedForwardFrontRight, and so on. All four held identical values so nothing
-	 * misbehaved, but the
-	 * first person to tune one module would have tuned a different wheel. One
-	 * factory removes the
-	 * possibility.
-	 *
-	 * @return the drive feedforward
-	 */
-	private static SimpleMotorFeedforward driveFeedForward() {
-		return new SimpleMotorFeedforward(0.0, 2.61, 0.098433);
-	}
-
 	/** Builds the drivetrain. */
 	public Chassis() {
 		super();
@@ -92,7 +70,7 @@ public class Chassis extends SwerveChassis {
 
 	@Override
 	public double getMaxModuleSpeed() {
-		return 4.541;
+		return 4.39;
 	}
 
 	/**
@@ -136,13 +114,16 @@ public class Chassis extends SwerveChassis {
 	}
 
 	private static SwerveModuleConfig baseModuleConfig() {
-		SwerveModuleConfig config = new SwerveModuleConfig(driveFeedForward(), 0, 0);
+		SwerveModuleConfig config = new SwerveModuleConfig(0, 0);
 		config.CanBus = RobotConstants.overCANivore;
 		config.DriveGearRatio = kDriveGearRatio;
 		config.TurnGearRatio = kTurnGearRatio;
 		config.WheelDiameter = Units.inchesToMeters(4.0);
 		config.DriveMotorConfig.CurrentLimits.SupplyCurrentLowerLimit = 40.0;
 		config.DriveMotorConfig.CurrentLimits.SupplyCurrentLimit = 40.0;
+		config.DriveMotorConfig.Slot0.withKS(0.0).withKV(0.87).withKA(0.0314).withKP(0.3);
+		config.useFOCDrive = true;
+		config.useFOCTurn = true;
 		config.TurnMotorConfig.Slot0.withKP(40).withKS(0.15);
 		config.TurnMotorConfig.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
 		config.DriveMotorConfig.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;

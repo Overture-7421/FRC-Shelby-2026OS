@@ -31,34 +31,11 @@ public class DriveCommand extends Command {
 	 */
 	private static final double kTranslationDecelLimit = 11.0;
 
-	/**
-	 * How far the limited velocity may drift from how the robot is really moving,
-	 * in m/s, before it is snapped back to the measured speed. The limiter only
-	 * remembers what it asked for; after hitting something the robot is stopped
-	 * but the limiter still believes it is at speed, so a reversal first spent
-	 * half a second braking a velocity that no longer existed. Normal driving stays
-	 * well inside this, since open loop the wheels run a little under the request.
-	 */
-	private static final double kReseedThreshold = 1.0;
-
 	private static final double kTranslationDeadband = 0.11;
 	private static final double kTranslationExpo = 0.2;
 
-	/**
-	 * Rotation always available, even at full translation, in rad/s. Above what
-	 * translation leaves free, rotation is capped so the modules do not saturate;
-	 * this much is kept anyway and paid for with a little translation. At full
-	 * translation the drivers asked for more turn than 0.3 gave; 0.45 costs about a
-	 * fifth of the translation while both sticks are pinned.
-	 */
-	private static final double kMinRotationRadPerSec = Units.rotationsToRadians(0.45);
+	private static final double kMinRotationRadPerSec = Units.rotationsToRadians(0.6);
 
-	/**
-	 * The velocity actually requested, after the slew limit. One limit on the whole
-	 * vector rather than one per axis: per axis, diagonals accelerated √2 faster
-	 * and a
-	 * change of direction drove a curve while each axis caught up on its own.
-	 */
 	private double limitedVx = 0.0;
 	private double limitedVy = 0.0;
 	private double lastTimestamp = 0.0;
@@ -103,7 +80,6 @@ public class DriveCommand extends Command {
 		// and bent the direction, since the curve changes the ratio between the axes.
 		double stickX = allianceMulti * -gamepad.getHID().getRawAxis(1);
 		double stickY = allianceMulti * -gamepad.getHID().getRawAxis(0);
-		// Many sticks read a little past 1 in the corners
 		double stickMagnitude = Math.min(1.0, Math.hypot(stickX, stickY));
 		double shapedMagnitude = Utils.applyAxisFilter(stickMagnitude, kTranslationDeadband, kTranslationExpo);
 		double stickScale = stickMagnitude > 0.0
@@ -152,16 +128,11 @@ public class DriveCommand extends Command {
 		double accelBudget = kTranslationAccelLimit * dt;
 		double decelBudget = kTranslationDecelLimit * dt;
 
-		// The limiter remembers what it asked for, not what the robot did. When the two
-		// part ways, as against a wall, start again from the measured speed
-		ChassisSpeeds measured = ChassisSpeeds.fromRobotRelativeSpeeds(
-				chassis.getCurrentSpeeds(), chassis.getEstimatedPose().getRotation());
-		if (Math.hypot(limitedVx - measured.vxMetersPerSecond,
-				limitedVy - measured.vyMetersPerSecond) > kReseedThreshold) {
-			limitedVx = measured.vxMetersPerSecond;
-			limitedVy = measured.vyMetersPerSecond;
-		}
-
+		// The limiter only remembers what it asked for, never what the robot did, and
+		// that is deliberate. Snapping it to the measured speed was tried: pinned
+		// against
+		// an obstacle the wheels read zero, so every push got cut back to a crawl a few
+		// times a second and the robot felt stuck. Reversing is handled below instead
 		double changeX = targetVx - limitedVx;
 		double changeY = targetVy - limitedVy;
 		double speed = Math.hypot(limitedVx, limitedVy);
@@ -183,8 +154,15 @@ public class DriveCommand extends Command {
 			double acrossY = changeY - along * unitY;
 
 			// Braking stops at zero: a reversal brakes first, then speeds up the other way
-			// at the accel limit on the next loops
-			double slowing = Math.max(-Math.min(decelBudget, speed), Math.min(0.0, along));
+			// at the accel limit on the next loops. Pulling the stick against the motion
+			// brakes at once instead of riding the ramp down: against an obstacle the robot
+			// is already stopped, and with the wheels slipping the measured speed cannot
+			// say so, which left the ramp as half a second of nothing before backing off.
+			// On open carpet it asks the tires for a little more than they have for a
+			// moment, which is what a hard pull back means
+			boolean reversing = targetVx * unitX + targetVy * unitY < 0.0;
+			double brakeBudget = reversing ? speed : Math.min(decelBudget, speed);
+			double slowing = Math.max(-brakeBudget, Math.min(0.0, along));
 
 			double speedingUp = Math.max(0.0, along);
 			double growth = Math.hypot(speedingUp, Math.hypot(acrossX, acrossY));
