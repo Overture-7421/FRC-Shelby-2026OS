@@ -893,7 +893,7 @@
         "efficiency": 0.848264,
         "hoodAngleRad": 1.350254,
         "hoodGain": -0.745514,
-        "fireRateHz": 30.0,
+        "fireRateHz": 25.0,
         "flywheelValue": "velocity",
         "minExitSpeedMps": 2.0,
         "fixedExitSpeedMps": 0.0,
@@ -1115,7 +1115,7 @@
     "game_2026": {
       "schemaVersion": 1,
       "data": {
-        "capacity": 120,
+        "capacity": 60,
         "preloadFuel": 8,
         "neutralFuel": 360,
         "depotFuel": 24,
