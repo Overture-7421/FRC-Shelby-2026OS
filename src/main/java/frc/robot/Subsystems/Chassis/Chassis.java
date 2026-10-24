@@ -121,7 +121,7 @@ public class Chassis extends SwerveChassis {
 		config.WheelDiameter = Units.inchesToMeters(4.0);
 		config.DriveMotorConfig.CurrentLimits.SupplyCurrentLowerLimit = 40.0;
 		config.DriveMotorConfig.CurrentLimits.SupplyCurrentLimit = 40.0;
-		config.DriveMotorConfig.Slot0.withKS(0.0).withKV(0.87).withKA(0.0314).withKP(0.3);
+		config.DriveMotorConfig.Slot0.withKS(0.2).withKV(0.87).withKA(0.0314).withKP(0.3);
 		config.useFOCDrive = true;
 		config.useFOCTurn = true;
 		config.TurnMotorConfig.Slot0.withKP(40).withKS(0.15);

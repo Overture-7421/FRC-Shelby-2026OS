@@ -77,12 +77,12 @@
         "driveEfficiency": 0.9,
         "driveCurrentLimitA": 60.0,
         "steerMotor": {
-          "name": "Kraken X44",
+          "name": "Kraken X44 (FOC)",
           "nominalVoltageV": 12.0,
-          "stallTorqueNm": 4.11,
-          "stallCurrentA": 279.0,
+          "stallTorqueNm": 5.01,
+          "stallCurrentA": 329.0,
           "freeCurrentA": 2.0,
-          "freeSpeedRadPerSec": 812.4158602183205
+          "freeSpeedRadPerSec": 771.5751557216531
         },
         "steerGearRatio": 26.090908,
         "steerInertiaKgM2": 0.004
@@ -121,12 +121,12 @@
         "driveEfficiency": 0.9,
         "driveCurrentLimitA": 60.0,
         "steerMotor": {
-          "name": "Kraken X44",
+          "name": "Kraken X44 (FOC)",
           "nominalVoltageV": 12.0,
-          "stallTorqueNm": 4.11,
-          "stallCurrentA": 279.0,
+          "stallTorqueNm": 5.01,
+          "stallCurrentA": 329.0,
           "freeCurrentA": 2.0,
-          "freeSpeedRadPerSec": 812.4158602183205
+          "freeSpeedRadPerSec": 771.5751557216531
         },
         "steerGearRatio": 26.090908,
         "steerInertiaKgM2": 0.004
@@ -165,12 +165,12 @@
         "driveEfficiency": 0.9,
         "driveCurrentLimitA": 60.0,
         "steerMotor": {
-          "name": "Kraken X44",
+          "name": "Kraken X44 (FOC)",
           "nominalVoltageV": 12.0,
-          "stallTorqueNm": 4.11,
-          "stallCurrentA": 279.0,
+          "stallTorqueNm": 5.01,
+          "stallCurrentA": 329.0,
           "freeCurrentA": 2.0,
-          "freeSpeedRadPerSec": 812.4158602183205
+          "freeSpeedRadPerSec": 771.5751557216531
         },
         "steerGearRatio": 26.090908,
         "steerInertiaKgM2": 0.004
@@ -209,12 +209,12 @@
         "driveEfficiency": 0.9,
         "driveCurrentLimitA": 60.0,
         "steerMotor": {
-          "name": "Kraken X44",
+          "name": "Kraken X44 (FOC)",
           "nominalVoltageV": 12.0,
-          "stallTorqueNm": 4.11,
-          "stallCurrentA": 279.0,
+          "stallTorqueNm": 5.01,
+          "stallCurrentA": 329.0,
           "freeCurrentA": 2.0,
-          "freeSpeedRadPerSec": 812.4158602183205
+          "freeSpeedRadPerSec": 771.5751557216531
         },
         "steerGearRatio": 26.090908,
         "steerInertiaKgM2": 0.004

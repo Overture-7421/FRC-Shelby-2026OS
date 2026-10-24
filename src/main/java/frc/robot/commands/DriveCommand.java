@@ -174,6 +174,11 @@ public class DriveCommand extends Command {
 		}
 		limitedVx += changeX;
 		limitedVy += changeY;
+
+		if (Math.hypot(limitedVx, limitedVy) < 1e-3) {
+			limitedVx = 0.0;
+			limitedVy = 0.0;
+		}
 	}
 
 	@Override
