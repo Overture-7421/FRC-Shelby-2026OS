@@ -15,14 +15,15 @@ public class IndexerConstants {
 
 	public static Voltage OffVoltage = Volts.of(0.0);
 
-	public static Voltage shootVoltage = Volts.of(3);
+	public static Voltage shootVoltage = Volts.of(4);
 	public static Voltage preloadVoltage = Volts.of(1);
 
-	// Seconds the hopper sensor has to stay covered before the hopper counts as full
+	// Seconds the hopper sensor has to stay covered before the hopper counts as
+	// full
 	public static final double fuelDebouncingTime = 0.25;
 
 	public static final double hopperFuelDistance = 0.10;
-	 // Meters
+	// Meters
 	public static final double shooterFuelDistance = 0.35; // Meters
 
 	public static final int leaderCanId = 20; // Front left
@@ -30,7 +31,8 @@ public class IndexerConstants {
 	public static final int MotorCanId3 = 22; // Back right
 	public static final int MotorCanId4 = 23; // Back left
 
-	// One CANrange looks at the hopper and the other at the shooter feed, right before
+	// One CANrange looks at the hopper and the other at the shooter feed, right
+	// before
 	// the wheels
 	public static int hopperCanRangeId = 33;
 	public static int shooterCanRangeId = 34;
@@ -57,6 +59,5 @@ public class IndexerConstants {
 						new FeedbackConfigs()
 								.withSensorToMechanismRatio(GearRatio));
 	}
-
 
 }
