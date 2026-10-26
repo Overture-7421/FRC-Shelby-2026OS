@@ -7,6 +7,7 @@ import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.overture.lib.motorcontrollers.OverTalonFX;
 
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -18,6 +19,8 @@ public class Pivot extends SubsystemBase {
 	protected CANcoder pivotCC;
 
 	private Angle target = Degrees.of(0.0);
+
+	private double positionDegrees = 0.0;
 
 	private MotionMagicVoltage motionMagicRequest = new MotionMagicVoltage(0.0)
 			.withEnableFOC(true);
@@ -56,7 +59,6 @@ public class Pivot extends SubsystemBase {
 		pivotMotor.setControl(motionMagicRequest.withPosition(target));
 	}
 
-	
 	private void applyLimits(boolean slow) {
 		if (slow == slowLimits) {
 			return;
@@ -75,7 +77,7 @@ public class Pivot extends SubsystemBase {
 	}
 
 	public double getPosition() {
-		return pivotMotor.getPosition().getValue().in(Degrees);
+		return positionDegrees;
 	}
 
 	public double getError() {
@@ -95,7 +97,7 @@ public class Pivot extends SubsystemBase {
 
 	@Override
 	public void periodic() {
-
+		positionDegrees = Units.rotationsToDegrees(pivotMotor.getPosition().getValueAsDouble());
 	}
 
 }

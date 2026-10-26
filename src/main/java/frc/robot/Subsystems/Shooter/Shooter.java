@@ -24,6 +24,8 @@ public class Shooter extends SubsystemBase {
 
 	private AngularVelocity target = RotationsPerSecond.of(0.0);
 
+	private double velocityRps = 0.0;
+
 	private VoltageOut voltageRequest = new VoltageOut(0.0);
 	private MotionMagicVelocityVoltage velocityRequest = new MotionMagicVelocityVoltage(0.0)
 			.withEnableFOC(true);
@@ -82,7 +84,7 @@ public class Shooter extends SubsystemBase {
 	}
 
 	public double getVelocity() {
-		return shooterMotorLead.getVelocity().getValueAsDouble();
+		return velocityRps;
 	}
 
 	public boolean isAtTarget() {
@@ -110,7 +112,7 @@ public class Shooter extends SubsystemBase {
 
 	@Override
 	public void periodic() {
-
+		velocityRps = shooterMotorLead.getVelocity().getValueAsDouble();
 	}
 
 }

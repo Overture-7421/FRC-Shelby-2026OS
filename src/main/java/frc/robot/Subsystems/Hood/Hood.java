@@ -10,6 +10,7 @@ import com.overture.lib.motorcontrollers.OverTalonFX;
 
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.filter.Debouncer.DebounceType;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -20,6 +21,9 @@ import frc.robot.Constants;
 public class Hood extends SubsystemBase {
 	protected OverTalonFX hoodMotor;
 	private Angle target = Degrees.of(0.0);
+
+	private double positionDegrees = 0.0;
+	private double velocityDegreesPerSecond = 0.0;
 
 	private MotionMagicVoltage motionMagicRequest = new MotionMagicVoltage(0.0)
 			.withEnableFOC(true);
@@ -80,11 +84,11 @@ public class Hood extends SubsystemBase {
 	}
 
 	public double getPosition() {
-		return hoodMotor.getPosition().getValue().in(Degrees);
+		return positionDegrees;
 	}
 
 	public double getVelocity() {
-		return hoodMotor.getVelocity().getValue().in(DegreesPerSecond);
+		return velocityDegreesPerSecond;
 	}
 
 	public double getError() {
@@ -141,7 +145,8 @@ public class Hood extends SubsystemBase {
 
 	@Override
 	public void periodic() {
-
+		positionDegrees = Units.rotationsToDegrees(hoodMotor.getPosition().getValueAsDouble());
+		velocityDegreesPerSecond = Units.rotationsToDegrees(hoodMotor.getVelocity().getValueAsDouble());
 	}
 
 }
