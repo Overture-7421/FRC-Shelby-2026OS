@@ -4,7 +4,6 @@
 
 package frc.robot;
 
-import static edu.wpi.first.units.Units.RotationsPerSecond;
 import static edu.wpi.first.units.Units.Volts;
 
 import com.overture.lib.gamepads.OverXboxController;
@@ -56,7 +55,8 @@ public class RobotContainer implements OverContainer {
 
 	// Controllers. There is no operator controller, the driver does everything
 	private final OverXboxController driver = new OverXboxController(0, 0.20, 0.2);
-	private final OverXboxController operator = new OverXboxController(1, 0.20, 0.2);
+	// private final OverXboxController operator = new OverXboxController(1, 0.20,
+	// 0.2);
 
 	// Vision. One field layout shared by the four cameras, each one feeding the
 	// chassis pose estimator on its own
@@ -67,15 +67,17 @@ public class RobotContainer implements OverContainer {
 	private static final String limelightRightName = "limelight-right";
 	private static final String limelightLeftName = "limelight-left";
 
-	
 	private static final int bluePipeline = 0;
 	private static final int redPipeline = 1;
 	private int limelightPipeline = -1;
 
-	// The PhotonVision cameras are not on the robot yet. Uncomment these two and the
+	// The PhotonVision cameras are not on the robot yet. Uncomment these two and
+	// the
 	// two photonSeesTag terms in isAnyTagVisible when they are mounted
-	// private final AprilTags camRight = new AprilTags(tagLayout, chassis, camRightConfig());
-	// private final AprilTags camLeft = new AprilTags(tagLayout, chassis, camLeftConfig());
+	// private final AprilTags camRight = new AprilTags(tagLayout, chassis,
+	// camRightConfig());
+	// private final AprilTags camLeft = new AprilTags(tagLayout, chassis,
+	// camLeftConfig());
 	private final AprilTags limelightRight = new AprilTags(tagLayout, chassis, limelightRightConfig());
 	private final AprilTags limelightLeft = new AprilTags(tagLayout, chassis, limelightLeftConfig());
 
@@ -101,8 +103,8 @@ public class RobotContainer implements OverContainer {
 		SmartDashboard.setDefaultNumber(passShooterMultiKey, 1.0);
 
 		configDriverBindings();
-		configOperatorBindings();
-		configCharacterizationBindings();
+		// configOperatorBindings();
+		// configCharacterizationBindings();
 		configureAutos();
 	}
 
@@ -111,13 +113,14 @@ public class RobotContainer implements OverContainer {
 		chassis.setDefaultCommand(new DriveCommand(chassis, driver));
 
 		// shooter.setDefaultCommand(shooter.trackVelocity(
-		// 		() -> RotationsPerSecond.of(LaunchConstants.DistanceToShooterForHub.get(getHubDistance()))));
+		// () ->
+		// RotationsPerSecond.of(LaunchConstants.DistanceToShooterForHub.get(getHubDistance()))));
 
 		hood.setDefaultCommand(
 				Commands.either(hood.holdPosition(HoodConstants.States.Close), hood.HoodHoming(), hood::isHomed));
 
 		// Between shots the indexer keeps the fuel ready at the shooter
-		
+
 		indexer.setDefaultCommand(indexer.preloadShooter());
 
 		driver.back().onTrue(Commands.runOnce(() -> {
@@ -143,21 +146,19 @@ public class RobotContainer implements OverContainer {
 		driver.leftBumper().whileTrue(new LaunchCommand(shooter, hood, chassis, indexer, pivot, roller,
 				LaunchModes.PASS, () -> getShooterMulti(LaunchModes.PASS), intakeInUse));
 
-
-		
 	}
 
 	@Override
 	public void configOperatorBindings() {
-		operator.x().whileTrue(new EmergencyCompress(pivot, roller));
-		operator.y().onTrue(hood.HoodHoming());
-		operator.povUp().onTrue(hood.AddOffset(1));
-		operator.povDown().onTrue(hood.AddOffset(-1));
-		operator.povRight().onTrue(shooter.AddOffset(1));
-		operator.povLeft().onTrue(shooter.AddOffset(-1));
-		operator.a().whileTrue(indexer.setVoltage(Volts.of(0.0)));
-		operator.b().whileTrue(shooter.setVoltage(Volts.of(0.0)));
-	
+		// operator.x().whileTrue(new EmergencyCompress(pivot, roller));
+		// operator.y().onTrue(hood.HoodHoming());
+		// operator.povUp().onTrue(hood.AddOffset(1));
+		// operator.povDown().onTrue(hood.AddOffset(-1));
+		// operator.povRight().onTrue(shooter.AddOffset(1));
+		// operator.povLeft().onTrue(shooter.AddOffset(-1));
+		// operator.a().whileTrue(indexer.setVoltage(Volts.of(0.0)));
+		// operator.b().whileTrue(shooter.setVoltage(Volts.of(0.0)));
+
 	}
 
 	@Override
@@ -171,7 +172,8 @@ public class RobotContainer implements OverContainer {
 		// Each entry is a path file in deploy/autos/paths. The first path of an auto
 		// resets the pose to its start, later ones follow from wherever the robot is
 
-		// Autos are drawn once on the right side of the blue field. Mirrored runs the same
+		// Autos are drawn once on the right side of the blue field. Mirrored runs the
+		// same
 		// file on the left, red is flipped automatically on top of that
 		autoChooser.addOption("Double pass right", AutoRoutines.DoublePass(paths, autos, false));
 		autoChooser.addOption("Double pass left", AutoRoutines.DoublePass(paths, autos, true));

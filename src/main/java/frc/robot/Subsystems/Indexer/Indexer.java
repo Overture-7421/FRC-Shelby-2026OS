@@ -25,8 +25,9 @@ public class Indexer extends SubsystemBase{
     protected CANrange hopperCanRange;
 
 	// The hopper sensor is debounced so a single fuel rolling by does not count as
-	// a full hopper. The shooter sensor is read straight, a shot has to react fast
+	// a full hopper. The shooter sensor is read straight, a shot has to react fast.
 	protected boolean hopperFull;
+	protected boolean shooterFull;
 	protected Debouncer debouncer;
 
 	private Voltage target = Volts.of(0.0);
@@ -109,12 +110,13 @@ public class Indexer extends SubsystemBase{
 	}
 
 	public boolean isShooterFull(){
-		return isFuelInShooter();
+		return shooterFull;
 	}
 
 	@Override
 	public void periodic() {
 		hopperFull = debouncer.calculate(isFuelInHopper());
+		shooterFull = isFuelInShooter();
 	}
 
 }
