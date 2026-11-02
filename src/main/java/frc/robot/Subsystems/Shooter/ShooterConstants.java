@@ -39,6 +39,13 @@ public class ShooterConstants {
 
 	public static Voltage OffVoltage = Volts.of(0.0);
 
+	// Speed held between launches, all the time. Just under the lowest
+	// shot in the tables (hub 22 rps at 1.3 m, pass 19), so a launch only adds the
+	// last part of the spin-up and never has to brake the flywheel. Holding costs
+	// about 20 A for the four motors; tracking the hub distance while driving cost
+	// 45 to 50 A and spinning up from zero 1.1 s per launch, Oct 31 logs
+	public static AngularVelocity IdleSpeed = RotationsPerSecond.of(20.0);
+
 	public static int leaderCanId = 25; // Top left
 	public static int MotorCanId2 = 26; // Bottom left
 	public static int MotorCanId3 = 27; // Top right

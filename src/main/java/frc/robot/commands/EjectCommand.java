@@ -2,6 +2,7 @@ package frc.robot.commands;
 
 import java.util.function.BooleanSupplier;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Subsystems.Indexer.Indexer;
 import frc.robot.Subsystems.Indexer.IndexerConstants;
@@ -11,10 +12,10 @@ import frc.robot.Subsystems.Intake.Rollers.Roller;
 import frc.robot.Subsystems.Intake.Rollers.RollerConstants;
 
 /**
- * Feeds the shooter, but only while the shot is ready. While it feeds it also
- * closes the intake, which squeezes the fuel in the hopper towards the shooter.
- * Whenever the shot stops being ready the indexer goes back to preloading and
- * the intake opens again.
+ * Feeds the shooter, but only while the shot is ready. A moment after it starts
+ * feeding it also closes the intake, which squeezes the fuel in the hopper
+ * towards the shooter. Whenever the shot stops being ready the indexer goes
+ * back to preloading and the intake opens again.
  */
 public class EjectCommand extends Command {
 	private final Indexer indexer;
@@ -24,6 +25,8 @@ public class EjectCommand extends Command {
 	private final BooleanSupplier readyToEject;
 	private final BooleanSupplier intakeInUse;
 
+	// Counts from the moment the indexer starts feeding the shooter
+	private final Timer shootingTimer = new Timer();
 	private boolean compressing = false;
 
 	/**
@@ -52,6 +55,8 @@ public class EjectCommand extends Command {
 	@Override
 	public void initialize() {
 		compressing = false;
+		shootingTimer.stop();
+		shootingTimer.reset();
 	}
 
 	@Override
@@ -59,13 +64,18 @@ public class EjectCommand extends Command {
 		if (readyToEject.getAsBoolean()) {
 			indexer.setTarget(IndexerConstants.shootVoltage);
 
-			if (!intakeInUse.getAsBoolean()) {
+			// Starts counting on the first loop the shot is fed, does nothing after
+			shootingTimer.start();
+
+			if (shootingTimer.hasElapsed(0.5) && !intakeInUse.getAsBoolean()) {
 				pivot.setMotorSlow(PivotConstants.States.Closed);
 				roller.setTarget(RollerConstants.CompressingVoltage);
 				compressing = true;
 			}
 		} else {
 			// indexer.setMotorPreload();
+			shootingTimer.stop();
+			shootingTimer.reset();
 			openIntake();
 		}
 	}

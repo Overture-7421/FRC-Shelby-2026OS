@@ -14,7 +14,6 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.LinearVelocity;
-import frc.robot.Subsystems.Hood.HoodConstants;
 
 /**
  * Where the robot launches to and with what. Every number here is 2910's, taken
@@ -35,10 +34,13 @@ public final class LaunchConstants {
 	public static final double FieldMidline = AllianceFlip.getFieldWidth() / 2.0;
 	public static final double PassOverlap = 1.0;
 
-	private static final double ShooterPassOffset = -2;
+	private static final double ShooterPassOffset = -4;
+	private static final double HoodPassOffset = 2;
+
 	private static final double HoodShootOffset = 1;
 
-	// Distance to the hub in meters -> shooter velocity in rps. Measured on the robot, Oct 12
+	// Distance to the hub in meters -> shooter velocity in rps. Measured on the
+	// robot, Oct 12
 	public static final InterpolatingTable DistanceToShooterForHub = new InterpolatingTable(
 			1.3, 22.0,
 			1.5, 24.0,
@@ -50,7 +52,8 @@ public final class LaunchConstants {
 			4.5, 29.0,
 			5.0, 29.0);
 
-	// Distance to the hub in meters -> hood angle in degrees. Measured on the robot, Oct 12
+	// Distance to the hub in meters -> hood angle in degrees. Measured on the
+	// robot, Oct 12
 	public static final InterpolatingTable DistanceToHoodForHub = new InterpolatingTable(
 			1.3, 0.0 + HoodShootOffset,
 			1.5, 0.0 + HoodShootOffset,
@@ -62,19 +65,19 @@ public final class LaunchConstants {
 			4.5, 22.0 + HoodShootOffset,
 			5.0, 25.0 + HoodShootOffset);
 
-	// Distance to the pass target in meters -> shooter velocity in rps. Measured on the
-	// robot, Oct 12
+	// Distance to the pass target in meters -> shooter velocity in rps. Measured on
+	// the robot, Oct 12
 	public static final InterpolatingTable DistanceToShooterForPass = new InterpolatingTable(
 			2.0, 23.0 + ShooterPassOffset,
 			5.0, 30.0 + ShooterPassOffset,
 			10.0, 35.0 + ShooterPassOffset);
 
-	// Distance to the pass target in meters -> hood angle in degrees. Measured on the
-	// robot, Oct 12, at the same distances as the pass speed table
+	// Distance to the pass target in meters -> hood angle in degrees. Measured on
+	// the robot, Oct 12, at the same distances as the pass speed table
 	public static final InterpolatingTable DistanceToHoodForPass = new InterpolatingTable(
-			2.0, 30.0,
-			5.0, 33.0,
-			10.0, 37.0);
+			2.0, 30.0 + HoodPassOffset,
+			5.0, 33.0 + HoodPassOffset,
+			10.0, 37.0 + HoodPassOffset);
 
 	// Distance to the pass target in meters -> seconds the fuel spends in the air.
 	// Only passes lead the target, the hub is shot at standing still
@@ -89,7 +92,7 @@ public final class LaunchConstants {
 	public static final Distance HubMinimumDistance = Meters.of(1.5);
 
 	public static final Angle PassChassisTolerance = Degrees.of(5.0);
-	public static final LinearVelocity PassSpeedTolerance = MetersPerSecond.of(10.0);
+	public static final LinearVelocity PassSpeedTolerance = MetersPerSecond.of(1.0);
 
 	// How much of the driver's translation gets through while the chassis aligns
 	public static final double HubTranslationScalar = 1.0;

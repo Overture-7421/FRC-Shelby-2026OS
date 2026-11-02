@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import static edu.wpi.first.units.Units.RotationsPerSecond;
 import static edu.wpi.first.units.Units.Volts;
 
 import com.overture.lib.gamepads.OverXboxController;
@@ -35,6 +36,7 @@ import frc.robot.Subsystems.Intake.Pivot.PivotConstants;
 import frc.robot.Subsystems.Intake.Rollers.Roller;
 import frc.robot.Subsystems.Intake.Rollers.RollerConstants;
 import frc.robot.Subsystems.Shooter.Shooter;
+import frc.robot.Subsystems.Shooter.ShooterConstants;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.EmergencyCompress;
 import frc.robot.commands.LaunchCommand;
@@ -112,9 +114,11 @@ public class RobotContainer implements OverContainer {
 	public void configDriverBindings() {
 		chassis.setDefaultCommand(new DriveCommand(chassis, driver));
 
-		// shooter.setDefaultCommand(shooter.trackVelocity(
-		// () ->
-		// RotationsPerSecond.of(LaunchConstants.DistanceToShooterForHub.get(getHubDistance()))));
+		// Between launches the shooter idles at a fixed speed, so a launch only adds
+		// the last part of the spin-up. Tracking the hub distance here instead cost
+		// twice the battery, Oct 31 logs. Not gated on the fuel sensors: they read
+		// empty most of the time and flip hundreds of times a session
+		shooter.setDefaultCommand(shooter.trackVelocity(() ->ShooterConstants.IdleSpeed));
 
 		hood.setDefaultCommand(
 				Commands.either(hood.holdPosition(HoodConstants.States.Close), hood.HoodHoming(), hood::isHomed));

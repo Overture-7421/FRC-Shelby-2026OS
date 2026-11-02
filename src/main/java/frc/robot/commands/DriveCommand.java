@@ -20,9 +20,11 @@ public class DriveCommand extends Command {
 
 	/**
 	 * How fast the robot may speed up or change direction, in m/s per second. This
-	 * is what pulls current from the battery.
+	 * is what pulls current from the battery: speeding up took half the drive's
+	 * charge and most of its time at the supply limit, Oct 31 logs. 6 was the
+	 * value before.
 	 */
-	private static final double kTranslationAccelLimit = 6.0;
+	private static final double kTranslationAccelLimit = 4.5;
 
 	/**
 	 * How fast the robot may slow down, in m/s per second. Braking takes energy out
