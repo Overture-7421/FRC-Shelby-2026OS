@@ -25,7 +25,7 @@
       "default_auto_velocity_merge_tolerance_meters_per_sec": 0.3
     }
   },
-  "active_path_file_name": "secondpass.json",
+  "active_path_file_name": "FollowerCloseTrench.json",
   "active_path_group_id": null,
   "path_groups": [
     {
@@ -78,7 +78,7 @@
         ],
         "linked_targets": [
           {
-            "element_index": 7.0,
+            "element_index": 8.0,
             "target_id": "target-1cc45549"
           }
         ]
@@ -193,7 +193,7 @@
             "target_id": "target-1cc45549"
           },
           {
-            "element_index": 9.0,
+            "element_index": 10.0,
             "target_id": "target-1cc45549"
           }
         ]
@@ -205,7 +205,7 @@
         "ranged_constraints": [
           {
             "key": "max_velocity_meters_per_sec",
-            "value": 2.25,
+            "value": 2.63,
             "start_ordinal": 1,
             "end_ordinal": 1,
             "source": "auto_velocity",
@@ -218,22 +218,9 @@
           },
           {
             "key": "max_velocity_meters_per_sec",
-            "value": 2.63,
-            "start_ordinal": 2,
-            "end_ordinal": 2,
-            "source": "auto_velocity",
-            "auto_velocity": {
-              "velocity_safety_factor": 0.9,
-              "acceleration_safety_factor": 0.8,
-              "merge_tolerance_meters_per_sec": 0.3,
-              "input_signature": "{\"pathElements\":[{\"type\":\"waypoint\",\"xMeters\":2.94,\"yMeters\":2.56533,\"handoffRadiusMeters\":0.25,\"rotationRadians\":-2.36946,\"profiledRotation\":true},{\"type\":\"waypoint\",\"xMeters\":2.98332,\"yMeters\":0.65454,\"handoffRadiusMeters\":0.45,\"rotationRadians\":0.00882,\"profiledRotation\":true},{\"type\":\"waypoint\",\"xMeters\":6.05069,\"yMeters\":0.69868,\"handoffRadiusMeters\":0.45,\"rotationRadians\":0,\"profiledRotation\":true},{\"type\":\"rotation\",\"rotationRadians\":1.55924,\"tRatio\":0.47089,\"profiledRotation\":true},{\"type\":\"waypoint\",\"xMeters\":6.06844,\"yMeters\":3.32606,\"handoffRadiusMeters\":0.45,\"rotationRadians\":1.56643,\"profiledRotation\":true},{\"type\":\"waypoint\",\"xMeters\":7.710018522428106,\"yMeters\":3.479589523064895,\"handoffRadiusMeters\":0.45,\"rotationRadians\":0,\"profiledRotation\":true},{\"type\":\"waypoint\",\"xMeters\":7.655163166681428,\"yMeters\":2.7298993821848736,\"handoffRadiusMeters\":0.45,\"rotationRadians\":-3.1384049549275015,\"profiledRotation\":true},{\"type\":\"waypoint\",\"xMeters\":5.9353,\"yMeters\":2.57158,\"handoffRadiusMeters\":0.45,\"rotationRadians\":-3.111028121071616,\"profiledRotation\":true},{\"type\":\"rotation\",\"rotationRadians\":-3.111276121046725,\"tRatio\":0.77186,\"profiledRotation\":true},{\"type\":\"waypoint\",\"xMeters\":2.94,\"yMeters\":2.56533,\"handoffRadiusMeters\":0.45,\"rotationRadians\":-2.36946,\"profiledRotation\":true}],\"scalarConstraints\":{\"maxVelocityMps\":null,\"maxAccelerationMps2\":null,\"maxVelocityDegPerSec\":null,\"maxAccelerationDegPerSec\":null},\"rotationRangedConstraints\":[],\"config\":{\"maxVelocityMps\":4.5,\"maxAccelerationMps2\":10,\"handoffRadiusMeters\":0.45,\"maxVelocityDegPerSec\":540,\"maxAccelerationDegPerSec\":1500,\"autoVelocityVelocitySafetyFactor\":0.9,\"autoVelocityAccelerationSafetyFactor\":0.8},\"options\":{\"velocitySafetyFactor\":0.9,\"accelerationSafetyFactor\":0.8,\"sampleStepMeters\":null}}"
-            }
-          },
-          {
-            "key": "max_velocity_meters_per_sec",
             "value": 4.05,
-            "start_ordinal": 6,
-            "end_ordinal": 6,
+            "start_ordinal": 5,
+            "end_ordinal": 5,
             "source": "auto_velocity",
             "auto_velocity": {
               "velocity_safety_factor": 0.9,
@@ -246,18 +233,26 @@
         "linked_targets": [
           {
             "element_index": 0.0,
-            "target_id": "target-1cc45549"
-          },
-          {
-            "element_index": 1.0,
             "target_id": "target-71c12f5d"
           },
           {
-            "element_index": 9.0,
+            "element_index": 8.0,
             "target_id": "target-1cc45549"
           }
         ]
       }
+    },
+    "FollowerCloseTrench.json": {
+      "display_name": "FollowerCloseTrench",
+      "editor_metadata": null
+    },
+    "FollowerClose.json": {
+      "display_name": "FollowerClose",
+      "editor_metadata": null
+    },
+    "FollowerExtended.json": {
+      "display_name": "FollowerExtended",
+      "editor_metadata": null
     }
   },
   "field_assets": {}
