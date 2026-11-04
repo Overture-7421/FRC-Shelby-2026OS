@@ -3,8 +3,8 @@
     {
       "type": "waypoint",
       "translation_target": {
-        "x_meters": 3.27395,
-        "y_meters": 0.67264,
+        "x_meters": 3.3868,
+        "y_meters": 0.62376,
         "intermediate_handoff_radius_meters": 0.45
       },
       "rotation_target": {
@@ -45,8 +45,8 @@
     {
       "type": "waypoint",
       "translation_target": {
-        "x_meters": 6.04115,
-        "y_meters": 4.01339,
+        "x_meters": 6.3019,
+        "y_meters": 4.01647,
         "intermediate_handoff_radius_meters": 0.45
       },
       "rotation_target": {
@@ -63,30 +63,36 @@
     {
       "type": "waypoint",
       "translation_target": {
-        "x_meters": 5.81947,
-        "y_meters": 2.25567,
+        "x_meters": 6.33484,
+        "y_meters": 2.50128,
         "intermediate_handoff_radius_meters": 0.45
       },
       "rotation_target": {
-        "rotation_radians": -1.51937,
+        "rotation_radians": -3.14159,
         "profiled_rotation": true
       }
     },
     {
-      "type": "rotation",
-      "rotation_radians": -1.58553,
-      "t_ratio": 0.45676,
-      "profiled_rotation": true
+      "type": "waypoint",
+      "translation_target": {
+        "x_meters": 3.51855,
+        "y_meters": 2.51775,
+        "intermediate_handoff_radius_meters": 0.25
+      },
+      "rotation_target": {
+        "rotation_radians": 3.14159,
+        "profiled_rotation": true
+      }
     },
     {
       "type": "waypoint",
       "translation_target": {
-        "x_meters": 0.89307,
-        "y_meters": 2.24301,
+        "x_meters": 1.11401,
+        "y_meters": 2.02366,
         "intermediate_handoff_radius_meters": 0.45
       },
       "rotation_target": {
-        "rotation_radians": -2.74751,
+        "rotation_radians": -2.51839,
         "profiled_rotation": true
       }
     }
@@ -104,7 +110,7 @@
         "end_ordinal": 2
       },
       {
-        "value": 2.92,
+        "value": 1.82,
         "start_ordinal": 3,
         "end_ordinal": 3
       },
@@ -114,9 +120,9 @@
         "end_ordinal": 4
       },
       {
-        "value": 3.92,
-        "start_ordinal": 5,
-        "end_ordinal": 5
+        "value": 2.92,
+        "start_ordinal": 6,
+        "end_ordinal": 6
       }
     ],
     "max_acceleration_meters_per_sec2": [
