@@ -6,6 +6,7 @@ package frc.robot.commands.autos;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Subsystems.Chassis.BLinePaths;
 
 public class AutoRoutines {
@@ -31,5 +32,29 @@ public class AutoRoutines {
 				autos.intakeAlong(paths.follow("FirstSecondPass", mirrored)),
 				autos.hubShot(2.7),
 				autos.intakeAlong(paths.follow("ThirdPass", mirrored)));
+	}
+
+	public static Command FollowerExtended(BLinePaths paths, AutoCommands autos, boolean mirrored) {
+
+		return new SequentialCommandGroup(
+				new WaitCommand(2),
+				autos.intakeAlong(paths.resetAndFollow("FollowerExtended", mirrored)),
+				autos.hubShot(2.7));
+	}
+
+	public static Command FollowerClose(BLinePaths paths, AutoCommands autos, boolean mirrored) {
+
+		return new SequentialCommandGroup(
+				new WaitCommand(2),
+				autos.intakeAlong(paths.resetAndFollow("FollowerClose", mirrored)),
+				autos.hubShot(2.7));
+	}
+
+	public static Command FollowerCloseTrench(BLinePaths paths, AutoCommands autos, boolean mirrored) {
+
+		return new SequentialCommandGroup(
+				new WaitCommand(2),
+				autos.intakeAlong(paths.resetAndFollow("FollowerCloseTrench", mirrored)),
+				autos.hubShot(2.7));
 	}
 }

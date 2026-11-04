@@ -183,6 +183,13 @@ public class RobotContainer implements OverContainer {
 		autoChooser.addOption("Double pass left", AutoRoutines.DoublePass(paths, autos, true));
 		autoChooser.addOption("Alternate double pass right", AutoRoutines.AlternateDoublePass(paths, autos, false));
 		autoChooser.addOption("Alternate double pass left", AutoRoutines.AlternateDoublePass(paths, autos, true));
+		autoChooser.addOption("Follower Extended right", AutoRoutines.FollowerExtended(paths, autos, false));
+		autoChooser.addOption("Follower Extended left", AutoRoutines.FollowerExtended(paths, autos, true));
+		autoChooser.addOption("Follower Close right", AutoRoutines.FollowerClose(paths, autos, false));
+		autoChooser.addOption("Follower Close left", AutoRoutines.FollowerClose(paths, autos, true));
+		autoChooser.addOption("Follower CloseTrench right", AutoRoutines.FollowerCloseTrench(paths, autos, false));
+		autoChooser.addOption("Follower CloseTrench left", AutoRoutines.FollowerCloseTrench(paths, autos, true));
+		
 
 		SmartDashboard.putData("Auto Chooser", autoChooser);
 	}

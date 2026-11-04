@@ -1090,6 +1090,38 @@
       "xM": 12.031,
       "yM": 0.52654,
       "headingRad": 3.141593
+    },
+    {
+      "id": "start",
+      "label": "Blue right (Follower pass)",
+      "alliance": "blue",
+      "xM": 2.979928,
+      "yM": 0.649986,
+      "headingRad": 0.0
+    },
+    {
+      "id": "start_2",
+      "label": "Blue left (Follower pass) ",
+      "alliance": "blue",
+      "xM": 2.979928,
+      "yM": 7.409942,
+      "headingRad": 0.0
+    },
+    {
+      "id": "start_red",
+      "label": "Red right (Follower)",
+      "alliance": "red",
+      "xM": 13.561072,
+      "yM": 7.419014,
+      "headingRad": 3.1415927
+    },
+    {
+      "id": "start_2_red",
+      "label": "Red left (Follower) ",
+      "alliance": "red",
+      "xM": 13.561072,
+      "yM": 0.6590581,
+      "headingRad": 3.1415927
     }
   ],
   "motionLinks": [],
